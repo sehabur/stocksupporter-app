@@ -1,0 +1,294 @@
+"use client";
+import * as React from "react";
+import { DateTime } from "luxon";
+import Link from "next/link";
+import LoadingSpinner from "@/components/shared/LoadingSpinner";
+
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import {
+  Box,
+  Typography,
+  Paper,
+  Button,
+  Chip,
+  Stack,
+  Divider,
+} from "@mui/material";
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { pageTitleActions } from "_store";
+import { AUTO_RELOAD_TIME_MS } from "@/data/constants";
+
+function calculateAverage(values: number[]) {
+  if (values.length === 0) return 0; // Handle empty array case
+
+  const sum = values.reduce(
+    (accumulator, currentValue) => accumulator + currentValue,
+    0
+  );
+  const average = sum / values.length;
+
+  return average.toFixed(2);
+}
+
+export default function BlockTransection() {
+  const [data, setdata] = React.useState<any>([]);
+  const [summary, setsummary] = React.useState<any>({
+    quantity: 0,
+    value: 0,
+    trades: 0,
+    scripts: 0,
+  });
+
+  const [isLoading, setisLoading] = React.useState(false);
+
+  const router = useRouter();
+
+  const dispatch = useDispatch();
+
+  dispatch(pageTitleActions.setPageTitle("Block Transections"));
+
+  const handleButtonClick = (href: string, title: string) => {
+    router.push(href);
+    // dispatch(pageTitleActions.setPageTitle(title));
+  };
+
+  function getBlockTrSummary(data: any) {
+    let quantity = 0;
+    let value = 0;
+    let trades = 0;
+    let scripts = 0;
+    for (let row of data) {
+      quantity += row.quantity;
+      value += row.value;
+      trades += row.trades;
+      scripts++;
+    }
+    return {
+      quantity,
+      value,
+      trades,
+      scripts,
+    };
+  }
+
+  async function getData() {
+    try {
+      setisLoading(true);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/blockTr/lastday`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!res.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      const initdata = await res.json();
+
+      setsummary(getBlockTrSummary(initdata));
+      setdata(initdata);
+      setisLoading(false);
+    } catch (error) {
+      setisLoading(false);
+    }
+  }
+
+  console.log(summary);
+
+  React.useEffect(() => {
+    getData();
+  }, []);
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      const { pathname, search } = window.location;
+      router.push(`/reload?redirect=${encodeURIComponent(pathname + search)}`);
+    }, AUTO_RELOAD_TIME_MS);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  return (
+    <Box
+      sx={{
+        py: 1.5,
+        px: 1.5,
+      }}
+    >
+      <LoadingSpinner open={isLoading} />
+
+      <Paper
+        elevation={0}
+        sx={{
+          bgcolor: "appCardBgColor",
+          px: 3,
+          pb: 1.5,
+          pt: 1.5,
+          borderRadius: 3,
+          mb: 1.5,
+        }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center", mb: 1.5 }}>
+          <Typography sx={{ mr: 2, fontSize: ".95rem" }}>
+            Total{" "}
+            <Typography
+              sx={{ display: "inline", fontWeight: 700, fontSize: "1.2rem" }}
+            >
+              {summary.scripts}
+            </Typography>{" "}
+            scripts traded
+          </Typography>
+          <Chip
+            label={DateTime.fromISO(data[0]?.date).toFormat("dd MMM, yyyy")}
+            // variant="outlined"
+            size="small"
+            sx={{ fontSize: ".9rem" }}
+          />
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "space-between",
+          }}
+        >
+          <Box>
+            <Typography color="text.primary" sx={{ fontSize: ".8rem" }}>
+              Volume
+            </Typography>
+            <Typography
+              color="text.primary"
+              sx={{
+                fontSize: "1.3rem",
+                fontWeight: 700,
+                fontFamily: "'Nunito Sans', sans-serif",
+              }}
+            >
+              {summary.quantity}
+            </Typography>
+          </Box>
+          <Divider orientation="vertical" flexItem variant="middle" />
+          <Box>
+            <Typography color="text.primary" sx={{ fontSize: ".8rem" }}>
+              Value (Mn)
+            </Typography>
+            <Typography
+              color="text.primary"
+              sx={{
+                fontSize: "1.3rem",
+                fontWeight: 700,
+                fontFamily: "'Nunito Sans', sans-serif",
+              }}
+            >
+              {summary.value.toFixed(2)}
+            </Typography>
+          </Box>
+          <Divider orientation="vertical" flexItem variant="middle" />
+          <Box>
+            <Typography color="text.primary" sx={{ fontSize: ".8rem" }}>
+              Trades
+            </Typography>
+            <Typography
+              color="text.primary"
+              sx={{
+                fontSize: "1.3rem",
+                fontWeight: 700,
+                fontFamily: "'Nunito Sans', sans-serif",
+              }}
+            >
+              {summary.trades}
+            </Typography>
+          </Box>
+        </Box>
+      </Paper>
+
+      <TableContainer
+        component={Paper}
+        variant="outlined"
+        sx={{ maxHeight: "65vh", mb: 2 }}
+      >
+        <Table size="small" stickyHeader>
+          <TableHead>
+            <TableRow
+              sx={{
+                ".MuiTableCell-head": {
+                  fontWeight: 700,
+                  color: "text.primary",
+                  lineHeight: 1.4,
+                  py: 1,
+                },
+              }}
+            >
+              {/* <TableCell>DATE</TableCell> */}
+              <TableCell>TRADING CODE</TableCell>
+              <TableCell>VALUE (MN)</TableCell>
+              <TableCell>VOLUME</TableCell>
+              <TableCell>TRADES</TableCell>
+              <TableCell>MAX PRICE</TableCell>
+              <TableCell>MIN PRICE</TableCell>
+              {/* <TableCell>AVERAGE PRICE</TableCell> */}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data?.map((row: any) => (
+              <TableRow
+                key={row._id}
+                hover={true}
+                sx={{
+                  // ".MuiTableCell": {
+                  //   fontSize: "1rem",
+                  //   fontWeight: 500,
+                  //   color: "text.secondary",
+                  // },
+                  "&:nth-of-type(odd)": {
+                    backgroundColor: "stipedTableEvenRow",
+                  },
+                }}
+              >
+                {/* <TableCell component="th" scope="row" sx={{ minWidth: 80 }}>
+                  {DateTime.fromISO(row.date).toFormat("dd MMM")}
+                </TableCell> */}
+                <TableCell align="left">
+                  <Typography
+                    onClick={() => {
+                      handleButtonClick(
+                        `/stock-details/${row.tradingCode}`,
+                        `${row.tradingCode} Details`
+                      );
+                    }}
+                    sx={{
+                      textAlign: "left",
+                      color: "primary.main",
+                      ":hover": { textDecoration: "underline" },
+                    }}
+                  >
+                    {row.tradingCode}
+                  </Typography>
+                </TableCell>
+                <TableCell>{row.value}</TableCell>
+                <TableCell>{row.quantity}</TableCell>
+                <TableCell>{row.trades}</TableCell>
+                <TableCell>{row.maxPrice}</TableCell>
+                <TableCell>{row.minPrice}</TableCell>
+                {/* <TableCell>
+                  {calculateAverage([row.maxPrice, row.minPrice])}
+                </TableCell> */}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
+  );
+}

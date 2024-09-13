@@ -1,0 +1,48 @@
+export const sectorList: any = [
+  { name: "Bank", tag: "bank" },
+  { name: "Cement", tag: "cement" },
+  { name: "Ceramics Sector", tag: "ceramics" },
+  { name: "Engineering", tag: "engineering" },
+  { name: "Financial Institutions", tag: "financial" },
+  { name: "Food & Allied", tag: "food" },
+  { name: "Fuel & Power", tag: "fuel" },
+  { name: "General Insurance", tag: "general" },
+  { name: "Life Insurance", tag: "life" },
+  { name: "IT Sector", tag: "it" },
+  { name: "Jute", tag: "jute" },
+  { name: "Miscellaneous", tag: "miscellaneous" },
+  { name: "Mutual Funds", tag: "mutual" },
+  { name: "Paper & Printing", tag: "paper" },
+  { name: "Pharmaceuticals & Chemicals", tag: "pharmaceuticals" },
+  { name: "Services & Real Estate", tag: "services" },
+  { name: "Tannery Industries", tag: "tannery" },
+  { name: "Telecommunication", tag: "telecommunication" },
+  { name: "Textile", tag: "textile" },
+  { name: "Travel & Leisure", tag: "travel" },
+];
+
+export const categoryList = ["A", "B", "N", "Z", "SME"];
+
+export const yearEndMap = [
+  {
+    yearEnd: "30-Jun",
+    q1: "Q1 (Jul-Sep)",
+    q2: "Q2 (Oct-Dec)",
+    q3: "Q3 (Jan-Mar)",
+    q4: "Q4 (Apr-Jun)",
+  },
+  {
+    yearEnd: "31-Dec",
+    q1: "Q1 (Jan-Mar)",
+    q2: "Q2 (Apr-Jun)",
+    q3: "Q3 (Jul-Sep)",
+    q4: "Q4 (Oct-Dec)",
+  },
+  {
+    yearEnd: "31-Mar",
+    q1: "Q1 (Apr-Jun)",
+    q2: "Q2 (Jul-Sep)",
+    q3: "Q3 (Oct-Dec)",
+    q4: "Q4 (Jan-Mar)",
+  },
+];

@@ -1,0 +1,11 @@
+.downTrend {
+  color: #ff173e;
+}
+
+.upTrend {
+  color: #00a97f;
+}
+
+.neutral {
+  color: #2962ff;
+}

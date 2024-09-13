@@ -1,0 +1,12 @@
+# dependencies
+/node_modules
+/.next
+/out
+
+# misc
+/android
+/ios
+
+#environment
+.env.development
+.env.production
