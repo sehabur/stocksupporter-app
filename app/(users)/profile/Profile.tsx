@@ -1,36 +1,33 @@
 "use client";
 import React from "react";
-
 import Link from "next/link";
 import { DateTime } from "luxon";
 import { useSelector } from "react-redux";
-
-import {
-  Avatar,
-  Box,
-  Button,
-  Chip,
-  Divider,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Avatar, Box, Button, Chip, Divider, Typography } from "@mui/material";
 import WorkspacePremiumRoundedIcon from "@mui/icons-material/WorkspacePremiumRounded";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
+import SigninDialogContent from "@/components/shared/SigninDialogContent";
 
 export default function Profile() {
   const auth = useSelector((state: any) => state.auth);
 
   return (
     <>
+      {!auth?.isLoggedIn && (
+        <Box sx={{ px: 2, py: 4 }}>
+          <SigninDialogContent redirect="/profile" />
+        </Box>
+      )}
+
       <Box>
-        {auth && (
+        {auth?.isLoggedIn && (
           <>
             <Box sx={{ mb: 2, mt: 1 }}>
               <Avatar sx={{ width: 50, height: 50 }} />
               <Typography
                 variant="h4"
                 color="primary.main"
-                sx={{ fontSize: "1.5rem", fontWeight: 500, mt: 1 }}
+                sx={{ fontSize: "1.5rem", fontWeight: 500, mt: 2 }}
               >
                 {auth.name || "User"}
               </Typography>
@@ -64,7 +61,7 @@ export default function Profile() {
               >
                 Account type
               </Typography>
-              {auth?.isPremium ? (
+              {auth?.isPremiumEligible ? (
                 <>
                   <Chip
                     size="small"
@@ -104,10 +101,10 @@ export default function Profile() {
               >
                 Edit profile
               </Button>
-              {!auth?.isPremium && (
+              {!auth?.isPremiumEligible && (
                 <Button
                   component={Link}
-                  href="#"
+                  href="/pricing"
                   variant="contained"
                   color="warning"
                   sx={{ px: 2, py: 0.8 }}

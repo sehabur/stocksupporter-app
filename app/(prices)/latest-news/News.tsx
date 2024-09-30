@@ -35,6 +35,7 @@ import { useDispatch } from "react-redux";
 import { pageTitleActions } from "_store";
 import { useRouter } from "next/navigation";
 import { AUTO_RELOAD_TIME_MS } from "@/data/constants";
+import AutoReload from "@/components/shared/AutoReload";
 
 const options: any = [
   {
@@ -131,25 +132,6 @@ export default function News() {
     }
   }
 
-  React.useEffect(() => {
-    getData();
-  }, []);
-
-  React.useEffect(() => {
-    setNews(data.slice(0, 300));
-  }, [data]);
-
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      const { pathname, search } = window.location;
-      router.push(`/reload?redirect=${encodeURIComponent(pathname + search)}`);
-    }, AUTO_RELOAD_TIME_MS);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
   const handleAlignmentChange = (
     event: React.MouseEvent<HTMLElement>,
     newAlignment: string
@@ -187,9 +169,18 @@ export default function News() {
     setDialogContent(item);
   };
 
+  React.useEffect(() => {
+    getData();
+  }, []);
+
+  React.useEffect(() => {
+    setNews(data.slice(0, 300));
+  }, [data]);
+
   return (
     <Box>
       <LoadingSpinner open={isLoading} />
+      <AutoReload />
       <Dialog
         onClose={handleDialogClose}
         open={openDialog}
@@ -278,7 +269,10 @@ export default function News() {
                 variant="outlined"
                 key={item._id}
               >
-                <CardContent sx={{ pb: 0 }}>
+                <CardContent
+                  sx={{ pb: 0 }}
+                  onClick={() => handleItemClick(item)}
+                >
                   <Typography
                     gutterBottom
                     variant="h5"

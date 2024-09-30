@@ -40,8 +40,8 @@ export default function AlertButton({
             border: `1.2px solid ${alpha(theme.palette.primary.main, 0.5)}`,
             bgcolor: alpha(theme.palette.primary.main, 0.07),
             mr: 1.5,
-            px: 1.1,
-            py: 1.1,
+            px: 0.9,
+            py: 0.9,
           }}
           onClick={() => handleDialogOpen()}
         >

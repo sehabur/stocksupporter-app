@@ -27,6 +27,7 @@ import MobileViewPriceCard from "@/components/cards/MobileViewPriceCard";
 import SigninDialogContent from "@/components/shared/SigninDialogContent";
 import { useRouter } from "next/navigation";
 import { AUTO_RELOAD_TIME_MS } from "@/data/constants";
+import AutoReload from "@/components/shared/AutoReload";
 
 export default function Favorites() {
   const router = useRouter();
@@ -121,20 +122,20 @@ export default function Favorites() {
     }
   }, [favorite, latestPrice]);
 
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      if (!dialogOpen) {
-        const { pathname, search } = window.location;
-        router.push(
-          `/reload?redirect=${encodeURIComponent(pathname + search)}`
-        );
-      }
-    }, AUTO_RELOAD_TIME_MS);
+  // React.useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     if (!dialogOpen) {
+  //       const { pathname, search } = window.location;
+  //       router.push(
+  //         `/reload?redirect=${encodeURIComponent(pathname + search)}`
+  //       );
+  //     }
+  //   }, AUTO_RELOAD_TIME_MS);
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+  //   return () => {
+  //     clearInterval(interval);
+  //   };
+  // }, []);
 
   return (
     <Box
@@ -143,6 +144,8 @@ export default function Favorites() {
         mx: "auto",
       }}
     >
+      <AutoReload enable={!dialogOpen} />
+
       <ToastMessage
         open={toastOpen}
         onClose={handleLogoutToastColse}
@@ -222,7 +225,7 @@ export default function Favorites() {
 
       {!auth?.isLoggedIn && (
         <Box sx={{ px: 2, py: 4 }}>
-          <SigninDialogContent />
+          <SigninDialogContent redirect="/favorites" />
         </Box>
       )}
 

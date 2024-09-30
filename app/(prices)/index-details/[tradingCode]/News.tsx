@@ -112,7 +112,10 @@ export default function News({ news }: any) {
           {news.map((item: any) => (
             <Grid item xs={12} sm={4} key={item._id}>
               <Card sx={{ minWidth: 275 }} variant="outlined">
-                <CardContent sx={{ pb: 1 }}>
+                <CardContent
+                  sx={{ pb: 1 }}
+                  onClick={() => handleItemClick(item)}
+                >
                   <Typography
                     gutterBottom
                     variant="h5"

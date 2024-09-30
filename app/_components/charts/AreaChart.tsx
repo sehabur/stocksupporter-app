@@ -90,6 +90,17 @@ export default function AreaChart(props: AreaChartProps) {
       },
     });
 
+    chart.current.applyOptions({
+      watermark: {
+        visible: true,
+        fontSize: 24,
+        horzAlign: "center",
+        vertAlign: "center",
+        color: "rgba(125, 125, 125, 0.3)",
+        text: "Stocksupporter",
+      },
+    });
+
     const series = chart.current.addAreaSeries({
       lineColor: color,
       topColor: alpha(color, 0.5),

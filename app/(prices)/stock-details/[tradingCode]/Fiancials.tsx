@@ -16,6 +16,8 @@ import {
   Slider,
   Divider,
 } from "@mui/material";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+
 import { yearEndMap } from "@/data/dse";
 import ShareholdingLineChart from "@/components/charts/ShareholdingLineChart";
 import SquareRoundedIcon from "@mui/icons-material/SquareRounded";
@@ -26,8 +28,6 @@ import YearlyStackedColumnChart from "@/components/charts/YearlyStackedColumnCha
 import FundamentalsDialogContent from "./_component/FundamentalsDialogContent";
 import PremiumDialogContent from "@/components/shared/PremiumDialogContent";
 import PieChartShareHolding from "@/components/charts/PieChartShareholding";
-
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
 const formatYearlyData = (data: any, divideFactor = 1, nonZero = false) => {
   if (!data) return;
@@ -383,7 +383,7 @@ export default function Financials({ data }: any) {
   // };
 
   const handleItemClick = (type: string) => {
-    // if (!auth?.isPremium) {
+    // if (!auth?.isPremiumEligible) {
     //   handlePremiumDialogOpen();
     // } else {
     //   handleDialogOpen();
@@ -434,7 +434,7 @@ export default function Financials({ data }: any) {
 
   return (
     <Box sx={{ bgcolor: "financePageBgcolor" }}>
-      <Box sx={{ maxWidth: "550px", mx: "auto", py: 0, px: 2 }}>
+      <Box sx={{ maxWidth: "550px", mx: "auto", pt: 3, pb: 2, px: 2 }}>
         {/* <Dialog
           open={openPremiumDialog}
           onClose={handlePremiumDialogClose}
@@ -546,7 +546,7 @@ export default function Financials({ data }: any) {
           )}
           {dialogContent === "pe" && (
             <>
-              <DialogTitle sx={{ fontWeight: 700, fontSize: "1.4rem", pr: 12 }}>
+              <DialogTitle sx={{ fontWeight: 700, pr: 12 }}>
                 Price-to-EPS (P/E) Ratio of {data.tradingCode}
               </DialogTitle>
 
@@ -653,7 +653,7 @@ export default function Financials({ data }: any) {
           )}
           {dialogContent === "pbv" && (
             <>
-              <DialogTitle sx={{ fontWeight: 700, fontSize: "1.4rem", pr: 12 }}>
+              <DialogTitle sx={{ fontWeight: 700, pr: 12 }}>
                 Price-to-Bookvalue (P/Bv) Ratio of {data.tradingCode}
               </DialogTitle>
 
@@ -762,7 +762,7 @@ export default function Financials({ data }: any) {
           )}
           {dialogContent === "ps" && (
             <>
-              <DialogTitle sx={{ fontWeight: 700, fontSize: "1.4rem", pr: 12 }}>
+              <DialogTitle sx={{ fontWeight: 700, pr: 12 }}>
                 Price-to-Sales (P/S) Ratio of {data.tradingCode}
               </DialogTitle>
 
@@ -871,7 +871,7 @@ export default function Financials({ data }: any) {
           )}
           {dialogContent === "pcf" && (
             <>
-              <DialogTitle sx={{ fontWeight: 700, fontSize: "1.4rem", pr: 12 }}>
+              <DialogTitle sx={{ fontWeight: 700, pr: 12 }}>
                 Price-to-Cashflow (P/Cf) Ratio of {data.tradingCode}
               </DialogTitle>
 
@@ -1118,32 +1118,17 @@ export default function Financials({ data }: any) {
           )}
           {dialogContent === "shareholdings" && (
             <>
-              <DialogTitle sx={{ fontWeight: 700, fontSize: "1.4rem", pr: 12 }}>
+              <DialogTitle
+                sx={{
+                  fontWeight: 700,
+                  pr: 12,
+                }}
+              >
                 Shareholding percentage history of {data.tradingCode}
               </DialogTitle>
               <DialogContent dividers>
                 <Box sx={{ maxWidth: "600px", mx: "auto", pb: 2, pt: 1 }}>
                   <Box sx={{ my: 2 }}>
-                    {/* <Typography
-                      sx={{
-                        fontSize: "1.1rem",
-                        fontWeight: 500,
-                        ml: 2,
-                      }}
-                    >
-                      Shareholding percentage history
-                    </Typography>
-                    <MultipleLineChart
-                      data={shareholdings.series}
-                      categories={shareholdings.categories}
-                      lineColors={[
-                        "#4dd0e1",
-                        "#b388ff",
-                        "#448aff",
-                        "#42bda8",
-                        "#f57f17",
-                      ]}
-                    /> */}
                     <Box sx={{ mb: 4 }}>
                       <Typography
                         sx={{ textAlign: "center", fontSize: "1rem" }}
@@ -1221,411 +1206,478 @@ export default function Financials({ data }: any) {
             <CloseRoundedIcon sx={{ fontSize: "1.6rem" }} />
           </IconButton>
         </Dialog>
-        {!auth?.isPremium && (
+        {!auth?.isPremiumEligible && (
           <Box
             sx={{
-              pt: 3,
+              pt: 4,
               pb: 4,
+              px: 2,
             }}
           >
-            <PremiumDialogContent />
+            <PremiumDialogContent details={false} />
           </Box>
         )}
 
-        {auth?.isPremium && (
-          <Grid
-            container
-            direction="row"
-            justifyContent="flex-start"
-            rowSpacing={{ xs: 3, sm: 6 }}
-            columnSpacing={{ xs: 1, sm: 4 }}
-            sx={{ pt: 4 }}
-          >
-            <Grid item xs={6} sm={4}>
-              <FinancialCard
-                titleShort="EPS"
-                title="Earning Per Share (EPS)"
-                data={data?.screener?.epsQuarterly || data?.screener?.epsYearly}
-                dialogtype="eps"
-                handleItemClick={handleItemClick}
-              />
-            </Grid>
-            <Grid item xs={6} sm={4}>
-              <FinancialCard
-                title="Net Asset Value (NAV)"
-                titleShort="NAV"
-                data={data?.screener?.navQuarterly || data?.screener?.navYearly}
-                dialogtype="nav"
-                handleItemClick={handleItemClick}
-              />
-            </Grid>
-            <Grid item xs={6} sm={4}>
-              <FinancialCard
-                titleShort="ROE"
-                title="Return of Equity (ROE)"
-                unit="%"
-                divideFactor={0.01}
-                data={data?.screener?.roe}
-                dialogtype="roe"
-                handleItemClick={handleItemClick}
-              />
-            </Grid>
-            <Grid item xs={6} sm={4}>
-              <FinancialCard
-                titleShort="ROA"
-                title="Return of Assets (ROA)"
-                unit="%"
-                divideFactor={0.01}
-                data={data?.screener?.roa}
-                dialogtype="roa"
-                handleItemClick={handleItemClick}
-              />
-            </Grid>
-            {/* <Grid item xs={6} sm={4}>
-            <FinancialCard
-              titleShort='ROCE'
-              title='Return of Capital Employed'
-              unit='%'
-              divideFactor={0.01}
-              data={data?.screener?.roce}
-              dialogtype='roce'
-              handleItemClick={handleItemClick}
-            />
-          </Grid> */}
-            <Grid item xs={6} sm={4}>
-              <FinancialCard
-                titleShort="P/E Ratio"
-                title="Profit-to-Earning (P/E) Ratio"
-                data={data.pe}
-                dialogtype="pe"
-                handleItemClick={handleItemClick}
-              />
-            </Grid>
-            <Grid item xs={6} sm={4}>
-              <FinancialCard
-                titleShort="D/E Ratio"
-                title="Debt-to-Equity (D/E) Ratio"
-                // unit="%"
-                // divideFactor={0.01}
-                data={data?.screener?.de}
-                dialogtype="de"
-                handleItemClick={handleItemClick}
-              />
-            </Grid>
-            <Grid item xs={6} sm={4}>
-              <FinancialCard
-                titleShort="P/S Ratio"
-                title="Price/Sales Ratio"
-                data={data?.screener?.ps}
-                dialogtype="ps"
-                handleItemClick={handleItemClick}
-              />
-            </Grid>
-            <Grid item xs={6} sm={4}>
-              <FinancialCard
-                titleShort="P/BV Ratio"
-                title="Price/Bookvalue Ratio"
-                data={data.pbv}
-                dialogtype="pbv"
-                handleItemClick={handleItemClick}
-              />
-            </Grid>
-            <Grid item xs={6} sm={4}>
-              <FinancialCard
-                titleShort="Current Ratio"
-                title="Current Ratio"
-                data={data?.screener?.currentRatio}
-                dialogtype="currentRatio"
-                handleItemClick={handleItemClick}
-              />
-            </Grid>
-            <Grid item xs={6} sm={4}>
-              <FinancialCard
-                titleShort="Net Income Ratio"
-                title="Net Income Ratio"
-                data={data?.screener?.netIncomeRatio}
-                dialogtype="netIncomeRatio"
-                handleItemClick={handleItemClick}
-              />
-            </Grid>
-            <Grid item xs={6} sm={4}>
-              <FinancialCard
-                titleShort="NOCFPS"
-                title="NOCFPS"
-                data={
-                  data?.screener?.nocfpsQuarterly ||
-                  data?.screener?.nocfpsYearly
-                }
-                dialogtype="nocfps"
-                handleItemClick={handleItemClick}
-              />
-            </Grid>
-            <Grid item xs={6} sm={4}>
-              <FinancialCard
-                titleShort="P/CF Ratio"
-                title="Price/Cashflow Ratio"
-                data={data.pcf}
-                dialogtype="pcf"
-                handleItemClick={handleItemClick}
-              />
-            </Grid>
-            <Grid item xs={6} sm={4}>
-              <FinancialCard
-                titleShort="Profit Margin"
-                title="Profit Margin"
-                unit="%"
-                divideFactor={0.01}
-                data={data?.screener?.profitMargin}
-                dialogtype="profitMargin"
-                handleItemClick={handleItemClick}
-              />
-            </Grid>
-
-            <Grid item xs={6} sm={4}>
-              <FinancialCard
-                titleShort="Dividend Yield"
-                title="Divident Yield"
-                unit="%"
-                data={data?.screener?.dividendYield}
-                dialogtype="dividendYield"
-                handleItemClick={handleItemClick}
-              />
-            </Grid>
-
-            <Grid item xs={6} sm={4}>
-              <FinancialCard
-                titleShort="Div Payout Ratio"
-                title="Dividend Payout Ratio"
-                data={data?.screener?.dividendPayoutRatio}
-                dialogtype="dividendPayoutRatio"
-                handleItemClick={handleItemClick}
-              />
-            </Grid>
-            <Grid item xs={6} sm={4}>
-              <FinancialCard
-                titleShort="Revenue"
-                title="Revenue"
-                unit="Crore"
-                divideFactor={10000000}
-                data={data?.screener?.revenue}
-                dialogtype="revenue"
-                handleItemClick={handleItemClick}
-              />
-            </Grid>
-
-            <Grid item xs={6} sm={4}>
-              <FinancialCard
-                titleShort="Net Income"
-                title="Net Income"
-                unit="Crore"
-                divideFactor={10000000}
-                data={data?.screener?.netIncome}
-                dialogtype="netIncome"
-                handleItemClick={handleItemClick}
-              />
-            </Grid>
-            <Grid item xs={6} sm={4}>
-              <FinancialCard
-                titleShort="Total Assets"
-                title="Total Assets"
-                unit="Crore"
-                divideFactor={10000000}
-                data={data?.screener?.totalAsset}
-                dialogtype="totalAsset"
-                handleItemClick={handleItemClick}
-              />
-            </Grid>
-            <Grid item xs={6} sm={4}>
-              <FinancialCard
-                titleShort="Operating Profit"
-                title="Operating Profit"
-                unit="Crore"
-                divideFactor={10000000}
-                data={data?.screener?.operatingProfit}
-                dialogtype="operatingProfit"
-                handleItemClick={handleItemClick}
-              />
-            </Grid>
-            <Grid item xs={6} sm={4}>
-              <FinancialCard
-                titleShort="Resrv & Surpl"
-                title="Reserve & Surplus"
-                unit="Crore"
-                divideFactor={10}
-                data={data?.screener?.reserveSurplus}
-                dialogtype="reserveSurplus"
-                handleItemClick={handleItemClick}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <Box
+        {auth?.isPremiumEligible && (
+          <>
+            <Box>
+              <Typography
                 sx={{
-                  bgcolor: theme.palette.background.default,
-                  borderRadius: 1,
-                  pb: 4,
+                  fontSize: "1.5rem",
+                  fontWeight: 700,
+                  color: "text.primary",
+                  mb: 1.5,
+                  ml: 0.2,
                 }}
               >
-                <Typography
-                  color="text.primary"
+                Key Indicators
+              </Typography>
+            </Box>
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              rowSpacing={2}
+              columnSpacing={1}
+            >
+              <Grid item xs={6} sm={4}>
+                <FinancialCard
+                  titleShort="EPS"
+                  title="Earning Per Share (EPS)"
+                  data={
+                    data?.screener?.epsQuarterly || data?.screener?.epsYearly
+                  }
+                  dialogtype="eps"
+                  handleItemClick={handleItemClick}
+                />
+              </Grid>
+              <Grid item xs={6} sm={4}>
+                <FinancialCard
+                  title="Net Asset Value (NAV)"
+                  titleShort="NAV"
+                  data={
+                    data?.screener?.navQuarterly || data?.screener?.navYearly
+                  }
+                  dialogtype="nav"
+                  handleItemClick={handleItemClick}
+                />
+              </Grid>
+              <Grid item xs={6} sm={4}>
+                <FinancialCard
+                  titleShort="NOCFPS"
+                  title="NOCFPS"
+                  data={
+                    data?.screener?.nocfpsQuarterly ||
+                    data?.screener?.nocfpsYearly
+                  }
+                  dialogtype="nocfps"
+                  handleItemClick={handleItemClick}
+                />
+              </Grid>
+              <Grid item xs={6} sm={4}>
+                <FinancialCard
+                  titleShort="P/E Ratio"
+                  title="Profit-to-Earning (P/E) Ratio"
+                  data={data.pe}
+                  dialogtype="pe"
+                  handleItemClick={handleItemClick}
+                />
+              </Grid>
+            </Grid>
+            <Box>
+              <Typography
+                sx={{
+                  fontSize: "1.5rem",
+                  fontWeight: 700,
+                  color: "text.primary",
+                  mt: 5,
+                  mb: 1.5,
+                  ml: 0.2,
+                }}
+              >
+                Ratios
+              </Typography>
+            </Box>
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              rowSpacing={2}
+              columnSpacing={1}
+            >
+              <Grid item xs={6} sm={4}>
+                <FinancialCard
+                  titleShort="ROE"
+                  title="Return of Equity (ROE)"
+                  unit="%"
+                  divideFactor={0.01}
+                  data={data?.screener?.roe}
+                  dialogtype="roe"
+                  handleItemClick={handleItemClick}
+                />
+              </Grid>
+              <Grid item xs={6} sm={4}>
+                <FinancialCard
+                  titleShort="ROA"
+                  title="Return of Assets (ROA)"
+                  unit="%"
+                  divideFactor={0.01}
+                  data={data?.screener?.roa}
+                  dialogtype="roa"
+                  handleItemClick={handleItemClick}
+                />
+              </Grid>
+
+              <Grid item xs={6} sm={4}>
+                <FinancialCard
+                  titleShort="D/E Ratio"
+                  title="Debt-to-Equity (D/E) Ratio"
+                  // unit="%"
+                  // divideFactor={0.01}
+                  data={data?.screener?.de}
+                  dialogtype="de"
+                  handleItemClick={handleItemClick}
+                />
+              </Grid>
+
+              <Grid item xs={6} sm={4}>
+                <FinancialCard
+                  titleShort="Current Ratio"
+                  title="Current Ratio"
+                  data={data?.screener?.currentRatio}
+                  dialogtype="currentRatio"
+                  handleItemClick={handleItemClick}
+                />
+              </Grid>
+
+              <Grid item xs={6} sm={4}>
+                <FinancialCard
+                  titleShort="P/BV Ratio"
+                  title="Price/Bookvalue Ratio"
+                  data={data.pbv}
+                  dialogtype="pbv"
+                  handleItemClick={handleItemClick}
+                />
+              </Grid>
+
+              <Grid item xs={6} sm={4}>
+                <FinancialCard
+                  titleShort="P/S Ratio"
+                  title="Price/Sales Ratio"
+                  data={data?.screener?.ps}
+                  dialogtype="ps"
+                  handleItemClick={handleItemClick}
+                />
+              </Grid>
+
+              <Grid item xs={6} sm={4}>
+                <FinancialCard
+                  titleShort="P/CF Ratio"
+                  title="Price/Cashflow Ratio"
+                  data={data.pcf}
+                  dialogtype="pcf"
+                  handleItemClick={handleItemClick}
+                />
+              </Grid>
+
+              <Grid item xs={6} sm={4}>
+                <FinancialCard
+                  titleShort="Net Income Ratio"
+                  title="Net Income Ratio"
+                  data={data?.screener?.netIncomeRatio}
+                  dialogtype="netIncomeRatio"
+                  handleItemClick={handleItemClick}
+                />
+              </Grid>
+
+              <Grid item xs={6} sm={4}>
+                <FinancialCard
+                  titleShort="Div Payout Ratio"
+                  title="Dividend Payout Ratio"
+                  data={data?.screener?.dividendPayoutRatio}
+                  dialogtype="dividendPayoutRatio"
+                  handleItemClick={handleItemClick}
+                />
+              </Grid>
+            </Grid>
+            <Box>
+              <Typography
+                sx={{
+                  fontSize: "1.5rem",
+                  fontWeight: 700,
+                  color: "text.primary",
+                  mt: 5,
+                  mb: 1.5,
+                  ml: 0.2,
+                }}
+              >
+                Growth & Profitibility
+              </Typography>
+            </Box>
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              rowSpacing={2}
+              columnSpacing={1}
+            >
+              <Grid item xs={6} sm={4}>
+                <FinancialCard
+                  titleShort="Revenue"
+                  title="Revenue"
+                  unit="CR"
+                  divideFactor={10000000}
+                  data={data?.screener?.revenue}
+                  dialogtype="revenue"
+                  handleItemClick={handleItemClick}
+                />
+              </Grid>
+
+              <Grid item xs={6} sm={4}>
+                <FinancialCard
+                  titleShort="Net Income"
+                  title="Net Income"
+                  unit="CR"
+                  divideFactor={10000000}
+                  data={data?.screener?.netIncome}
+                  dialogtype="netIncome"
+                  handleItemClick={handleItemClick}
+                />
+              </Grid>
+              <Grid item xs={6} sm={4}>
+                <FinancialCard
+                  titleShort="Total Assets"
+                  title="Total Assets"
+                  unit="CR"
+                  divideFactor={10000000}
+                  data={data?.screener?.totalAsset}
+                  dialogtype="totalAsset"
+                  handleItemClick={handleItemClick}
+                />
+              </Grid>
+              <Grid item xs={6} sm={4}>
+                <FinancialCard
+                  titleShort="Operating Profit"
+                  title="Operating Profit"
+                  unit="CR"
+                  divideFactor={10000000}
+                  data={data?.screener?.operatingProfit}
+                  dialogtype="operatingProfit"
+                  handleItemClick={handleItemClick}
+                />
+              </Grid>
+
+              <Grid item xs={6} sm={4}>
+                <FinancialCard
+                  titleShort="Profit Margin"
+                  title="Profit Margin"
+                  unit="%"
+                  divideFactor={0.01}
+                  data={data?.screener?.profitMargin}
+                  dialogtype="profitMargin"
+                  handleItemClick={handleItemClick}
+                />
+              </Grid>
+
+              <Grid item xs={6} sm={4}>
+                <FinancialCard
+                  titleShort="Resrv & Surpl"
+                  title="Reserve & Surplus"
+                  unit="CR"
+                  divideFactor={10}
+                  data={data?.screener?.reserveSurplus}
+                  dialogtype="reserveSurplus"
+                  handleItemClick={handleItemClick}
+                />
+              </Grid>
+
+              <Grid item xs={6} sm={4}>
+                <FinancialCard
+                  titleShort="Dividend Yield"
+                  title="Divident Yield"
+                  unit="%"
+                  data={data?.screener?.dividendYield}
+                  dialogtype="dividendYield"
+                  handleItemClick={handleItemClick}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <Box
                   sx={{
-                    fontSize: "1.2rem",
-                    fontWeight: 700,
-                    px: 2,
-                    py: 1.5,
+                    bgcolor: theme.palette.background.default,
+                    borderRadius: 1,
+                    mt: 4,
+                    pb: 4,
                   }}
                 >
-                  Share holdings
-                </Typography>
-                <Divider light />
-                <Grid container sx={{ mt: 3, px: 2 }}>
-                  <Grid item xs={12} sm={7}>
-                    <Box>
-                      <Box sx={{ display: "flex", justifyContent: "center" }}>
-                        <PieChartShareHolding
-                          data={shareholdings.current.values}
-                          colors={shareholdings.current.colors}
-                          labels={shareholdings.current.labels}
-                          height={380}
-                          width={380}
-                          donutSize="65%"
-                        />
+                  <Typography
+                    color="text.primary"
+                    sx={{
+                      fontSize: "1.2rem",
+                      fontWeight: 700,
+                      px: 2,
+                      py: 1.5,
+                    }}
+                  >
+                    Share holdings
+                  </Typography>
+                  <Divider light />
+                  <Grid container sx={{ mt: 3, px: 2 }}>
+                    <Grid item xs={12} sm={7}>
+                      <Box>
+                        <Box sx={{ display: "flex", justifyContent: "center" }}>
+                          <PieChartShareHolding
+                            data={shareholdings.current.values}
+                            colors={shareholdings.current.colors}
+                            labels={shareholdings.current.labels}
+                            height={380}
+                            width={380}
+                            donutSize="65%"
+                          />
+                        </Box>
                       </Box>
-                    </Box>
+                    </Grid>
+
+                    <Grid item xs={12} sm={5} sx={{ mt: 4 }}>
+                      <Box
+                        sx={{
+                          // bgcolor: "secondaryBackground",
+                          display: "inline-block",
+                          // px: 3,
+                          // py: 0.8,
+                          // borderRadius: 1,
+                          // mb: 0.8,
+                        }}
+                      >
+                        <Typography color="text.primary">
+                          As of {shareholdings.current.date} :
+                        </Typography>
+                      </Box>
+                      <Stack
+                        direction="row"
+                        alignItems="center"
+                        spacing={1.5}
+                        sx={{ my: 2 }}
+                      >
+                        <SquareRoundedIcon
+                          sx={{ color: "#4dd0e1", fontSize: "1rem" }}
+                        />
+                        <Typography
+                          sx={{
+                            fontSize: "1rem",
+                            color: shareholdings.changeText[0].color,
+                          }}
+                        >
+                          {shareholdings.changeText[0].text}
+                        </Typography>
+                      </Stack>
+
+                      <Stack
+                        direction="row"
+                        alignItems="center"
+                        spacing={1.5}
+                        sx={{ my: 2 }}
+                      >
+                        <SquareRoundedIcon
+                          sx={{ color: "#b388ff", fontSize: "1rem" }}
+                        />
+                        <Typography
+                          sx={{
+                            fontSize: "1rem",
+                            color: shareholdings.changeText[1].color,
+                          }}
+                        >
+                          {shareholdings.changeText[1].text}
+                        </Typography>
+                      </Stack>
+                      <Stack
+                        direction="row"
+                        alignItems="center"
+                        spacing={1.5}
+                        sx={{ my: 2 }}
+                      >
+                        <SquareRoundedIcon
+                          sx={{ color: "#448aff", fontSize: "1rem" }}
+                        />
+                        <Typography
+                          sx={{
+                            fontSize: "1rem",
+                            color: shareholdings.changeText[2].color,
+                          }}
+                        >
+                          {shareholdings.changeText[2].text}
+                        </Typography>
+                      </Stack>
+
+                      <Button
+                        onClick={() => handleItemClick("shareholdings")}
+                        variant="outlined"
+                        sx={{ borderRadius: 8, px: 3, mt: 1 }}
+                        color="warning"
+                      >
+                        View change history
+                      </Button>
+                    </Grid>
                   </Grid>
+                </Box>
+              </Grid>
 
-                  <Grid item xs={12} sm={5} sx={{ mt: 4 }}>
-                    <Box
-                      sx={{
-                        // bgcolor: "secondaryBackground",
-                        display: "inline-block",
-                        // px: 3,
-                        // py: 0.8,
-                        // borderRadius: 1,
-                        // mb: 0.8,
-                      }}
-                    >
-                      <Typography color="text.primary">
-                        As of {shareholdings.current.date} :
-                      </Typography>
-                    </Box>
-                    <Stack
-                      direction="row"
-                      alignItems="center"
-                      spacing={1.5}
-                      sx={{ my: 2 }}
-                    >
-                      <SquareRoundedIcon
-                        sx={{ color: "#4dd0e1", fontSize: "1rem" }}
-                      />
-                      <Typography
-                        sx={{
-                          fontSize: "1rem",
-                          color: shareholdings.changeText[0].color,
-                        }}
-                      >
-                        {shareholdings.changeText[0].text}
-                      </Typography>
-                    </Stack>
-
-                    <Stack
-                      direction="row"
-                      alignItems="center"
-                      spacing={1.5}
-                      sx={{ my: 2 }}
-                    >
-                      <SquareRoundedIcon
-                        sx={{ color: "#b388ff", fontSize: "1rem" }}
-                      />
-                      <Typography
-                        sx={{
-                          fontSize: "1rem",
-                          color: shareholdings.changeText[1].color,
-                        }}
-                      >
-                        {shareholdings.changeText[1].text}
-                      </Typography>
-                    </Stack>
-                    <Stack
-                      direction="row"
-                      alignItems="center"
-                      spacing={1.5}
-                      sx={{ my: 2 }}
-                    >
-                      <SquareRoundedIcon
-                        sx={{ color: "#448aff", fontSize: "1rem" }}
-                      />
-                      <Typography
-                        sx={{
-                          fontSize: "1rem",
-                          color: shareholdings.changeText[2].color,
-                        }}
-                      >
-                        {shareholdings.changeText[2].text}
-                      </Typography>
-                    </Stack>
-
-                    <Button
-                      onClick={() => handleItemClick("shareholdings")}
-                      variant="outlined"
-                      sx={{ borderRadius: 8, px: 4, mt: 1 }}
-                      color="warning"
-                    >
-                      View change history
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Box>
-            </Grid>
-
-            <Grid item xs={12}>
-              <Box
-                sx={{
-                  bgcolor: theme.palette.background.default,
-                  borderRadius: 1,
-                  mb: 2,
-                }}
-              >
-                <Typography
-                  color="text.primary"
+              <Grid item xs={12}>
+                <Box
                   sx={{
-                    fontSize: "1.2rem",
-                    fontWeight: 700,
-                    px: 2,
-                    py: 1.5,
+                    bgcolor: theme.palette.background.default,
+                    borderRadius: 1,
+                    mt: 1,
+                    mb: 2,
                   }}
                 >
-                  Dividends
-                </Typography>
-                <Divider light />
-                <Box sx={{ px: { xs: 2, sm: 12 }, pt: 3 }}>
                   <Typography
                     color="text.primary"
-                    gutterBottom
-                    sx={{ fontSize: "1rem", fontWeight: 700, my: 0, py: 0 }}
+                    sx={{
+                      fontSize: "1.2rem",
+                      fontWeight: 700,
+                      px: 2,
+                      py: 1.5,
+                    }}
                   >
-                    Overview
+                    Dividends
                   </Typography>
-                  <Typography color="text.primary">
-                    {data?.screener?.dividendYield?.overview ||
-                      "No data available"}
-                  </Typography>
-                  <Typography
-                    color="text.primary"
-                    sx={{ fontSize: "1rem", fontWeight: 700, my: 0, mt: 3 }}
-                  >
-                    History
-                  </Typography>
+                  <Divider light />
+                  <Box sx={{ px: { xs: 2, sm: 12 }, pt: 3 }}>
+                    <Typography
+                      color="text.primary"
+                      gutterBottom
+                      sx={{ fontSize: "1rem", fontWeight: 700, my: 0, py: 0 }}
+                    >
+                      Overview
+                    </Typography>
+                    <Typography color="text.primary">
+                      {data?.screener?.dividendYield?.overview ||
+                        "No data available"}
+                    </Typography>
+                    <Typography
+                      color="text.primary"
+                      sx={{ fontSize: "1rem", fontWeight: 700, my: 0, mt: 3 }}
+                    >
+                      History
+                    </Typography>
 
-                  {dividend ? (
-                    <YearlyStackedColumnChart data={dividend} />
-                  ) : (
-                    <Typography sx={{ pb: 2 }}>No history available</Typography>
-                  )}
+                    {dividend ? (
+                      <YearlyStackedColumnChart data={dividend} />
+                    ) : (
+                      <Typography sx={{ pb: 2 }}>
+                        No history available
+                      </Typography>
+                    )}
+                  </Box>
                 </Box>
-              </Box>
+              </Grid>
             </Grid>
-          </Grid>
+          </>
         )}
       </Box>
     </Box>

@@ -115,8 +115,8 @@ export default function FavoriteButton({
               ? alpha(theme.palette.error.main, 0.07)
               : alpha(theme.palette.primary.main, 0.07),
             mr: 1.5,
-            px: 1.1,
-            py: 1.1,
+            px: 0.9,
+            py: 0.9,
           }}
           onClick={() => handleFavorite(!isFavorite)}
         >

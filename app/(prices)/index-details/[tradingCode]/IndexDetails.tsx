@@ -58,7 +58,6 @@ const indexDataInitState = {
 
 export default function IndexDetails({ tradingCode }: any) {
   // const params = useParams();
-
   // const { tradingCode } = params;
 
   const dispatch = useDispatch();
@@ -251,10 +250,10 @@ export default function IndexDetails({ tradingCode }: any) {
               </Typography>
             </Box>
             <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
-              <FavoriteButton tradingCode={stock?.fundamentals?.tradingCode} />
+              <FavoriteButton tradingCode={tradingCode} />
               <Button
                 component={Link}
-                href={`/supercharts?symbol=${stock.fundamentals?.tradingCode}`}
+                href={`/supercharts?symbol=${tradingCode.slice(2)}`}
                 sx={{ borderRadius: 2, py: 1.05 }}
                 variant="contained"
               >

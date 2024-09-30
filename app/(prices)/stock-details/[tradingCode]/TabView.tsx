@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Box,
   Grid,
@@ -10,7 +10,10 @@ import {
   Tabs,
   useMediaQuery,
   useTheme,
+  IconButton,
 } from "@mui/material";
+import AddchartOutlinedIcon from "@mui/icons-material/AddchartOutlined";
+
 import Overview from "./Overview";
 import Financials from "./Fiancials";
 import MarketDepth from "./MarketDepth";
@@ -20,6 +23,8 @@ import Technical from "./Technical";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { pageTitleActions } from "_store";
+import FavoriteButton from "@/components/buttons/FavoriteButton";
+import Link from "next/link";
 
 const TabPanel = (props: any) => {
   const { children, value, index, ...other } = props;
@@ -38,13 +43,35 @@ const TabPanel = (props: any) => {
 };
 
 export default function TabView(props: any) {
-  const { stock, news, blocktr, tradingCode } = props;
+  const { stock, tradingCode, prices, handleScrollToBottom } = props;
 
   const [value, setValue] = useState(0);
 
   const router = useRouter();
 
   const dispatch = useDispatch();
+
+  const [isSticky, setIsSticky] = useState(false);
+
+  const boxRef: any = useRef(null); // Reference to an empty Box component
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (boxRef.current) {
+        const offsetTop = boxRef.current.getBoundingClientRect().top;
+        // console.log(offsetTop);
+        if (offsetTop < 40) {
+          setIsSticky(true);
+        } else {
+          setIsSticky(false);
+        }
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const handleButtonClick = (href: string, title: string) => {
     router.push(href);
@@ -99,10 +126,89 @@ export default function TabView(props: any) {
     <Box>
       <Box
         sx={{
-          borderBottom: 1,
+          borderBottom: 2,
           borderColor: "divider",
+          position: isSticky ? "fixed" : "inherit",
+          top: isSticky ? 56 : "auto",
+          zIndex: 1000,
+          bgcolor: "background.default",
+          overflowX: "auto",
+          whiteSpace: "nowrap",
+          width: "100%",
         }}
       >
+        {isSticky && (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              px: 2,
+              pt: 1,
+            }}
+          >
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Typography
+                sx={{
+                  color: "text.primary",
+                  fontSize: "1.4rem",
+                  fontWeight: 700,
+                  fontFamily: "'Nunito Sans', sans-serif",
+                }}
+              >
+                {prices.close}
+              </Typography>
+
+              <Typography
+                sx={{
+                  color: "text.secondary",
+                  fontSize: ".875rem",
+                  ml: 0.8,
+                  mr: 2,
+                  mt: 0.4,
+                }}
+              >
+                BDT
+              </Typography>
+
+              <Typography
+                sx={{
+                  color: prices.color,
+                  fontSize: "1.1rem",
+                  fontWeight: 700,
+                  fontFamily: "'Nunito Sans', sans-serif",
+                  mr: 2,
+                }}
+              >
+                {prices.change}
+              </Typography>
+
+              <Typography
+                sx={{
+                  color: prices.color,
+                  fontSize: "1.1rem",
+                  fontWeight: 700,
+                  fontFamily: "'Nunito Sans', sans-serif",
+                }}
+              >
+                {stock.latest?.change !== 0 ? prices.percentChange : 0}
+                {"%"}
+              </Typography>
+            </Box>
+
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <FavoriteButton tradingCode={tradingCode} variant="iconOnly" />
+              <IconButton
+                sx={{ ml: 0.4, py: 0 }}
+                component={Link}
+                href={`/supercharts?symbol=${tradingCode}`}
+              >
+                <AddchartOutlinedIcon color="primary" />
+              </IconButton>
+            </Box>
+          </Box>
+        )}
+
         <Tabs value={value} variant="scrollable" onChange={handleChange}>
           {tabItems.map((item, index) => (
             <Tab
@@ -113,11 +219,16 @@ export default function TabView(props: any) {
                 fontSize: "1rem",
                 color: "text.primary",
                 px: 1.7,
+                pt: 0,
+                pb: 0,
               }}
             />
           ))}
         </Tabs>
       </Box>
+
+      <Box sx={{ bgcolor: "red" }} ref={boxRef}></Box>
+
       {tabItems.map((item, index) => (
         <TabPanel value={value} index={index} key={index}>
           {item.component}

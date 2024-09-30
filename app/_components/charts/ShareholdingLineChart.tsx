@@ -28,7 +28,7 @@ export default function ShareholdingLineChart(props: any) {
       },
     },
     markers: {
-      size: 6,
+      size: 5,
     },
     dataLabels: {
       enabled: false,
@@ -51,6 +51,7 @@ export default function ShareholdingLineChart(props: any) {
     },
     stroke: {
       show: true,
+      width: 4,
     },
     tooltip: {
       theme: "dark",

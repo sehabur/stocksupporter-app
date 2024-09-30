@@ -5,7 +5,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 import SignInComp from "../../(users)/signin/SignInComp";
 
-export default function SigninDialogContent() {
+export default function SigninDialogContent({ redirect }: any) {
   return (
     <Box>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
@@ -26,7 +26,7 @@ export default function SigninDialogContent() {
         </Typography>
       </Box>
 
-      <SignInComp />
+      <SignInComp redirectFromComponent={redirect} />
     </Box>
   );
 }

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import { Button, Paper, Typography, Alert } from "@mui/material";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Link from "next/link";
@@ -13,6 +14,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import SigninDialogContent from "@/components/shared/SigninDialogContent";
 
 export default function Portfolio() {
   const [portfolio, setPortfolio] = useState<any>();
@@ -39,6 +41,10 @@ export default function Portfolio() {
   };
 
   async function getData() {
+    if (!auth) {
+      return;
+    }
+
     setIsLoading(true);
     const res: any = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/portfolio?user=${auth._id}`,
@@ -101,7 +107,7 @@ export default function Portfolio() {
   }, [auth]);
 
   return (
-    <Box>
+    <Box sx={{ py: 2 }}>
       {isLoading && <Spinner />}
       <Dialog
         open={openDialog}
@@ -134,171 +140,192 @@ export default function Portfolio() {
           </Button>
         </DialogActions>
       </Dialog>
-      <Box sx={{ mt: 2, maxWidth: 400, mx: "auto" }}>
+      <Box>
         {successMessage && <Alert severity="success">{successMessage}</Alert>}
         {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
       </Box>
-      <Box>
-        <Button
-          component={Link}
-          href="/portfolio/create"
-          variant="contained"
-          color="primary"
-          sx={{ borderRadius: 6, px: 4, mt: 3, mb: 4 }}
-        >
-          Create new portfolio
-        </Button>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexWrap: "wrap",
-        }}
-      >
-        {portfolio?.map((item: any) => (
-          <Paper
-            sx={{ width: 380, py: 2, my: 2, borderRadius: 2, mx: 2 }}
-            elevation={6}
-            key={item._id}
-          >
-            <Typography
-              sx={{
-                fontSize: "1.2rem",
-                textAlign: "left",
-                color: "primary.main",
-                mb: 1,
-                px: 2,
-              }}
-            >
-              {item.name}
+      {!auth?.isLoggedIn && (
+        <Box sx={{ px: 2 }}>
+          <SigninDialogContent redirect="/portfolio" />
+        </Box>
+      )}
+
+      {auth?.isLoggedIn && (
+        <>
+          <Box>
+            <Typography color="text.secondary">
+              Create your own portfolio and track market value of your shares
+              real time. Perform mock buy sell to get started with stock market
             </Typography>
-            <Divider />
-            <Box sx={{ px: 2, pt: 1 }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  my: 0.8,
-                }}
-              >
-                <Typography fontSize="1rem">Total portfolio</Typography>
-                <Typography fontSize="1.2rem">
-                  {item.totalCost}{" "}
-                  <Typography component="span" color="text.secondary">
-                    BDT
-                  </Typography>
-                </Typography>
-              </Box>
-              <Divider light />
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  my: 0.8,
-                }}
-              >
-                <Typography fontSize="1rem">Market value</Typography>
-                <Typography fontSize="1.2rem">
-                  {item.totalSellValue}{" "}
-                  <Typography component="span" color="text.secondary">
-                    BDT
-                  </Typography>
-                </Typography>
-              </Box>
-              <Divider light />
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  my: 0.8,
-                }}
-              >
-                <Typography fontSize="1rem">Unrealized gain</Typography>
-                <Typography
-                  fontSize="1.2rem"
-                  color={
-                    item.unrealizedGain < 0 ? "error.main" : "success.main"
-                  }
-                >
-                  {item.unrealizedGain}{" "}
-                  <Typography component="span" color="text.secondary">
-                    BDT
-                  </Typography>
-                </Typography>
-              </Box>
-              <Divider light />
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  my: 0.8,
-                }}
-              >
-                <Typography fontSize="1rem">Unrealized gain (%)</Typography>
-                <Typography
-                  fontSize="1.2rem"
-                  color={
-                    item.unrealizedGain < 0 ? "error.main" : "success.main"
-                  }
-                >
-                  {item.unrealizedGainPercent || 0}{" "}
-                  <Typography component="span" color="text.secondary">
-                    BDT
-                  </Typography>
-                </Typography>
-              </Box>
-            </Box>
-            <Box
-              sx={{ display: "flex", justifyContent: "flex-end", mt: 3, mr: 2 }}
+          </Box>
+          <Box>
+            <Button
+              component={Link}
+              startIcon={<AddRoundedIcon />}
+              href="/portfolio/create"
+              variant="contained"
+              color="primary"
+              sx={{ mt: 2, mb: 3 }}
             >
-              <Button
-                variant="outlined"
-                size="small"
-                color="error"
-                sx={{ ml: 1.5 }}
-                onClick={() => handleClickDelete(item._id)}
-              >
-                Delete
-              </Button>
-              <Button
-                variant="outlined"
-                size="small"
-                color="primary"
-                sx={{ ml: 1.5 }}
-                component={Link}
-                href={`/portfolio/details?id=${item._id}`}
-              >
-                View details
-              </Button>
-              <Button
-                variant="contained"
-                size="small"
-                color="success"
-                sx={{ ml: 1.5 }}
-                component={Link}
-                href={`/portfolio/trade?portfolio=${item._id}&comm=${item.commission}`}
-              >
-                Buy/Sell
-              </Button>
-            </Box>
-          </Paper>
-        ))}
-        {portfolio?.length < 1 && (
+              Create new portfolio
+            </Button>
+          </Box>
+
+          <Box>
+            <Typography sx={{ fontSize: "1rem", color: "text.secondary" }}>
+              My portfolios
+            </Typography>
+          </Box>
           <Box
             sx={{
-              bgcolor: "secondaryBackground",
-              mt: 4,
-              py: 2,
-              px: 4,
-              borderRadius: 2,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexWrap: "wrap",
             }}
           >
-            <Typography>No portfolio to show</Typography>
+            {portfolio?.map((item: any) => (
+              <Paper
+                sx={{ width: 380, py: 2, my: 2, borderRadius: 2, mx: 2 }}
+                elevation={6}
+                key={item._id}
+              >
+                <Typography
+                  sx={{
+                    fontSize: "1.2rem",
+                    textAlign: "left",
+                    color: "primary.main",
+                    mb: 1,
+                    px: 2,
+                  }}
+                >
+                  {item.name}
+                </Typography>
+                <Divider />
+                <Box sx={{ px: 2, pt: 1 }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      my: 0.8,
+                    }}
+                  >
+                    <Typography fontSize="1rem">Total portfolio</Typography>
+                    <Typography fontSize="1.2rem">
+                      {item.totalCost}{" "}
+                      <Typography component="span" color="text.secondary">
+                        BDT
+                      </Typography>
+                    </Typography>
+                  </Box>
+                  <Divider light />
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      my: 0.8,
+                    }}
+                  >
+                    <Typography fontSize="1rem">Market value</Typography>
+                    <Typography fontSize="1.2rem">
+                      {item.totalSellValue}{" "}
+                      <Typography component="span" color="text.secondary">
+                        BDT
+                      </Typography>
+                    </Typography>
+                  </Box>
+                  <Divider light />
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      my: 0.8,
+                    }}
+                  >
+                    <Typography fontSize="1rem">Unrealized gain</Typography>
+                    <Typography
+                      fontSize="1.2rem"
+                      color={
+                        item.unrealizedGain < 0 ? "error.main" : "success.main"
+                      }
+                    >
+                      {item.unrealizedGain}{" "}
+                      <Typography component="span" color="text.secondary">
+                        BDT
+                      </Typography>
+                    </Typography>
+                  </Box>
+                  <Divider light />
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      my: 0.8,
+                    }}
+                  >
+                    <Typography fontSize="1rem">Unrealized gain (%)</Typography>
+                    <Typography
+                      fontSize="1.2rem"
+                      color={
+                        item.unrealizedGain < 0 ? "error.main" : "success.main"
+                      }
+                    >
+                      {item.unrealizedGainPercent || 0}{" "}
+                      <Typography component="span" color="text.secondary">
+                        BDT
+                      </Typography>
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    mt: 3,
+                    mr: 2,
+                  }}
+                >
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    color="error"
+                    sx={{ ml: 1.5 }}
+                    onClick={() => handleClickDelete(item._id)}
+                  >
+                    Delete
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    color="primary"
+                    sx={{ ml: 1.5 }}
+                    component={Link}
+                    href={`/portfolio/details?id=${item._id}`}
+                  >
+                    View details
+                  </Button>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    color="success"
+                    sx={{ ml: 1.5 }}
+                    component={Link}
+                    href={`/portfolio/trade?portfolio=${item._id}&comm=${item.commission}`}
+                  >
+                    Buy/Sell
+                  </Button>
+                </Box>
+              </Paper>
+            ))}
           </Box>
-        )}
-      </Box>
+
+          {portfolio?.length < 1 && (
+            <Box sx={{ mt: 2 }}>
+              <Typography>No portfolio to show</Typography>
+            </Box>
+          )}
+        </>
+      )}
     </Box>
   );
 }

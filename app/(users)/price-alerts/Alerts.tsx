@@ -1,6 +1,13 @@
 "use client";
 import React, { useState } from "react";
-import { Box, Button, Typography, Paper, IconButton } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  Paper,
+  IconButton,
+  Chip,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 
@@ -10,6 +17,7 @@ import ToastMessage from "@/components/shared/ToastMessage";
 import SigninDialogContent from "@/components/shared/SigninDialogContent";
 import Link from "next/link";
 import AlertSetDialog from "@/components/shared/AlertSetDialog";
+import PremiumDialogContent from "@/components/shared/PremiumDialogContent";
 
 const formInputsInitState = {
   price: "",
@@ -68,18 +76,21 @@ export default function Alerts() {
   //   }
   // };
 
+  // const getStatus = (status: string) => {
+  //   const text = status == "executed" ? "Sent" : "Live";
+  //   const color = status == "executed" ? "success" : "info";
+
+  //   return {
+  //     text,
+  //     color,
+  //   };
+  // };
+
   const addItemToCurrAlerts = (payload: any) => {
     setcurrAlerts((prevState: any) => {
       let newstate = prevState;
-      newstate.push(payload);
+      newstate.unshift(payload);
       return newstate;
-    });
-  };
-
-  const removeItemFromCurrAlerts = (id: string) => {
-    setcurrAlerts((prevState: any) => {
-      const newState = prevState.filter((item: any) => item._id !== id);
-      return newState;
     });
   };
 
@@ -96,7 +107,11 @@ export default function Alerts() {
         }
       );
       if (res.ok) {
-        removeItemFromCurrAlerts(id);
+        setcurrAlerts((prevState: any) => {
+          const newState = prevState.filter((item: any) => item._id !== id);
+          return newState;
+        });
+
         setToastOpen(true);
         setToastMessage({
           severity: "success",
@@ -194,7 +209,7 @@ export default function Alerts() {
     }
     const initdata = await res.json();
 
-    setcurrAlerts(initdata.priceAlerts);
+    setcurrAlerts(initdata);
   };
 
   React.useEffect(() => {
@@ -220,117 +235,153 @@ export default function Alerts() {
         handleDialogClose={handleDialogClose}
         dialogOpen={dialogOpen}
       />
-      {!auth?.isLoggedIn && (
+      {/* {!auth?.isLoggedIn && (
         <Box sx={{ px: 2, py: 4 }}>
           <SigninDialogContent />
         </Box>
-      )}
-      {auth?.isLoggedIn && (
-        <>
-          <Paper
-            variant="outlined"
-            sx={{ mt: 1, px: 2, py: 1.5, bgcolor: "priceCardBgColor" }}
-          >
-            <Typography gutterBottom sx={{ color: "text.secondary" }}>
-              You can set maximum 10 price alerts.
-            </Typography>
-            <Typography sx={{ color: "text.primary" }}>
-              For setting unlimited alert please get our premuim packages
-            </Typography>
-            <Box sx={{ mt: 1 }}>
-              <Button
-                variant="outlined"
-                size="small"
-                sx={{ fontSize: ".9rem", px: 3 }}
-              >
-                Get premium
-              </Button>
-            </Box>
-          </Paper>
+      )} */}
 
-          <Typography
+      <>
+        {!auth?.isPremiumEligible && (
+          <Box
             sx={{
-              pl: 0.5,
-              fontSize: "1rem",
-              color: "text.primary",
-              mb: 1,
-              mt: 4,
+              pt: 3,
+              pb: 4,
+              px: 3,
             }}
           >
-            My Alerts
-          </Typography>
+            <PremiumDialogContent />
+          </Box>
 
-          <Box sx={{ mt: 1.5 }}>
-            {currAlerts?.length > 0 ? (
-              <>
-                {currAlerts?.map((alert: any) => (
-                  <Paper
-                    variant="outlined"
-                    key={alert._id}
-                    sx={{
-                      pl: 2,
-                      pr: 1,
-                      py: 0.8,
-                      mb: 1,
-                      bgcolor: "priceCardBgColor",
-                    }}
-                  >
-                    <Box
+          // <Paper
+          //   variant="outlined"
+          //   sx={{ mt: 2, px: 2, py: 2, bgcolor: "priceCardBgColor" }}
+          // >
+          //   <Typography sx={{ color: "text.primary" }}>
+          //     For setting unlimited alert please get our premuim packages
+          //   </Typography>
+          //   <Box sx={{ mt: 1 }}>
+          //     <Button
+          //       variant="outlined"
+          //       size="small"
+          //       sx={{ fontSize: ".9rem", px: 3 }}
+          //     >
+          //       Get premium
+          //     </Button>
+          //   </Box>
+          // </Paper>
+        )}
+
+        {auth?.isPremiumEligible && (
+          <>
+            <Typography
+              sx={{
+                pl: 0.5,
+                fontSize: "1rem",
+                color: "text.primary",
+                my: 1,
+              }}
+            >
+              My Alerts
+            </Typography>
+            <Box sx={{ mt: 1.5 }}>
+              {currAlerts?.length > 0 ? (
+                <>
+                  {currAlerts?.map((alert: any) => (
+                    <Paper
+                      variant="outlined"
+                      key={alert._id}
                       sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        gap: 2,
+                        pl: 2,
+                        pr: 1,
+                        py: 1,
+                        mb: 1,
+                        bgcolor: "priceCardBgColor",
                       }}
                     >
-                      <Typography
-                        component={Link}
-                        href={`/stock-details/${alert.tradingCode}`}
+                      <Box
                         sx={{
-                          color: "primary.main",
-                          fontSize: "1rem",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          gap: 2,
                         }}
                       >
-                        {alert.tradingCode}
-                      </Typography>
-                      <Typography
-                        sx={{
-                          color: "text.secondary",
-                          fontSize: ".9rem",
-                          lineHeight: 1.2,
-                        }}
-                      >
-                        {alert.details}
-                      </Typography>
-                      <IconButton
-                        color="error"
-                        onClick={() => handleDeleteAlert(alert._id)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </Box>
-                  </Paper>
-                ))}
-              </>
-            ) : (
-              <Box sx={{ pb: 2, pl: 0.5 }}>
-                <Typography sx={{ color: "text.secondary" }}>
-                  Currently no price alert is set.
-                </Typography>
-              </Box>
-            )}
-          </Box>
-          <Box sx={{ mt: 1.5 }}>
-            <Button
-              startIcon={<AddRoundedIcon />}
-              variant="contained"
-              onClick={handleDialogOpen}
-            >
-              Set new alert
-            </Button>
-          </Box>
-        </>
-      )}
+                        <Box>
+                          <Box>
+                            <Typography
+                              component={Link}
+                              href={`/stock-details/${alert.tradingCode}`}
+                              sx={{
+                                color: "primary.main",
+                                fontSize: "1rem",
+                              }}
+                            >
+                              {alert.tradingCode}
+                              <Chip
+                                color={
+                                  alert.status == "executed"
+                                    ? "success"
+                                    : "warning"
+                                }
+                                label={
+                                  alert.status == "executed"
+                                    ? "Delivered"
+                                    : "Live"
+                                }
+                                size="small"
+                                sx={{
+                                  ml: 1.5,
+                                  borderRadius: 1,
+                                }}
+                              />
+                            </Typography>
+                          </Box>
+                          <Box>
+                            <Typography
+                              sx={{
+                                color: "text.primary",
+                                fontSize: ".875rem",
+                                mt: 0.5,
+                              }}
+                            >
+                              {alert.details}
+                            </Typography>
+                          </Box>
+                        </Box>
+
+                        <Box>
+                          <IconButton
+                            color="error"
+                            onClick={() => handleDeleteAlert(alert._id)}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </Box>
+                      </Box>
+                    </Paper>
+                  ))}
+                </>
+              ) : (
+                <Box sx={{ pb: 2, pl: 0.5 }}>
+                  <Typography sx={{ color: "text.secondary" }}>
+                    Currently no price alert is set.
+                  </Typography>
+                </Box>
+              )}
+            </Box>
+            <Box sx={{ mt: 1.5 }}>
+              <Button
+                startIcon={<AddRoundedIcon />}
+                variant="contained"
+                onClick={handleDialogOpen}
+              >
+                Set new alert
+              </Button>
+            </Box>
+          </>
+        )}
+      </>
     </Box>
   );
 }

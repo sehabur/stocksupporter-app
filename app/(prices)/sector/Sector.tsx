@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { pageTitleActions } from "_store";
 import { AUTO_RELOAD_TIME_MS } from "@/data/constants";
 import { useRouter } from "next/navigation";
+import AutoReload from "@/components/shared/AutoReload";
 
 export default function Sector() {
   const router = useRouter();
@@ -48,20 +49,10 @@ export default function Sector() {
     getData();
   }, []);
 
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      const { pathname, search } = window.location;
-      router.push(`/reload?redirect=${encodeURIComponent(pathname + search)}`);
-    }, AUTO_RELOAD_TIME_MS);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
   return (
     <Box>
       <LoadingSpinner open={isLoading} />
+      <AutoReload />
       <Box
         sx={{
           display: "flex",

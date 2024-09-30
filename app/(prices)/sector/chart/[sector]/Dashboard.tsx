@@ -13,6 +13,33 @@ import { pageTitleActions } from "_store";
 import { DateTime } from "luxon";
 import FavoriteButton from "@/components/buttons/FavoriteButton";
 
+const changeDays = [
+  {
+    field: "today",
+    title: "Today",
+  },
+  {
+    field: "oneWeek",
+    title: "1 Week",
+  },
+  {
+    field: "oneMonth",
+    title: "1 Month",
+  },
+  {
+    field: "sixMonth",
+    title: "6 Months",
+  },
+  {
+    field: "oneYear",
+    title: "1 Year",
+  },
+  {
+    field: "fiveYear",
+    title: "5 Years",
+  },
+];
+
 const addPlusSign = (value: number) => {
   let result;
   if (value > 0) {
@@ -59,6 +86,7 @@ const calcPercentChange = (current: any, previous: any) => {
 };
 
 const formatPercentChangeData = (latestdata: any, lastdaydata: any) => {
+  console.log(lastdaydata);
   return {
     today: calcPercentChange(latestdata?.ltp, latestdata?.ycp),
     oneWeek: calcPercentChange(latestdata?.ltp, lastdaydata?.oneWeekBeforeData),
@@ -79,9 +107,6 @@ const formatPercentChangeData = (latestdata: any, lastdaydata: any) => {
 };
 
 export default function Dashboard({ sectorTag }: any) {
-  // const params = useParams();
-  // const sectorTag = params.sector;
-
   const [data, setdata] = React.useState<any>(null);
 
   const [fetched, setfetched] = React.useState<boolean>(false);
@@ -96,7 +121,7 @@ export default function Dashboard({ sectorTag }: any) {
 
   dispatch(pageTitleActions.setPageTitle(sector.name));
 
-  const percentChangeData = formatPercentChangeData(
+  const percentChangeData: any = formatPercentChangeData(
     data?.latest,
     data?.lastDay
   );
@@ -255,7 +280,7 @@ export default function Dashboard({ sectorTag }: any) {
               </Typography>
             </Box>
             <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
-              <FavoriteButton tradingCode={data?.fundamentals?.tradingCode} />
+              <FavoriteButton tradingCode={sector.name} />
               <Button
                 component={Link}
                 href={`/supercharts?symbol=${encodeURIComponent(sector.name)}`}
@@ -271,6 +296,48 @@ export default function Dashboard({ sectorTag }: any) {
           </Box>
 
           <Box>
+            <Paper
+              sx={{
+                mt: 3,
+                mb: 4,
+                pt: 1.8,
+                pb: 1.5,
+                mx: 1.5,
+                borderRadius: 2,
+                bgcolor: "appCardBgColor",
+              }}
+              elevation={0}
+            >
+              <Grid container rowGap={2}>
+                {changeDays.map((item: any) => (
+                  <Grid item xs={4}>
+                    <Box sx={{ textAlign: "center" }}>
+                      <Typography
+                        sx={{
+                          fontSize: ".9rem",
+                          color: "text.primary",
+                          fontWeight: 500,
+                        }}
+                      >
+                        {item.title}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontSize: "1.2rem",
+                          fontWeight: 700,
+                          color: percentChangeData[item.field].color,
+                        }}
+                      >
+                        {percentChangeData[item.field].text}
+                      </Typography>
+                    </Box>
+                  </Grid>
+                ))}
+              </Grid>
+            </Paper>
+          </Box>
+
+          {/* <Box>
             <Paper
               sx={{
                 display: "flex",
@@ -434,7 +501,7 @@ export default function Dashboard({ sectorTag }: any) {
                 </Typography>
               </Box>
             </Paper>
-          </Box>
+          </Box> */}
 
           <Box sx={{ px: 2, mb: 4 }}>
             <Box>

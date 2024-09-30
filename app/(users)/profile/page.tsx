@@ -2,6 +2,7 @@ import React from "react";
 import { Box } from "@mui/material";
 
 import Profile from "./Profile";
+import PageTitleSetter from "@/components/shared/PageTitleSetter";
 
 // async function getUserById(id: any) {
 //   const res = await fetch(
@@ -29,6 +30,7 @@ export default async function ProfilePage() {
         minHeight: "90vh",
       }}
     >
+      <PageTitleSetter pageTitle="Profile" />
       <Box sx={{ maxWidth: "850px", mx: "auto", pt: 2, pb: 4, px: 4 }}>
         <Profile />
       </Box>

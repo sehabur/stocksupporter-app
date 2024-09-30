@@ -9,8 +9,7 @@ export default function Page() {
       sx={{
         bgcolor: "secondaryBackground",
         minHeight: "90vh",
-        pt: 0.3,
-        pb: 2,
+        py: 2,
         px: 1.3,
       }}
     >

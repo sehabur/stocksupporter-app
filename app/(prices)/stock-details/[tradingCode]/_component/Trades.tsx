@@ -155,7 +155,7 @@ export default function Trades(props: any) {
   };
 
   return (
-    <Box sx={{ mt: 2 }}>
+    <Box>
       <Dialog
         open={openDialog}
         onClose={handleDialogClose}
@@ -176,9 +176,10 @@ export default function Trades(props: any) {
             >
               <Chip
                 label={`Buy: ${totalBuy}`}
-                icon={<TrendingUpRoundedIcon color="success" />}
+                icon={<TrendingUpRoundedIcon />}
+                color="success"
                 sx={{
-                  color: "success.main",
+                  // color: "success.main",
                   borderRadius: 1,
                   fontSize: "1rem",
                   py: 2.5,
@@ -187,9 +188,10 @@ export default function Trades(props: any) {
               />
               <Chip
                 label={`Sell: ${totalSell}`}
-                icon={<TrendingDownRoundedIcon color="error" />}
+                icon={<TrendingDownRoundedIcon />}
+                color="error"
                 sx={{
-                  color: "error.main",
+                  // color: "error.main",
                   borderRadius: 1,
                   fontSize: "1rem",
                   py: 2.5,
@@ -264,7 +266,13 @@ export default function Trades(props: any) {
           ":hover": {
             cursor: "pointer",
           },
-          py: 0,
+          pt: 0.6,
+          pb: 0.3,
+          ".MuiAlert-root, .MuiAlert-message, .MuiAlert-action": {
+            py: 0,
+            my: 0,
+          },
+
           borderRadius: 1.5,
           fontWeight: 700,
           mb: { xs: 1, sm: 0 },
@@ -283,23 +291,25 @@ export default function Trades(props: any) {
           </IconButton>
         }
       >
-        <Typography
-          sx={{
-            display: "inline",
-            mr: 1,
-          }}
-          color="text.primary"
-        >
-          {lastTrade?.volume || 0} shares @ {lastTrade?.ltp || 0} BDT
-        </Typography>
+        <Box sx={{ mt: 0.2 }}>
+          <Typography
+            sx={{
+              display: "inline",
+              mr: 1,
+            }}
+            color="text.primary"
+          >
+            {lastTrade?.volume || 0} shares @ {lastTrade?.ltp || 0} BDT
+          </Typography>
 
-        {lastTrade?.timeIso && (
-          <Chip
-            label={<ReactTimeAgo date={lastTrade?.timeIso} locale="en-US" />}
-            size="small"
-            variant="outlined"
-          />
-        )}
+          {lastTrade?.timeIso && (
+            <Chip
+              label={<ReactTimeAgo date={lastTrade?.timeIso} locale="en-US" />}
+              size="small"
+              variant="outlined"
+            />
+          )}
+        </Box>
       </Alert>
     </Box>
   );

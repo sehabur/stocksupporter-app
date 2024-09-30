@@ -5,11 +5,12 @@ import KeyboardDoubleArrowDownRoundedIcon from "@mui/icons-material/KeyboardDoub
 import PauseCircleOutlineRoundedIcon from "@mui/icons-material/PauseCircleOutlineRounded";
 
 import PieChartSectorTrend from "@/components/charts/PieChartSectorTrend";
+import GaugeChart from "../charts/GaugeChart";
 
 const colors = ["#24b29b", "#448aff", "#f45e6a"];
 const labels = ["Uptrend", "Neutral", "Downtrend"];
 
-export default function MarketMoverChart({ data, sectorData }: any) {
+export default function MarketMoverChart({ data, rsi }: any) {
   return (
     <Box
       sx={{
@@ -121,6 +122,16 @@ export default function MarketMoverChart({ data, sectorData }: any) {
           width={360}
           donutSize="60%"
         />
+      </Box>
+      <Box sx={{ mt: 3 }}>
+        <Typography
+          color="text.primary"
+          sx={{ fontSize: "1.3rem", fontWeight: 500, textAlign: "center" }}
+        >
+          Sentiment
+        </Typography>
+
+        <GaugeChart rsi={rsi} />
       </Box>
     </Box>
   );

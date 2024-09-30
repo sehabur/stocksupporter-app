@@ -8,6 +8,7 @@ import {
 import { Capacitor } from "@capacitor/core";
 
 import { Dialog } from "@capacitor/dialog";
+import { authActions } from "_store";
 
 export const pushNotificationInit = (auth: any) => {
   if (Capacitor.getPlatform() == "web") return;
@@ -57,6 +58,7 @@ export const pushNotificationInit = (auth: any) => {
   PushNotifications.addListener(
     "pushNotificationReceived",
     (notification: PushNotificationSchema) => {
+      authActions.updateNotificationCount(1);
       Dialog.alert({
         title: notification.title,
         message: notification.body || "",

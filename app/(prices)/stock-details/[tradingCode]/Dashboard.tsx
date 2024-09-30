@@ -131,187 +131,170 @@ export default function Dashboard({ tradingCode }: any) {
     }
   }
 
+  const handleButtonClick = (href: string) => {
+    router.push(href);
+  };
+
   React.useEffect(() => {
     getStockDetails();
   }, []);
-
-  const handleButtonClick = (href: string, title: string) => {
-    router.push(href);
-    // dispatch(pageTitleActions.setPageTitle(title));
-  };
 
   return (
     <Box>
       <LoadingSpinner open={isLoading} />
       {fetched && (
-        <Box>
-          <Box sx={{ py: { xs: 2, sm: 4 } }}>
+        <>
+          <Box sx={{ bgcolor: "background.default", pt: 2, pb: 2 }}>
             <Box
               sx={{
-                maxWidth: 500,
+                maxWidth: 600,
                 mx: "auto",
                 px: 2,
-                display: "flex",
-                flexDirection: "row",
-                flexWrap: "wrap",
-                alignItems: "center",
-                justifyContent: { xs: "flex-start", sm: "space-around" },
               }}
             >
-              <Box>
+              <Typography
+                sx={{
+                  color: "text.primary",
+                  fontSize: "1.2rem",
+                  fontWeight: 500,
+                }}
+              >
+                {stock.fundamentals?.companyName}
+              </Typography>
+
+              <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+                <Chip
+                  label={`Category ${stock.fundamentals?.category}`}
+                  size="small"
+                  sx={{
+                    borderRadius: 1,
+                    mr: 1,
+                    fontSize: ".875rem",
+                  }}
+                />
+                <Chip
+                  size="small"
+                  label={stock.fundamentals?.sector}
+                  sx={{
+                    borderRadius: 1,
+                    fontSize: ".875rem",
+                  }}
+                />
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  alignItems: "center",
+                  mt: 1,
+                }}
+              >
                 <Typography
-                  variant="h1"
                   sx={{
                     color: "text.primary",
-                    fontSize: "1.2rem",
-                    fontWeight: 500,
+                    fontSize: "1.8rem",
+                    fontWeight: 700,
+                    fontFamily: "'Nunito Sans', sans-serif",
                   }}
                 >
-                  {stock.fundamentals?.companyName}
+                  {latestPriceData.price}
                 </Typography>
 
-                <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-                  {/* <Chip
-                    label={stock.fundamentals?.tradingCode}
-                    variant="outlined"
-                    sx={{
-                      borderRadius: 1,
-                      fontSize: "1rem",
-                      mt: 1,
-                    }}
-                  /> */}
-                  <Chip
-                    label={`Category ${stock.fundamentals?.category}`}
-                    size="small"
-                    sx={{
-                      borderRadius: 1,
-                      mr: 1,
-                      fontSize: ".875rem",
-                      mt: 1,
-                    }}
-                  />
-                  <Chip
-                    size="small"
-                    label={stock.fundamentals?.sector}
-                    sx={{
-                      borderRadius: 1,
-                      fontSize: ".875rem",
-                      mt: 1,
-                    }}
-                  />
-                </Box>
-
-                <Box
+                <Typography
                   sx={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    alignItems: "center",
-                    mt: 1.5,
+                    color: "text.secondary",
+                    fontSize: "1rem",
+                    ml: 0.8,
+                    mr: 2,
+                    mt: 0.5,
                   }}
                 >
-                  <Typography
-                    sx={{
-                      color: "text.primary",
-                      fontSize: "2rem",
-                      fontWeight: 700,
-                      fontFamily: "'Nunito Sans', sans-serif",
-                    }}
-                  >
-                    {latestPriceData.price}
-                  </Typography>
+                  BDT
+                </Typography>
 
+                <Typography
+                  sx={{
+                    color: textColor,
+                    fontSize: "1.3rem",
+                    fontWeight: 700,
+                    fontFamily: "'Nunito Sans', sans-serif",
+                    mr: 2,
+                  }}
+                >
+                  {addPlusSign(stock.latest?.change)}
+                </Typography>
+
+                <Typography
+                  sx={{
+                    color: textColor,
+                    fontSize: "1.3rem",
+                    fontWeight: 700,
+                    fontFamily: "'Nunito Sans', sans-serif",
+                    mr: 2,
+                  }}
+                >
+                  {stock.latest?.change !== 0
+                    ? addPlusSign(stock.latest?.percentChange)
+                    : 0}
+                  {"%"}
+                </Typography>
+
+                {stock.haltStatus && stock.haltStatus != "none" && (
+                  <Chip
+                    label="Halt"
+                    size="small"
+                    variant="outlined"
+                    color={stock.haltStatus == "buy" ? "success" : "error"}
+                    sx={{
+                      borderRadius: 6,
+                      fontSize: ".875rem",
+                      mr: 1.5,
+                    }}
+                  />
+                )}
+
+                <Tooltip
+                  title={`Market is ${stock.marketOpenStatus.toLowerCase()} now`}
+                  enterTouchDelay={10}
+                  arrow
+                >
+                  <Chip
+                    label={stock.marketOpenStatus}
+                    variant="outlined"
+                    size="small"
+                    icon={
+                      stock.marketOpenStatus == "Open" ? (
+                        <RadioButtonCheckedRoundedIcon color="success" />
+                      ) : stock.marketOpenStatus == "Closed" ? (
+                        <DoDisturbOnRoundedIcon color="error" />
+                      ) : (
+                        <DoDisturbOnRoundedIcon color="warning" />
+                      )
+                    }
+                    sx={{ fontSize: ".875rem", px: 0.3, mr: 1.5 }}
+                  />
+                </Tooltip>
+
+                <Box>
                   <Typography
                     sx={{
                       color: "text.secondary",
                       fontSize: "1rem",
-                      ml: 0.6,
-                      mr: 2,
-                      mt: 1,
                     }}
                   >
-                    BDT
+                    {latestPriceData.time}
                   </Typography>
-
-                  <Typography
-                    sx={{
-                      color: textColor,
-                      fontSize: "1.3rem",
-                      fontWeight: 700,
-                      fontFamily: "'Nunito Sans', sans-serif",
-                      mr: 2,
-                    }}
-                  >
-                    {addPlusSign(stock.latest?.change)}
-                  </Typography>
-
-                  <Typography
-                    sx={{
-                      color: textColor,
-                      fontSize: "1.3rem",
-                      fontWeight: 700,
-                      fontFamily: "'Nunito Sans', sans-serif",
-                      mr: 2,
-                    }}
-                  >
-                    {stock.latest?.change !== 0
-                      ? addPlusSign(stock.latest?.percentChange)
-                      : 0}
-                    {"%"}
-                  </Typography>
-
-                  {stock.haltStatus && stock.haltStatus != "none" && (
-                    <Chip
-                      label="Halt"
-                      size="small"
-                      variant="outlined"
-                      color={stock.haltStatus == "buy" ? "success" : "error"}
-                      sx={{
-                        borderRadius: 6,
-                        fontSize: ".875rem",
-                        mr: 1.5,
-                      }}
-                    />
-                  )}
-
-                  <Tooltip
-                    title={`Market is ${stock.marketOpenStatus.toLowerCase()} now`}
-                    enterTouchDelay={10}
-                    arrow
-                  >
-                    <Chip
-                      label={stock.marketOpenStatus}
-                      variant="outlined"
-                      size="small"
-                      icon={
-                        stock.marketOpenStatus == "Open" ? (
-                          <RadioButtonCheckedRoundedIcon color="success" />
-                        ) : stock.marketOpenStatus == "Closed" ? (
-                          <DoDisturbOnRoundedIcon color="error" />
-                        ) : (
-                          <DoDisturbOnRoundedIcon color="warning" />
-                        )
-                      }
-                      sx={{ fontSize: ".875rem", px: 0.3, mr: 1.5 }}
-                    />
-                  </Tooltip>
-
-                  <Box>
-                    <Typography
-                      sx={{
-                        color: "text.secondary",
-                        fontSize: "1rem",
-                      }}
-                    >
-                      {latestPriceData.time}
-                    </Typography>
-                  </Box>
                 </Box>
+              </Box>
 
+              <Box sx={{ mt: 2 }}>
                 <Trades
                   data={stock.minute}
                   tradingCode={stock.fundamentals?.tradingCode}
                 />
               </Box>
+
               <Box sx={{ display: "flex", alignItems: "center", mt: 1.5 }}>
                 <FavoriteButton
                   tradingCode={stock.fundamentals?.tradingCode}
@@ -324,11 +307,10 @@ export default function Dashboard({ tradingCode }: any) {
                 <Button
                   onClick={() => {
                     handleButtonClick(
-                      `/supercharts?symbol=${stock.fundamentals.tradingCode}`,
-                      `${stock.fundamentals.tradingCode} Supercharts`
+                      `/supercharts?symbol=${stock.fundamentals.tradingCode}`
                     );
                   }}
-                  sx={{ borderRadius: 2, py: 1.05 }}
+                  sx={{ borderRadius: 2 }}
                   variant="contained"
                 >
                   See on Supercharts
@@ -337,9 +319,18 @@ export default function Dashboard({ tradingCode }: any) {
             </Box>
           </Box>
           <Box>
-            <TabView stock={stock} tradingCode={tradingCode} />
+            <TabView
+              stock={stock}
+              tradingCode={tradingCode}
+              prices={{
+                close: latestPriceData.price,
+                change: addPlusSign(stock.latest?.change),
+                percentChange: addPlusSign(stock.latest?.percentChange),
+                color: textColor,
+              }}
+            />
           </Box>
-        </Box>
+        </>
       )}
     </Box>
   );

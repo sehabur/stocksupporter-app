@@ -5,11 +5,18 @@ const authSlice = createSlice({
   initialState: null,
   reducers: {
     login: (state, { payload }) => {
-      localStorage.setItem("userInfo", JSON.stringify(payload));
+      localStorage.setItem(
+        "userInfo",
+        JSON.stringify({
+          _id: payload._id,
+          token: payload.token,
+        })
+      );
       return payload;
     },
 
     logout: () => {
+      localStorage.removeItem("userInfo");
       return null;
     },
 
@@ -19,9 +26,22 @@ const authSlice = createSlice({
         name: payload.name,
         email: payload.email,
       };
+      return newState;
+    },
 
-      localStorage.setItem("userInfo", JSON.stringify(newState));
+    updateNotificationCount: (state: any, { payload }) => {
+      const newState = {
+        ...state,
+        newNotificationCount: state.newNotificationCount + payload,
+      };
+      return newState;
+    },
 
+    resetNewNotificationCount: (state: any) => {
+      const newState = {
+        ...state,
+        newNotificationCount: 0,
+      };
       return newState;
     },
 

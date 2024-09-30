@@ -62,12 +62,18 @@ export default function CandlestickVolumeChart(props: any) {
 
     chart.current = createChart(chartContainerRef.current, chartOptions);
 
+    chart.current.applyOptions({
+      watermark: {
+        visible: true,
+        fontSize: 24,
+        horzAlign: "center",
+        vertAlign: "center",
+        color: "rgba(125, 125, 125, 0.3)",
+        text: "Stocksupporter",
+      },
+    });
+
     const candleSeries = chart.current.addCandlestickSeries({
-      // upColor: '#089981',
-      // downColor: '#f23645',
-      // borderVisible: false,
-      // wickUpColor: '#089981',
-      // wickDownColor: '#f23645',
       upColor: "#22ab94",
       downColor: "#f7525f",
       borderUpColor: "#22ab94",

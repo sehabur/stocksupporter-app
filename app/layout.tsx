@@ -12,6 +12,8 @@ import ThemeRegistry from "./ThemeRegistry";
 import BottomNav from "./_components/BottomNav";
 import Header from "./_components/Header";
 import store from "./_store";
+import { NavigationEvent } from "./_components/shared/NavigationEvent";
+import DeeplinkListener from "./_components/shared/DeeplinkListener";
 
 TimeAgo.addDefaultLocale(en);
 TimeAgo.addLocale(ru);
@@ -36,6 +38,8 @@ export default function RootLayout({ children }: any) {
           <ThemeRegistry options={{ key: "mui" }}>
             <Header />
             {children}
+            <NavigationEvent />
+            {/* <DeeplinkListener /> */}
             <BottomNav />
           </ThemeRegistry>
         </Provider>

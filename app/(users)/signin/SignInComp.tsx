@@ -18,10 +18,14 @@ import { authActions, pageTitleActions } from "_store";
 import Spinner from "@/components/shared/Spinner";
 import { pushNotificationInit } from "_helper/fcm";
 
-export default function SignInComp() {
+export default function SignInComp({ redirectFromComponent }: any) {
   const dispatch = useDispatch();
 
   const router = useRouter();
+
+  const searchParams = useSearchParams();
+
+  const redirect = searchParams.get("redirect");
 
   const [formData, setFormData] = React.useState({
     phone: "",
@@ -38,9 +42,8 @@ export default function SignInComp() {
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const handleButtonClick = (href: string, title: string) => {
+  const handleButtonClick = (href: string) => {
     router.push(href);
-    // dispatch(pageTitleActions.setPageTitle(title));
   };
 
   const handleInputChange = (event: any) => {
@@ -70,7 +73,7 @@ export default function SignInComp() {
         dispatch(authActions.login(data.user));
         pushNotificationInit(data.user);
         setErrorMessage("");
-        handleButtonClick("/", "Home");
+        handleButtonClick(redirect || redirectFromComponent || "/");
       } else {
         setErrorMessage("Login failed. " + data.message);
       }
@@ -150,7 +153,7 @@ export default function SignInComp() {
         </Box>
         <Box sx={{ mt: 1 }}>
           <Typography
-            onClick={() => handleButtonClick("/signup", "Create new account")}
+            onClick={() => handleButtonClick(`/signup?redirect=${redirect}`)}
             sx={{
               textDecoration: "underline",
               color: "primary.main",

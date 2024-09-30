@@ -152,34 +152,111 @@ Past results of any trader published on this website are not indicative of futur
 stocksupporter.com makes no warranties and gives no assurances regarding the truth, timeliness, reliability, or good faith of any material posted at stocksupporter.com. The website does not warrant that trading methods or systems presented in their services or the information herein, or obtained from advertisers or members, will result in profits or losses.
 `;
 
-export const aboutus: string = `Stocksupporter is a platform with a mission to revolutionize the landscape for traders and investors in Bangladesh by overcoming key barriers related to cost, analysis, and technology. It is a specialized software as a service (SaaS) dedicated to providing comprehensive data, information, and content tailored specifically for Bangladeshi stocks and mutual funds. We aim to empower investors with the tools and insights needed to make informed decisions and navigate the local market confidently.
-
-We invite you to join us on this exciting journey as we strive to democratize access to financial information and empower investors in Bangladesh with the tools they need to succeed. Together, let's break barriers and pave the way for a more inclusive and dynamic investment landscape.`;
-
 export const faqItems: any = [
   {
     id: 1,
     ques: "How do I contact customer support if I have a question or issue?",
-    ans: "You can reach our customer support team by emailing support@email.com or calling our toll-free number. We&apos;re here to assist you promptly.",
+    ans: "You can reach our customer support team by emailing us or direct call us out hotline number. We are here to assist you promptly.",
   },
   {
     id: 2,
-    ques: "How do I contact customer support if I have a question or issue?",
-    ans: "You can reach our customer support team by emailing support@email.com or calling our toll-free number. We&apos;re here to assist you promptly.",
+    ques: "How much does it cost?",
+    ans: "You can check our Premium package and check which package is suitable for you.",
   },
   {
     id: 3,
-    ques: "How do I contact customer support if I have a question or issue?",
-    ans: "You can reach our customer support team by emailing support@email.com or calling our toll-free number. We&apos;re here to assist you promptly.",
+    ques: "How do I cancel?",
+    ans: "Stocksupporter is flexible. You can easily cancel your account online in two clicks. There are no cancellation fees to start or stop your account anytime..",
   },
   {
     id: 4,
-    ques: "How do I contact customer support if I have a question or issue?",
-    ans: "You can reach our customer support team by emailing support@email.com or calling our toll-free number. We&apos;re here to assist you promptly.",
+    ques: "Can I Auto renew the package?",
+    ans: "Yes ",
   },
   {
     id: 5,
-    ques: "How do I contact customer support if I have a question or issue?",
-    ans: "You can reach our customer support team by emailing support@email.com or calling our toll-free number. We&apos;re here to assist you promptly.",
+    ques: "What features do I have access in premium package?",
+    ans: `- Fundamental
+          - Screener
+          - Technical
+	        - Price alerts	
+          - Ad free unlimited use.`,
+  },
+  {
+    id: 6,
+    ques: "How do I open my account??",
+    ans: "Go to stocksupporter.com and click on create new account.",
+  },
+  {
+    id: 7,
+    ques: "How do I select the company before I invest?",
+    ans: "Before investing, ensure you fully understand the investment, including analyzing financial statements like annual reports and EPS (Earnings Per Share). Avoid basing decisions on rumors or unverified information. Rely on rational, evidence-based reasoning",
   },
 ];
+
+export const privacy: any = `Welcome to StockSupporter! Your privacy is incredibly important to us, and we’re dedicated to keeping your information safe and secure. This Privacy Policy explains how we collect, use, and protect your personal information when you use our website stocksupporter.com (“the Website”) and our StockSupporter mobile application (“the App,” together known as “the Service”). 
+
+Our Commitment to Your Privacy
+
+At StockSupporter, we’re committed to protecting your privacy. By using our Service, you agree to our Privacy Policy. We encourage you to review this Policy regularly to stay informed of any updates. If you don’t agree with our policy, please discontinue use of our Service and uninstall the App if applicable.
+
+What Information Do We Collect?
+
+We collect two types of information:
+
+1.	Non-Personal Information:
+
+  •	This includes data that doesn’t identify you personally, like your approximate location, web requests, browser type, and pages you visit.
+  •	Cookies: We use cookies—small files on your device that remember your preferences. Learn more about how we use cookies and manage them in our cookies policy.
+  •	Web Beacons: These are tiny pieces of code that help us understand how you interact with our website, such as tracking page visits.
+
+2.	Personal Information:
+
+  •	This is information you provide that can identify you personally, like your name, email address, phone number, and payment details. We collect this information when you create an account or interact with our Service.
+  •	Third-Party Accounts: You can also sign up or log in using credentials from services like Facebook or Google. This may give us access to additional information from your third-party profile, depending on your privacy settings there.
+
+Why We Collect Your Information?
+
+We use your information to:
+
+  •	Enhance Your Experience: Improve and personalize our Service for you.
+  •	Keep You Informed: Send you relevant offers, updates, and marketing materials.
+  •	Improve Our Service: Analyze usage to refine and expand our offerings.
+  •	Provide Support: Assist with any issues or questions you have.
+
+Who Do We Share Your Information With?
+
+We may share your information with:
+
+  •	Our Trusted Partners: This includes third parties that help us with analytics, email services, and other functions.
+  •	Advertisers: To provide you with targeted ads based on your interests.
+  •	Legal and Compliance: To comply with legal obligations or protect our rights.
+
+Your Advertising Choices
+
+We use third-party technologies to serve ads based on your interactions with our Service. You can opt-out of many ad networks through the Network Advertising Initiative (NAI) and the Digital Advertising Alliance (DAA).
+
+Your Rights
+
+You have the right to:
+
+  •	Access and Update: Review and update your personal information.
+  •	Opt-Out: Request not to receive marketing communications from us.
+
+To exercise these rights, contact us through our Contact Us page.
+
+International Transfers
+Your information may be transferred to and processed in countries outside your own, including Bangladesh. By using our Service, you consent to these transfers.
+
+Links to Other Sites
+Our Website may include links to other sites. We’re not responsible for their privacy practices, so we encourage you to review their policies.
+
+Contact Us
+Have questions or concerns? Reach out to us at info@stocksupporter.com with “Privacy” in the subject line. We’re here to help!
+
+Updates to This Policy
+We may update this Privacy Policy from time to time. Changes will be posted on this page and will take effect immediately.
+
+
+Thank you for choosing StockSupporter!
+`;

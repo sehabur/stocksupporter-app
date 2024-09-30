@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
-import { LocalNotifications } from "@capacitor/local-notifications";
 import {
   AppBar,
   Box,
@@ -42,6 +41,7 @@ import {
   INDEX_INFO_FETCH_TIME_MS,
   LATEST_PRICE_FETCH_TIME_MS,
 } from "@/data/constants";
+import { getUser } from "_helper/dataFetch";
 
 const TransitionSlide = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -76,7 +76,7 @@ export default function Header() {
 
   const indexInfo = useSelector((state: any) => state.indexInfo);
 
-  const auth = useSelector((state: any) => state.auth);
+  // const auth = useSelector((state: any) => state.auth);
 
   const [searchText, setSearchText] = useState("");
 
@@ -90,9 +90,20 @@ export default function Header() {
   const [indexInfoAnchorEl, setindexInfoAnchorEl] =
     React.useState<HTMLButtonElement | null>(null);
 
-  const handleReloadPage = () => {
+  const handleReloadPage = async () => {
+    await getIndexInfo();
+
     const { pathname, search } = window.location;
-    router.push(`/reload?redirect=${encodeURIComponent(pathname + search)}`);
+    const url = pathname + search;
+
+    // const url =
+    //   pathname +
+    //   search +
+    //   (search == "" ? "?" : "&") +
+    //   "scrollY=" +
+    //   Math.floor(window.scrollY);
+
+    router.push(`/reload?redirect=${encodeURIComponent(url)}`);
   };
 
   const handleIndexInfoClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -170,31 +181,18 @@ export default function Header() {
       throw new Error("Failed to fetch data");
     }
     const initdata = await res.json();
-
     dispatch(indexInfoActions.setData(initdata.Data));
   };
 
-  const getFavorites = async () => {
-    if (!auth) return;
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/favorite/${auth?._id}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth?.token}`,
-        },
-        next: { revalidate: 0 },
-      }
-    );
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
+  const getUserData = async () => {
+    const data = await getUser();
+    if (data) {
+      dispatch(authActions.login(data));
+      dispatch(favoriteActions.setData(data.favorites));
     }
-    const initdata = await res.json();
-    dispatch(favoriteActions.setData(initdata.favorites));
   };
 
-  useEffect(() => {
+  const setTheme = () => {
     const themeColor = localStorage.getItem("theme");
     if (themeColor) {
       dispatch(themeColorActions.setThemeColor(themeColor));
@@ -202,7 +200,27 @@ export default function Header() {
       localStorage.setItem("theme", "light");
       dispatch(themeColorActions.setThemeColor("light"));
     }
-  }, [dispatch]);
+  };
+
+  // const getFavorites = async () => {
+  //   if (!auth) return;
+  //   const res = await fetch(
+  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/profile/${auth?._id}`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${auth?.token}`,
+  //       },
+  //       next: { revalidate: 0 },
+  //     }
+  //   );
+  //   if (!res.ok) {
+  //     throw new Error("Failed to fetch data");
+  //   }
+  //   const initdata = await res.json();
+  //   dispatch(favoriteActions.setData(initdata.favorites));
+  // };
 
   useEffect(() => {
     if (searchText !== "") {
@@ -213,78 +231,21 @@ export default function Header() {
     }
   }, [searchText]);
 
-  // async function alertPermission() {
-  //   await LocalNotifications.requestPermissions();
-  // }
-  // async function alertSchedule() {
-  //   if (!auth || !latestPrice) return;
-
-  //   const res = await fetch(
-  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/priceAlerts/user/${auth?._id}`,
-  //     {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${auth?.token}`,
-  //       },
-  //       next: { revalidate: 0 },
-  //     }
-  //   );
-
-  //   if (!res.ok) {
-  //     throw new Error("Failed to fetch data");
-  //   }
-  //   const data = await res.json();
-
-  //   if (data?.priceAlerts?.length < 1) return;
-
-  //   let notificationList = [];
-
-  //   for (let alert of data?.priceAlerts) {
-  //     const stockPrice = latestPrice.find(
-  //       (item: any) => item.tradingCode === alert.tradingCode
-  //     );
-
-  //     if (
-  //       (alert.type == "above" && stockPrice.ltp > alert.price) ||
-  //       (alert.type == "below" && stockPrice.ltp < alert.price)
-  //     ) {
-  //     }
-
-  //     notificationList.push({
-  //       id: Math.random(),
-  //       title: alert.tradingCode + " Price Alert",
-  //       body:
-  //         "Latest trading price is now " +
-  //         alert.type +
-  //         " your set value (BDT " +
-  //         alert.price.toFixed(2) +
-  //         ")",
-  //     });
-  //   }
-
-  //   const result = await LocalNotifications.schedule({
-  //     notifications: notificationList,
-  //   });
-
-  //   console.log(latestPrice, auth, result);
-  // }
-
   useEffect(() => {
+    setTheme();
     getData();
     getIndexInfo();
-    // alertPermission();
+    getUserData();
   }, []);
 
-  useEffect(() => {
-    getFavorites();
-  }, [auth]);
+  // useEffect(() => {
+  //   getFavorites();
+  // }, [auth]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       getData();
     }, LATEST_PRICE_FETCH_TIME_MS);
-
     return () => {
       clearInterval(interval);
     };
@@ -292,9 +253,11 @@ export default function Header() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      getIndexInfo();
+      const { pathname } = window.location;
+      if (pathname != "/") {
+        getIndexInfo();
+      }
     }, INDEX_INFO_FETCH_TIME_MS);
-
     return () => {
       clearInterval(interval);
     };
@@ -310,14 +273,14 @@ export default function Header() {
   //   };
   // }, [auth, latestPrice]);
 
-  useEffect(() => {
-    const authDataFromStorage: any = localStorage.getItem("userInfo");
-    const data = JSON.parse(authDataFromStorage);
+  // useEffect(() => {
+  //   const authDataFromStorage: any = localStorage.getItem("userInfo");
+  //   const data = JSON.parse(authDataFromStorage);
 
-    if (data) {
-      dispatch(authActions.login(data));
-    }
-  }, []);
+  //   if (data) {
+  //     dispatch(authActions.login(data));
+  //   }
+  // }, []);
 
   return (
     <>

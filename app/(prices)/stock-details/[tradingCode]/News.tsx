@@ -146,7 +146,10 @@ export default function News({ tradingCode }: any) {
                 sx={{ minWidth: 275, bgcolor: "priceCardBgColor" }}
                 elevation={0}
               >
-                <CardContent sx={{ pb: 1 }}>
+                <CardContent
+                  sx={{ pb: 1 }}
+                  onClick={() => handleItemClick(item)}
+                >
                   <Typography
                     gutterBottom
                     variant="h5"

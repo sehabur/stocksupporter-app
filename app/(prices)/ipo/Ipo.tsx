@@ -65,7 +65,7 @@ export default function Ipo() {
     <Box>
       <LoadingSpinner open={isLoading} />
       {data && (
-        <Box>
+        <Box sx={{ mx: 2 }}>
           <Box sx={{ mb: 4 }}>
             <Typography
               variant="h1"
@@ -74,20 +74,11 @@ export default function Ipo() {
               sx={{
                 fontSize: "1.2rem",
                 fontWeight: 500,
-                // textAlign: "center",
-                // my: 2,
               }}
             >
               Upcoming
             </Typography>
-            <Box
-              sx={{
-                display: "flex",
-                flexWrap: "wrap",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
+            <Box>
               {data
                 .filter(
                   (item: any) => new Date(item.subscriptionEnd) >= new Date()
@@ -97,9 +88,8 @@ export default function Ipo() {
                     key={index}
                     sx={{
                       my: 2,
-                      mx: 2,
-                      borderRadius: 3,
-                      width: { xs: 320, sm: 350 },
+                      borderRadius: 2,
+                      maxWidth: 400,
                     }}
                     elevation={6}
                   >
@@ -207,19 +197,9 @@ export default function Ipo() {
               {data.filter(
                 (item: any) => new Date(item.subscriptionEnd) >= new Date()
               ).length < 1 && (
-                <Paper
-                  elevation={0}
-                  sx={{
-                    mt: 1,
-                    py: 1,
-                    px: 2,
-                    bgcolor: "secondaryBackground",
-                    maxWidth: 350,
-                    borderRadius: 2,
-                  }}
-                >
-                  <Typography> There is no upcoming IPO to display</Typography>
-                </Paper>
+                <Typography sx={{ mt: 2 }}>
+                  There is no upcoming IPO to display
+                </Typography>
               )}
             </Box>
           </Box>
@@ -231,20 +211,11 @@ export default function Ipo() {
               sx={{
                 fontSize: "1.2rem",
                 fontWeight: 500,
-                // textAlign: "center",
-                // my: 2,
               }}
             >
               Previous
             </Typography>
-            <Box
-              sx={{
-                display: "flex",
-                flexWrap: "wrap",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
+            <Box>
               {data
                 .filter(
                   (item: any) => new Date(item.subscriptionEnd) < new Date()
@@ -254,9 +225,8 @@ export default function Ipo() {
                     key={index}
                     sx={{
                       my: 2,
-                      mx: 2,
-                      borderRadius: 3,
-                      width: { xs: 320, sm: 350 },
+                      borderRadius: 2,
+                      maxWidth: 400,
                     }}
                     elevation={6}
                   >
@@ -365,18 +335,10 @@ export default function Ipo() {
           </Box>
           <Box>
             {data.length < 1 && (
-              <Paper
-                elevation={0}
-                sx={{
-                  my: 2,
-                  py: 2,
-                  px: 2,
-                  bgcolor: "secondaryBackground",
-                  width: 400,
-                }}
-              >
-                <Typography> There is no upcoming IPO to display.</Typography>
-              </Paper>
+              <Typography sx={{ mt: 2 }}>
+                {" "}
+                There is no IPO to display.
+              </Typography>
             )}
           </Box>
         </Box>

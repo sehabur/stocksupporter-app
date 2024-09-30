@@ -13,6 +13,7 @@ import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import { useDispatch } from "react-redux";
 import { pageTitleActions } from "_store";
 import { AUTO_RELOAD_TIME_MS } from "@/data/constants";
+import AutoReload from "@/components/shared/AutoReload";
 
 const typeList = [
   {
@@ -129,10 +130,6 @@ export default function Dashboard() {
 
   const dispatch = useDispatch();
 
-  dispatch(pageTitleActions.setPageTitle("Top shares"));
-
-  // const [initdata, setinitdata] = React.useState<any>([]);
-
   const [data, setdata] = React.useState<any>([]);
 
   const [initdata, setinitdata] = React.useState<any>([]);
@@ -144,6 +141,8 @@ export default function Dashboard() {
   const [typeAlignment, setTypeAlignment] = React.useState<any>(type);
 
   const [variantAlignment, setVariantAlignment] = React.useState<any>(variant);
+
+  dispatch(pageTitleActions.setPageTitle("Top shares"));
 
   async function getData() {
     try {
@@ -163,19 +162,6 @@ export default function Dashboard() {
       const resdata = await res.json();
 
       setinitdata(resdata);
-      // setdata(resdata);
-
-      // let newData;
-      // if (type === "gainer") {
-      //   newData = [...resdata].sort(
-      //     (a: any, b: any) => b.percentChange - a.percentChange
-      //   );
-      // } else if (type === "loser") {
-      //   newData = [...resdata].sort(
-      //     (a: any, b: any) => a.percentChange - b.percentChange
-      //   );
-      // }
-      // setdata(newData);
       setisLoading(false);
     } catch (error) {
       setisLoading(false);
@@ -185,21 +171,6 @@ export default function Dashboard() {
   React.useEffect(() => {
     getData();
   }, []);
-
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      const { pathname, search } = window.location;
-      router.push(`/reload?redirect=${encodeURIComponent(pathname + search)}`);
-    }, AUTO_RELOAD_TIME_MS);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
-  // const selectedData: any = variantMap.find(
-  //   (item) => item.type === typeAlignment && item.variant === variantAlignment
-  // );
 
   React.useEffect(() => {
     let newData = initdata.map((item: any) => ({
@@ -264,6 +235,7 @@ export default function Dashboard() {
   return (
     <Box sx={{ py: 0 }}>
       <LoadingSpinner open={isLoading} />
+      <AutoReload />
       <Box
         sx={{
           pt: 1.5,

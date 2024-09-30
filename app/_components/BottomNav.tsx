@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { App } from "@capacitor/app";
 
 import {
+  Badge,
   Box,
   Button,
   Dialog,
@@ -47,13 +48,18 @@ import DonutSmallIcon from "@mui/icons-material/DonutSmall";
 import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
 import WorkspacesRoundedIcon from "@mui/icons-material/WorkspacesRounded";
+import PrivacyTipOutlinedIcon from "@mui/icons-material/PrivacyTipOutlined";
+import FeedOutlinedIcon from "@mui/icons-material/FeedOutlined";
+import MailOutlineOutlinedIcon from "@mui/icons-material/MailOutlineOutlined";
+import LiveHelpOutlinedIcon from "@mui/icons-material/LiveHelpOutlined";
+import AlarmOutlinedIcon from "@mui/icons-material/AlarmOutlined";
 // import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 // import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 // import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
 // import CandlestickChartOutlinedIcon from "@mui/icons-material/CandlestickChartOutlined";
 // import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded";
 
-import { authActions } from "_store";
+import { authActions, favoriteActions } from "_store";
 import ToastMessage from "./shared/ToastMessage";
 import DarkThemeButton from "./buttons/DarkThemeButton";
 
@@ -162,7 +168,7 @@ const marketMenu = [
   {
     title: "Latest price",
     label: "Latest price",
-    icon: <CandlestickChartRoundedIcon />,
+    icon: <DonutSmallIcon />,
     href: "/latest-price",
   },
   {
@@ -224,6 +230,33 @@ const packageMenu = [
   },
 ];
 
+const othersMenu = [
+  {
+    title: "Contact",
+    label: "Contact",
+    icon: <MailOutlineOutlinedIcon />,
+    href: "/contact",
+  },
+  {
+    title: "FAQ",
+    label: "FAQ",
+    icon: <LiveHelpOutlinedIcon />,
+    href: "/faq",
+  },
+  {
+    title: "Terms & condition",
+    label: "Terms & condition",
+    icon: <FeedOutlinedIcon />,
+    href: "/terms",
+  },
+  {
+    title: "Privacy policy",
+    label: "Privacy policy",
+    icon: <PrivacyTipOutlinedIcon />,
+    href: "/privacy",
+  },
+];
+
 const userMenu = [
   {
     title: "Favorites",
@@ -234,8 +267,14 @@ const userMenu = [
   {
     title: "Price alerts",
     label: "Price alerts",
-    icon: <NotificationsNoneRoundedIcon />,
+    icon: <AlarmOutlinedIcon />,
     href: "/price-alerts",
+  },
+  {
+    title: "Notifications",
+    label: "Notifications",
+    icon: <NotificationsNoneRoundedIcon />,
+    href: "/notifications",
   },
   {
     title: "Portfolio",
@@ -275,6 +314,8 @@ export default function BottomNav() {
 
   const auth = useSelector((state: any) => state.auth);
 
+  console.log(auth);
+
   const dispatch = useDispatch();
 
   const handleLogoutToastColse = () => {
@@ -283,7 +324,7 @@ export default function BottomNav() {
 
   const handleSignOut = () => {
     dispatch(authActions.logout());
-    localStorage.removeItem("userInfo");
+    dispatch(favoriteActions.clearData());
     handleDialogClose();
     setLogoutSuccess(true);
   };
@@ -307,7 +348,7 @@ export default function BottomNav() {
     setOpenDialog(false);
   };
 
-  const handleMenuItemClick = (href: string, title: string) => {
+  const handleMenuItemClick = (href: string) => {
     router.push(href);
     handleDialogClose();
   };
@@ -327,7 +368,7 @@ export default function BottomNav() {
           width: "100%",
         }}
         component={Button}
-        onClick={() => handleMenuItemClick(item.href, item.title)}
+        onClick={() => handleMenuItemClick(item.href)}
         variant="outlined"
       >
         <Button
@@ -342,7 +383,16 @@ export default function BottomNav() {
           disableRipple
         >
           {item.label}
+
+          {item.label === "Notifications" && (
+            <Badge
+              badgeContent={auth?.newNotificationCount || 0}
+              color="error"
+              sx={{ ml: 2 }}
+            />
+          )}
         </Button>
+
         <KeyboardArrowRightRoundedIcon sx={{ color: "text.secondary" }} />
       </Paper>
     </Box>
@@ -531,6 +581,12 @@ export default function BottomNav() {
               <Box sx={{ pb: 2.5 }}>
                 <Typography color="text.secondary">Packages</Typography>
                 {packageMenu.map((item: any, index: number) =>
+                  getMenuItem(item, index)
+                )}
+              </Box>
+              <Box sx={{ pb: 2.5 }}>
+                <Typography color="text.secondary">Others</Typography>
+                {othersMenu.map((item: any, index: number) =>
                   getMenuItem(item, index)
                 )}
               </Box>

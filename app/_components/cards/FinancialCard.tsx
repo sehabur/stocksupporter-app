@@ -56,14 +56,14 @@ export default function FinancialCard(props: any) {
           direction="row"
           alignItems="center"
           justifyContent="space-between"
-          sx={{ bgcolor: "financeCardTitlecolor", px: 2, py: 1.2 }}
+          sx={{ bgcolor: "financeCardTitlecolor", pl: 1.5, pr: 1.5, py: 0.5 }}
         >
           <Typography
             onClick={() => handleItemClick(dialogtype)}
             color="primary.main"
             sx={{
               textAlign: "left",
-              fontSize: ".92rem",
+              fontSize: ".875rem",
               fontWeight: 700,
               p: 0,
               m: 0,
@@ -93,7 +93,7 @@ export default function FinancialCard(props: any) {
                 },
               }}
             >
-              <HelpOutlineRoundedIcon sx={{ fontSize: "1.2rem" }} />
+              <HelpOutlineRoundedIcon sx={{ fontSize: "1rem" }} />
             </IconButton>
           </CustomTooltip>
         </Stack>
@@ -102,14 +102,9 @@ export default function FinancialCard(props: any) {
             direction="row"
             alignItems="center"
             sx={{
-              px: 2,
-              py: 0,
-              mx: 0,
-              mt: 0.8,
-              mb: 0.5,
-              ":hover": {
-                bgcolor: "transparent",
-              },
+              pl: 1.5,
+              pr: 1.5,
+              py: 0.5,
             }}
             component={Button}
             disableRipple
@@ -120,31 +115,30 @@ export default function FinancialCard(props: any) {
               flexWrap="wrap"
               alignItems="baseline"
               spacing={0}
+              sx={{ mr: 1.3 }}
             >
               <Typography
                 color="text.primary"
                 sx={{
-                  fontSize: "1.4rem",
+                  fontSize: "1.3rem",
                   fontWeight: 500,
                 }}
               >
                 {data?.value && (data.value / divideFactor).toFixed(2)}
               </Typography>
-              <Typography sx={{ fontSize: "1rem", color: "text.secondary" }}>
+              <Typography
+                sx={{ fontSize: ".875rem", color: "text.secondary", ml: 0.5 }}
+              >
                 {unit}
               </Typography>
             </Stack>
 
             <Chip
               label={data?.period}
-              // variant="outlined"
-              // color="info"
               size="small"
               sx={{
-                ml: 1,
-                fontSize: ".875rem",
+                fontSize: ".85rem",
                 display: data?.period ? "block" : "none",
-                // borderRadius: 1,
               }}
             />
           </Stack>
@@ -155,17 +149,18 @@ export default function FinancialCard(props: any) {
             onClick={() => handleItemClick(dialogtype)}
             sx={{
               color: data?.color || "text.secondary",
-              fontSize: ".9rem",
+              fontSize: ".83rem",
               fontWeight: 500,
-              px: 2,
-              py: 1,
+              pl: 1.5,
+              pr: 1,
+              py: 0.5,
               ":hover": {
                 bgcolor: "transparent",
               },
               textAlign: "left",
             }}
           >
-            {data?.comment || "--"}
+            {data?.comment?.replace("year", "yr") || "--"}
           </Typography>
         </Box>
       </CardContent>

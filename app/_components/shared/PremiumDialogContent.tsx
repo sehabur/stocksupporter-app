@@ -1,91 +1,88 @@
 "use client";
-import { Box, Typography, Button, Avatar } from "@mui/material";
+import { Box, Typography, Button, Avatar, Paper } from "@mui/material";
 
 import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOutlined";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
-import { pageTitleActions } from "_store";
 
 export default function PremiumDialogContent(props: any) {
+  const { details = true } = props;
+
   const auth = useSelector((state: any) => state.auth);
 
   const router = useRouter();
 
-  const dispatch = useDispatch();
-
-  const handleButtonClick = (href: string, title: string) => {
+  const handleButtonClick = (href: string) => {
     router.push(href);
-    dispatch(pageTitleActions.setPageTitle(title));
   };
 
   return (
-    <Box sx={{ maxWidth: "500px", mx: "auto", px: 1 }}>
+    <Paper
+      variant="outlined"
+      sx={{ maxWidth: "500px", mx: "auto", px: 3, py: 3, borderRadius: 3 }}
+    >
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           textAlign: "center",
+          mb: 3,
         }}
       >
-        <Avatar
-          sx={{ width: 50, height: 50, bgcolor: "text.secondary", mb: 2 }}
-        >
-          <WorkspacePremiumOutlinedIcon sx={{ fontSize: 35 }} />
+        <Avatar sx={{ bgcolor: "text.secondary", mb: 3 }}>
+          <WorkspacePremiumOutlinedIcon sx={{ fontSize: 25 }} />
         </Avatar>
         <Typography
           sx={{
-            fontSize: "1.6rem",
+            fontSize: "1.5rem",
             fontWeight: 700,
             color: "text.primary",
             lineHeight: 1.1,
-            mb: 1,
+            mb: 2.5,
           }}
         >
-          Premium feature
+          Premium Content
         </Typography>
         <Typography
           sx={{
             fontSize: "1rem",
             fontWeight: 500,
-            color: "text.primary",
+            color: "text.secondary",
             lineHeight: 1.4,
           }}
         >
-          Please subscribe to one of our premium packages to access this feature
+          Please subscribe to premium package to access this feature
         </Typography>
       </Box>
 
-      <Box sx={{ my: 4 }}>
-        <Typography
-          sx={{
-            fontSize: "1rem",
-            textAlign: "justify",
-            color: "text.primary",
-          }}
-        >
-          Elevate your investing potential with a Premium membership. Gain
-          personalised and actionable insights with enhanced features to
-          maximize your investments!
-        </Typography>
-      </Box>
+      {details && (
+        <Box sx={{ mb: 4 }}>
+          <Typography
+            sx={{
+              fontSize: ".875rem",
+              textAlign: "justify",
+              color: "text.primary",
+            }}
+          >
+            Elevate your investing potential with a Premium membership. Gain
+            personalised and actionable insights with enhanced features to
+            maximize your investments!
+          </Typography>
+        </Box>
+      )}
 
       <Box>
         <Button
           variant="contained"
-          sx={{ py: 1.3, px: 4, fontSize: "1.1rem" }}
+          sx={{ py: 1.3, px: 4, mt: 1, fontSize: "1.1rem" }}
           fullWidth
-          onClick={() =>
-            handleButtonClick(
-              auth?.isLoggedIn ? "/pricing" : "/signup",
-              auth?.isLoggedIn ? "Pricing" : "Sign up"
-            )
-          }
+          onClick={() => handleButtonClick("/pricing")}
         >
           Start 14 days free trial
         </Button>
       </Box>
-    </Box>
+    </Paper>
   );
 }

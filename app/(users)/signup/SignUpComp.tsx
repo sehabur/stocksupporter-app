@@ -19,6 +19,7 @@ import { Stack } from "@mui/system";
 import Spinner from "@/components/shared/Spinner";
 import { useDispatch } from "react-redux";
 import { authActions, pageTitleActions } from "_store";
+import { pushNotificationInit } from "_helper/fcm";
 
 export default function SignUpComp() {
   const [formData, setFormData] = React.useState({
@@ -44,7 +45,7 @@ export default function SignUpComp() {
 
   const dispatch = useDispatch();
 
-  dispatch(pageTitleActions.setPageTitle("Create new account"));
+  dispatch(pageTitleActions.setPageTitle("Sign up"));
 
   const handleButtonClick = (href: string) => {
     router.push(href);
@@ -73,14 +74,12 @@ export default function SignUpComp() {
           body: JSON.stringify(formData),
         }
       );
-
       const data = await res.json();
-
       if (res.ok) {
         dispatch(authActions.login(data.user));
+        pushNotificationInit(data.user);
         setErrorMessage("");
-        handleButtonClick("/");
-        // setSuccessMessage("Account creation successful");
+        handleButtonClick(redirect || "/");
       } else {
         let errorMsg = "";
 
@@ -229,7 +228,7 @@ export default function SignUpComp() {
 
         <Box sx={{ mt: 1 }}>
           <Typography
-            onClick={() => handleButtonClick("/signin")}
+            onClick={() => handleButtonClick(`/signin?redirect=${redirect}`)}
             sx={{
               textDecoration: "underline",
               color: "primary.main",

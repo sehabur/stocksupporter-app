@@ -47,6 +47,33 @@ const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   color: theme.palette.text.primary,
 }));
 
+const changeDays = [
+  {
+    field: "today",
+    title: "Today",
+  },
+  {
+    field: "oneWeek",
+    title: "1 Week",
+  },
+  {
+    field: "oneMonth",
+    title: "1 Month",
+  },
+  {
+    field: "sixMonth",
+    title: "6 Months",
+  },
+  {
+    field: "oneYear",
+    title: "1 Year",
+  },
+  {
+    field: "fiveYear",
+    title: "5 Years",
+  },
+];
+
 const formatCandleChartData = (data: any) => {
   let candle = [];
   let volume = [];
@@ -149,7 +176,7 @@ export default function Overview({ stock }: any) {
   const weeklyCandleData = formatCandleChartData(stock.weekly);
   const monthlyCandleData = formatCandleChartData(stock.monthly);
 
-  const percentChangeData = formatPercentChangeData(
+  const percentChangeData: any = formatPercentChangeData(
     stock.latest,
     stock.lastDay
   );
@@ -255,6 +282,45 @@ export default function Overview({ stock }: any) {
         )}
 
         <Paper
+          sx={{
+            mt: 3,
+            mb: 4,
+            pt: 1.8,
+            pb: 1.5,
+            borderRadius: 2,
+            bgcolor: "appCardBgColor",
+          }}
+          elevation={0}
+        >
+          <Grid container rowGap={2}>
+            {changeDays.map((item: any) => (
+              <Grid item xs={4}>
+                <Box sx={{ textAlign: "center" }}>
+                  <Typography
+                    sx={{
+                      fontSize: ".9rem",
+                      color: "text.primary",
+                      fontWeight: 500,
+                    }}
+                  >
+                    {item.title}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "1.2rem",
+                      fontWeight: 700,
+                      color: percentChangeData[item.field].color,
+                    }}
+                  >
+                    {percentChangeData[item.field].text}
+                  </Typography>
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
+        </Paper>
+
+        {/* <Paper
           sx={{
             display: "flex",
             flexWrap: "wrap",
@@ -415,7 +481,7 @@ export default function Overview({ stock }: any) {
               {percentChangeData.fiveYear.text || "--"}
             </Typography>
           </Box>
-        </Paper>
+        </Paper> */}
 
         <Box sx={{ mt: 4 }}>
           <Typography

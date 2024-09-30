@@ -24,6 +24,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { pageTitleActions } from "_store";
 import { AUTO_RELOAD_TIME_MS } from "@/data/constants";
+import AutoReload from "@/components/shared/AutoReload";
 
 const variants: any = {
   gainer: {
@@ -126,17 +127,6 @@ export default function Dashboard() {
     getData();
   }, []);
 
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      const { pathname, search } = window.location;
-      router.push(`/reload?redirect=${encodeURIComponent(pathname + search)}`);
-    }, AUTO_RELOAD_TIME_MS);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
   const columns: GridColDef[] = [
     {
       field: "tradingCode",
@@ -195,6 +185,7 @@ export default function Dashboard() {
   return (
     <Box sx={{ p: { xs: 2, sm: 2 } }}>
       <LoadingSpinner open={isLoading} />
+      <AutoReload />
       <Box
         sx={{
           display: "flex",

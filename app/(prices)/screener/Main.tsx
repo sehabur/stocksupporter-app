@@ -11,6 +11,7 @@ import {
   MenuItem,
   InputAdornment,
   IconButton,
+  useTheme,
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -121,6 +122,8 @@ const initialTextFieldInput = {
 export default function Main() {
   const dispatch = useDispatch();
 
+  const theme = useTheme();
+
   dispatch(pageTitleActions.setPageTitle("Screener"));
 
   const auth = useSelector((state: any) => state.auth);
@@ -151,6 +154,8 @@ export default function Main() {
   });
 
   const [tabValue, setTabValue] = useState(0);
+
+  const [loading, setLoading] = useState(false);
 
   const [openCustomRangeMenu, setCustomRangeMenuOpen] =
     useState<boolean>(false);
@@ -302,29 +307,35 @@ export default function Main() {
   };
 
   const getScreenerData = async () => {
-    const fieldSet: any = new Set([
-      ...startingFields,
-      ...Object.keys(formInputs),
-      ...endingFields,
-    ]);
-    setscreenerDatafields([...fieldSet]);
+    try {
+      setLoading(true);
+      const fieldSet: any = new Set([
+        ...startingFields,
+        ...Object.keys(formInputs),
+        ...endingFields,
+      ]);
+      setscreenerDatafields([...fieldSet]);
 
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/screener`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formInputs),
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/screener`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formInputs),
+        }
+      );
+      if (!res.ok) {
+        throw new Error("Failed to fetch data");
       }
-    );
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    const data = await res.json();
+      const data = await res.json();
 
-    setScreenerData(data);
+      setScreenerData(data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -332,7 +343,7 @@ export default function Main() {
   }, [formInputs]);
 
   // useEffect(() => {
-  //   if (!auth?.isPremium) handlePremiumDialogOpen();
+  //   if (!auth?.isPremiumEligible) handlePremiumDialogOpen();
   // }, [auth]);
 
   useEffect(() => {
@@ -564,7 +575,16 @@ export default function Main() {
     ));
 
   const filterOptionsDialog = (
-    <Dialog open={openFilterOptionsDialog} fullScreen disableScrollLock={true}>
+    <Dialog
+      open={openFilterOptionsDialog}
+      fullScreen
+      disableScrollLock={true}
+      PaperProps={{
+        style: {
+          backgroundColor: theme?.palette?.mode == "dark" ? "#000" : "#fff",
+        },
+      }}
+    >
       <DialogTitle
         sx={{
           display: "flex",
@@ -595,7 +615,9 @@ export default function Main() {
           <IconButton onClick={handleFilterOptionsDialogClose} sx={{ py: 0 }}>
             <Box sx={{ display: "block" }}>
               <CloseIcon sx={{ fontSize: "1.3rem" }} />
-              <Typography sx={{ mt: -1.3 }}>Close</Typography>
+              <Typography sx={{ color: "text.secondary", mt: -1.3 }}>
+                Close
+              </Typography>
             </Box>
           </IconButton>
         </Box>
@@ -621,9 +643,15 @@ export default function Main() {
             // variant="fullWidth"
             centered
           >
-            <Tab label="Fundamental" sx={{ color: "primary.main" }} />
-            <Tab label="Technical" sx={{ color: "primary.main" }} />
-            <Tab label="All" sx={{ color: "primary.main" }} />
+            <Tab
+              label="Fundamental"
+              sx={{ color: "primary.main", fontWeight: 700 }}
+            />
+            <Tab
+              label="Technical"
+              sx={{ color: "primary.main", fontWeight: 700 }}
+            />
+            <Tab label="All" sx={{ color: "primary.main", fontWeight: 700 }} />
           </Tabs>
           <Box
             sx={{
@@ -695,17 +723,18 @@ export default function Main() {
       >
         <PremiumDialogContent />
       </Dialog> */}
-      {!auth?.isPremium && (
+      {!auth?.isPremiumEligible && (
         <Box
           sx={{
-            py: 6,
-            px: 2,
+            pt: 6,
+            pb: 6,
+            px: 4,
           }}
         >
           <PremiumDialogContent />
         </Box>
       )}
-      {auth?.isPremium && (
+      {auth?.isPremiumEligible && (
         <Box>
           <Box sx={{ maxWidth: 425, mx: 2, pt: 1.5 }}>
             <Button
@@ -759,6 +788,7 @@ export default function Main() {
                   },
                   filterPanel: { sx: { maxWidth: "90vw" } },
                 }}
+                loading={loading}
                 sx={{
                   ".MuiDataGrid-columnHeader": {
                     color: "text.primary",

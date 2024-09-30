@@ -41,12 +41,12 @@ export default function MobileViewPriceCard({ item }: any) {
   return (
     <Paper
       sx={{
-        my: 0.8,
+        my: 1,
         pl: 1.5,
         pr: 1,
         pt: 1.2,
         pb: 0.8,
-        borderRadius: 1.5,
+        borderRadius: 2,
         width: "100%",
         bgcolor: "priceCardBgColor",
       }}

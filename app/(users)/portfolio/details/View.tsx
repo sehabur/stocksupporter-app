@@ -172,7 +172,7 @@ export default function View() {
         <Button
           variant="contained"
           color="success"
-          sx={{ px: 4, borderRadius: 12 }}
+          sx={{ px: 3 }}
           component={Link}
           href={`/portfolio/trade?portfolio=${portfolio?._id}&comm=${portfolio?.commission}`}
         >

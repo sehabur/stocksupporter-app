@@ -99,6 +99,7 @@ export default function GainerLoser({ data, handleButtonClick }: any) {
                 color: "primary.main",
                 textDecoration: "underline",
               },
+              mb: 1.5,
             }}
           >
             Stock Gainer
@@ -160,6 +161,7 @@ export default function GainerLoser({ data, handleButtonClick }: any) {
               color: "primary.main",
               textDecoration: "underline",
             },
+            mb: 1.5,
           }}
         >
           Stock Loser
@@ -195,7 +197,7 @@ export default function GainerLoser({ data, handleButtonClick }: any) {
         </Box>
       </Box>
 
-      <Box sx={{ px: 1.5, mt: 1.5 }}>
+      <Box sx={{ px: 1.5, pt: 1.5 }}>
         {dataFormatter(data[alignmentLoser]).map((item: any) => (
           <MobileViewPriceCard item={item} key={item.id} />
         ))}

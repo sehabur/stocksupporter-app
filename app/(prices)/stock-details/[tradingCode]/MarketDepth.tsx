@@ -138,10 +138,9 @@ export default function MarketDepth(props: any) {
 
   const getData = async () => {
     try {
-      // setIsLoading(true);
       if (marketOpenStatus === "Closed") {
         setMarketDepthData(null);
-        // setIsLoading(false);
+        setdataFetched(true);
         return;
       }
       const res = await fetch(
@@ -161,11 +160,9 @@ export default function MarketDepth(props: any) {
 
       setMarketDepthData(initdata);
       setdataFetched(true);
-      // setIsLoading(false);
     } catch (error) {
       setMarketDepthData(null);
       setdataFetched(true);
-      // setIsLoading(false);
     }
   };
 
@@ -174,11 +171,8 @@ export default function MarketDepth(props: any) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // console.log(isLoading);
-
   return (
     <Box>
-      {/* <LoadingSpinner open={isLoading} /> */}
       {!dataFetched && (
         <Box
           sx={{
@@ -246,7 +240,7 @@ export default function MarketDepth(props: any) {
                             }}
                             key={index}
                           >
-                            <TableCell>{item[0]}</TableCell>
+                            <TableCell>{item[0].toFixed(1)}</TableCell>
                             <TableCell>{item[1]}</TableCell>
                           </TableRow>
                         )
@@ -382,7 +376,7 @@ export default function MarketDepth(props: any) {
               component={Paper}
               elevation={0}
               variant="outlined"
-              sx={{ maxHeight: 450 }}
+              sx={{ maxHeight: "40vh" }}
             >
               <Table size="small" stickyHeader>
                 <TableHead>

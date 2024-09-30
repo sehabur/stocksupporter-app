@@ -1,7 +1,6 @@
 "use client";
 import * as React from "react";
 import { DateTime } from "luxon";
-import Link from "next/link";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 
 import Table from "@mui/material/Table";
@@ -10,30 +9,39 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import {
-  Box,
-  Typography,
-  Paper,
-  Button,
-  Chip,
-  Stack,
-  Divider,
-} from "@mui/material";
+import { Box, Typography, Paper, Chip, Divider } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { pageTitleActions } from "_store";
 import { AUTO_RELOAD_TIME_MS } from "@/data/constants";
 
-function calculateAverage(values: number[]) {
-  if (values.length === 0) return 0; // Handle empty array case
+// function calculateAverage(values: number[]) {
+//   if (values.length === 0) return 0; // Handle empty array case
+//   const sum = values.reduce(
+//     (accumulator, currentValue) => accumulator + currentValue,
+//     0
+//   );
+//   const average = sum / values.length;
+//   return average.toFixed(2);
+// }
 
-  const sum = values.reduce(
-    (accumulator, currentValue) => accumulator + currentValue,
-    0
-  );
-  const average = sum / values.length;
-
-  return average.toFixed(2);
+function getBlockTrSummary(data: any) {
+  let quantity = 0;
+  let value = 0;
+  let trades = 0;
+  let scripts = 0;
+  for (let row of data) {
+    quantity += row.quantity;
+    value += row.value;
+    trades += row.trades;
+    scripts++;
+  }
+  return {
+    quantity,
+    value,
+    trades,
+    scripts,
+  };
 }
 
 export default function BlockTransection() {
@@ -55,27 +63,7 @@ export default function BlockTransection() {
 
   const handleButtonClick = (href: string, title: string) => {
     router.push(href);
-    // dispatch(pageTitleActions.setPageTitle(title));
   };
-
-  function getBlockTrSummary(data: any) {
-    let quantity = 0;
-    let value = 0;
-    let trades = 0;
-    let scripts = 0;
-    for (let row of data) {
-      quantity += row.quantity;
-      value += row.value;
-      trades += row.trades;
-      scripts++;
-    }
-    return {
-      quantity,
-      value,
-      trades,
-      scripts,
-    };
-  }
 
   async function getData() {
     try {
@@ -102,21 +90,8 @@ export default function BlockTransection() {
     }
   }
 
-  console.log(summary);
-
   React.useEffect(() => {
     getData();
-  }, []);
-
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      const { pathname, search } = window.location;
-      router.push(`/reload?redirect=${encodeURIComponent(pathname + search)}`);
-    }, AUTO_RELOAD_TIME_MS);
-
-    return () => {
-      clearInterval(interval);
-    };
   }, []);
 
   return (
@@ -133,13 +108,13 @@ export default function BlockTransection() {
         sx={{
           bgcolor: "appCardBgColor",
           px: 3,
-          pb: 1.5,
-          pt: 1.5,
-          borderRadius: 3,
+          pb: 1,
+          pt: 1,
+          borderRadius: 2,
           mb: 1.5,
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center", mb: 1.5 }}>
+        <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
           <Typography sx={{ mr: 2, fontSize: ".95rem" }}>
             Total{" "}
             <Typography
@@ -153,7 +128,7 @@ export default function BlockTransection() {
             label={DateTime.fromISO(data[0]?.date).toFormat("dd MMM, yyyy")}
             // variant="outlined"
             size="small"
-            sx={{ fontSize: ".9rem" }}
+            sx={{ fontSize: ".9rem", px: 0.5 }}
           />
         </Box>
         <Box

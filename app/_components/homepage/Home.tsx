@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
-import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
+
+import { Box, Divider, Typography } from "@mui/material";
+
 import IndexChart from "@/components/homepage/IndexChart";
 import MarketMoverChart from "@/components/homepage/MarketMoverChart";
 import SectorStatus from "@/components/homepage/SectorStatus";
@@ -12,10 +14,13 @@ import Ipo from "@/components/homepage/Ipo";
 import Beta from "@/components/homepage/Beta";
 import IndexMover from "@/components/homepage/IndexMover";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { pageTitleActions } from "_store";
+import { indexInfoActions, pageTitleActions } from "_store";
+import { AUTO_RELOAD_TIME_MS } from "@/data/constants";
+import AutoReload from "../shared/AutoReload";
 
 export default function Home() {
   const [indexData, setindexData] = React.useState<any>(null);
@@ -32,13 +37,13 @@ export default function Home() {
   const [datafetched, setdatafetched] = React.useState(false);
 
   const router = useRouter();
+
   const dispatch = useDispatch();
 
   dispatch(pageTitleActions.setPageTitle("Homepage"));
 
   const handleButtonClick = (href: string, title: string) => {
     router.push(href);
-    // dispatch(pageTitleActions.setPageTitle(title));
   };
 
   async function getIndexData() {
@@ -186,6 +191,23 @@ export default function Home() {
     setindexMover(data);
   }
 
+  async function getIndexInfo() {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/getIndexInfo`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    const initdata = await res.json();
+    dispatch(indexInfoActions.setData(initdata.Data));
+  }
+
   async function getData() {
     try {
       setisLoading(true);
@@ -210,23 +232,13 @@ export default function Home() {
 
   React.useEffect(() => {
     getData();
-  }, []);
-
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      const { pathname, search } = window.location;
-      router.push(`/reload?redirect=${encodeURIComponent(pathname + search)}`);
-    }, 60000);
-
-    return () => {
-      clearInterval(interval);
-    };
+    getIndexInfo();
   }, []);
 
   return (
-    <>
+    <Box>
       <LoadingSpinner open={isLoading} />
-
+      <AutoReload />
       {datafetched && (
         <>
           <Box>
@@ -248,7 +260,7 @@ export default function Home() {
                 {indexData && sectorData && (
                   <MarketMoverChart
                     data={indexData?.latest}
-                    sectorData={sectorData[0]}
+                    rsi={indexData.rsi}
                   />
                 )}
               </Box>
@@ -341,6 +353,6 @@ export default function Home() {
           </Box>
         </>
       )}
-    </>
+    </Box>
   );
 }

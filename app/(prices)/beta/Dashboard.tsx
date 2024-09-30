@@ -1,12 +1,8 @@
 "use client";
-import {
-  Box,
-  Button,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
-import * as React from "react";
+import React from "react";
+
+import { Box, Typography } from "@mui/material";
+
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup, {
   toggleButtonGroupClasses,
@@ -20,17 +16,18 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { pageTitleActions } from "_store";
 import { AUTO_RELOAD_TIME_MS } from "@/data/constants";
+import AutoReload from "@/components/shared/AutoReload";
 
-const variants: any = {
-  gainer: {
-    pageTitle: "Positive Beta",
-    pageSubtitle: "Stocks with positive beta value",
-  },
-  loser: {
-    pageTitle: "Negative Beta",
-    pageSubtitle: "Stocks with negative beta value",
-  },
-};
+// const variants: any = {
+//   gainer: {
+//     pageTitle: "Positive Beta",
+//     pageSubtitle: "Stocks with positive beta value",
+//   },
+//   loser: {
+//     pageTitle: "Negative Beta",
+//     pageSubtitle: "Stocks with negative beta value",
+//   },
+// };
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   [`& .${toggleButtonGroupClasses.grouped}`]: {
@@ -80,38 +77,6 @@ export default function Dashboard() {
   };
   const [data, setdata] = React.useState<any>(initstate);
 
-  async function getData() {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/allStockBeta?type=all`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    const data = await res.json();
-    setdata(data);
-  }
-
-  React.useEffect(() => {
-    getData();
-  }, []);
-
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      const { pathname, search } = window.location;
-      router.push(`/reload?redirect=${encodeURIComponent(pathname + search)}`);
-    }, AUTO_RELOAD_TIME_MS);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
   const [typeAlignment, setTypeAlignment] = React.useState("gainer");
 
   const router = useRouter();
@@ -119,11 +84,6 @@ export default function Dashboard() {
   const dispatch = useDispatch();
 
   dispatch(pageTitleActions.setPageTitle("Beta"));
-
-  const handleButtonClick = (href: string, title: string) => {
-    router.push(href);
-    // dispatch(pageTitleActions.setPageTitle(title));
-  };
 
   const columns: GridColDef[] = [
     {
@@ -137,10 +97,7 @@ export default function Dashboard() {
         return (
           <Typography
             onClick={() => {
-              handleButtonClick(
-                `/stock-details/${params.value}`,
-                `${params.value} sector`
-              );
+              handleButtonClick(`/stock-details/${params.value}`);
             }}
             sx={{
               color: "primary.main",
@@ -171,6 +128,23 @@ export default function Dashboard() {
     },
   ];
 
+  async function getData() {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/allStockBeta?type=all`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    const data = await res.json();
+    setdata(data);
+  }
+
   const handleTypeAlignmentChange = (
     event: React.MouseEvent<HTMLElement>,
     newAlignment: string
@@ -180,8 +154,17 @@ export default function Dashboard() {
     }
   };
 
+  const handleButtonClick = (href: string) => {
+    router.push(href);
+  };
+
+  React.useEffect(() => {
+    getData();
+  }, []);
+
   return (
     <Box sx={{ px: 2, py: 2 }}>
+      <AutoReload />
       <Box
         sx={{
           display: "flex",

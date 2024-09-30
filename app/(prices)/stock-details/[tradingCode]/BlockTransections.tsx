@@ -1,45 +1,23 @@
 "use client";
-import * as React from "react";
+import React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import {
-  Box,
-  Grid,
-  Typography,
-  Stack,
-  Tab,
-  Tabs,
-  useTheme,
-  useMediaQuery,
-  Paper,
-  Button,
-  Modal,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  IconButton,
-  Chip,
-  Divider,
-  CircularProgress,
-} from "@mui/material";
+import { Box, Paper, CircularProgress } from "@mui/material";
 import { DateTime } from "luxon";
-import { grey } from "@mui/material/colors";
-import LoadingSpinner from "@/components/shared/LoadingSpinner";
 
 export default function BlockTransections({ tradingCode }: any) {
-  const [blocktr, setblocktr] = React.useState<any>([]);
+  const targetRef: any = React.useRef(null);
 
-  const [isLoading, setisLoading] = React.useState<boolean>(false);
+  const [blocktr, setblocktr] = React.useState<any>([]);
 
   const [datafetched, setdatafetched] = React.useState<boolean>(false);
 
   async function getBlocktr() {
     try {
-      setisLoading(true);
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/blockTr/${tradingCode}`,
         {
@@ -55,10 +33,8 @@ export default function BlockTransections({ tradingCode }: any) {
       const initdata = await res.json();
       setblocktr(initdata);
       setdatafetched(true);
-      setisLoading(false);
     } catch (error) {
-      setdatafetched(false);
-      setisLoading(false);
+      setdatafetched(true);
     }
   }
 
@@ -66,9 +42,14 @@ export default function BlockTransections({ tradingCode }: any) {
     getBlocktr();
   }, []);
 
+  React.useEffect(() => {
+    if (targetRef.current) {
+      targetRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [targetRef, datafetched]);
+
   return (
     <Box sx={{ py: 2 }}>
-      {/* <LoadingSpinner open={isLoading} /> */}
       {!datafetched && (
         <Box
           sx={{
@@ -89,7 +70,7 @@ export default function BlockTransections({ tradingCode }: any) {
         >
           <TableContainer
             component={Paper}
-            sx={{ maxHeight: 400 }}
+            sx={{ maxHeight: "65vh" }}
             variant="outlined"
           >
             <Table stickyHeader size="small">
@@ -145,6 +126,7 @@ export default function BlockTransections({ tradingCode }: any) {
               </TableBody>
             </Table>
           </TableContainer>
+          <Box ref={targetRef}></Box>
         </Box>
       )}
     </Box>

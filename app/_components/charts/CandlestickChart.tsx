@@ -59,6 +59,17 @@ export default function CandlestickChart(props: { data: any[] }) {
       height: 300,
     });
 
+    chart.current.applyOptions({
+      watermark: {
+        visible: true,
+        fontSize: 24,
+        horzAlign: "center",
+        vertAlign: "center",
+        color: "rgba(125, 125, 125, 0.3)",
+        text: "Stocksupporter",
+      },
+    });
+
     const candleSeries = chart.current.addCandlestickSeries({
       upColor: "#26a69a",
       downColor: "#ef5350",
