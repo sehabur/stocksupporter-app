@@ -14,6 +14,8 @@ import Header from "./_components/Header";
 import store from "./_store";
 import { NavigationEvent } from "./_components/shared/NavigationEvent";
 import DeeplinkListener from "./_components/shared/DeeplinkListener";
+import NetworkStatus from "./_components/shared/NetworkStatus";
+import FirebaseAnalyticsComp from "./_components/shared/FirebaseAnalyticsComp";
 
 TimeAgo.addDefaultLocale(en);
 TimeAgo.addLocale(ru);
@@ -39,6 +41,8 @@ export default function RootLayout({ children }: any) {
             <Header />
             {children}
             <NavigationEvent />
+            <NetworkStatus />
+            <FirebaseAnalyticsComp />
             {/* <DeeplinkListener /> */}
             <BottomNav />
           </ThemeRegistry>

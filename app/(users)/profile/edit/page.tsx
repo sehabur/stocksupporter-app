@@ -29,7 +29,7 @@ export default function SignUp() {
           Edit my account
         </Typography>
       </Box>
-      <Box sx={{ px: 2, pb: 4, maxWidth: 400, mx: "auto" }}>
+      <Box sx={{ px: 4, pb: 4, maxWidth: 400, mx: "auto" }}>
         <EditComp />
       </Box>
     </Box>

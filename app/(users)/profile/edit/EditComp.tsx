@@ -109,7 +109,7 @@ export default function EditComp() {
         {successMessage && <Alert severity="success">{successMessage}</Alert>}
         {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
       </Box>
-      <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+      <Box component="form" onSubmit={handleSubmit} sx={{ mt: 4 }}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField

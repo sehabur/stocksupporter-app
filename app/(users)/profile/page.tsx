@@ -19,7 +19,6 @@ import PageTitleSetter from "@/components/shared/PageTitleSetter";
 
 export default async function ProfilePage() {
   // const { id } = params;
-
   // const userDetails = await getUserById(id);
 
   return (

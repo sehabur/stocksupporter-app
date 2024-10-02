@@ -38,7 +38,7 @@ export default function Checkout() {
     event.preventDefault();
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/payment/init?product=${product}&otp=${otp}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/payment/init?product=${product}&otp=${otp}&platform=app`,
         {
           method: "GET",
           headers: {
@@ -71,20 +71,21 @@ export default function Checkout() {
     // await InAppBrowser.addListener("browserPageLoaded", () => {
     //   console.log("browser was loaded.");
     // });
+
     await Browser.open({ url });
 
-    App.addListener("appUrlOpen", (data) => {
-      const url = data.url;
-      console.log(data);
-      if (url.includes("https://www.stocksupporter.com")) {
-        getUser().then((data) => {
-          dispatch(authActions.login(data));
-          Browser.close();
-        });
-      }
-      Browser.addListener("browserFinished", () => {
-        getUser().then((data) => dispatch(authActions.login(data)));
-      });
+    // App.addListener("appUrlOpen", (data) => {
+    //   setErrorMessage(url);
+    //   if (url.includes("https://www.stocksupporter.com")) {
+    //     getUser().then((data) => {
+    //       dispatch(authActions.login(data));
+    //       Browser.close();
+    //     });
+    //   }
+    // });
+
+    Browser.addListener("browserFinished", () => {
+      getUser().then((data) => dispatch(authActions.login(data)));
     });
   };
 
