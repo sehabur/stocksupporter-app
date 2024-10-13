@@ -18,7 +18,7 @@ export default function MarketMoverChart({ data, rsi }: any) {
         flexDirection: "column",
         alignItems: "center",
         pt: 3,
-        pb: 2,
+        pb: 3,
         px: 2,
       }}
     >

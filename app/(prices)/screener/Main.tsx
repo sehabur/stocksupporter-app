@@ -37,6 +37,7 @@ import { filterOptions } from "./filters";
 import styles from "./Main.module.css";
 import PremiumDialogContent from "@/components/shared/PremiumDialogContent";
 import { pageTitleActions } from "_store";
+import { Preferences } from "@capacitor/preferences";
 
 const startingFields = ["category", "tradingCode", "sector"];
 
@@ -306,6 +307,24 @@ export default function Main() {
     setCustomRangeMenuOpen(false);
   };
 
+  const fetchDataFromApi = async () => {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/screener`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formInputs),
+      }
+    );
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    const data = await res.json();
+    return data;
+  };
+
   const getScreenerData = async () => {
     try {
       setLoading(true);
@@ -316,47 +335,28 @@ export default function Main() {
       ]);
       setscreenerDatafields([...fieldSet]);
 
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/screener`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formInputs),
-        }
-      );
-      if (!res.ok) {
-        throw new Error("Failed to fetch data");
-      }
-      const data = await res.json();
+      let data = [];
 
+      if (Object.keys(formInputs).length === 0) {
+        const storage: { value: any } = await Preferences.get({
+          key: "screener",
+        });
+
+        if (storage.value) {
+          const valueFormStorage = JSON.parse(storage.value);
+          data = valueFormStorage.data;
+        } else {
+          data = await fetchDataFromApi();
+        }
+      } else {
+        data = await fetchDataFromApi();
+      }
       setScreenerData(data);
       setLoading(false);
     } catch (error) {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    getScreenerData();
-  }, [formInputs]);
-
-  // useEffect(() => {
-  //   if (!auth?.isPremiumEligible) handlePremiumDialogOpen();
-  // }, [auth]);
-
-  useEffect(() => {
-    let column: any = {};
-
-    for (let item of filterOptions) {
-      column[item.name] =
-        screenerDatafields.indexOf(item.name) === -1 ? false : true;
-    }
-
-    console.log(column);
-    setColumnVisibilityModel(column);
-  }, [screenerDatafields]);
 
   const customFilterMenu = (
     <>
@@ -709,6 +709,21 @@ export default function Main() {
       </DialogContent>
     </Dialog>
   );
+
+  useEffect(() => {
+    getScreenerData();
+  }, [formInputs]);
+
+  useEffect(() => {
+    let column: any = {};
+
+    for (let item of filterOptions) {
+      column[item.name] =
+        screenerDatafields.indexOf(item.name) === -1 ? false : true;
+    }
+
+    setColumnVisibilityModel(column);
+  }, [screenerDatafields]);
 
   return (
     <Box>

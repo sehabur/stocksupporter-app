@@ -107,9 +107,9 @@ export default function BlockTransection() {
         elevation={0}
         sx={{
           bgcolor: "appCardBgColor",
-          px: 3,
+          px: 2,
           pb: 1,
-          pt: 1,
+          pt: 1.5,
           borderRadius: 2,
           mb: 1.5,
         }}

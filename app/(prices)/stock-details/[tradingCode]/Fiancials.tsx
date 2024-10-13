@@ -1223,10 +1223,10 @@ export default function Financials({ data }: any) {
             <Box>
               <Typography
                 sx={{
-                  fontSize: "1.5rem",
+                  fontSize: "1.2rem",
                   fontWeight: 700,
                   color: "text.primary",
-                  mb: 1.5,
+                  mb: 2,
                   ml: 0.2,
                 }}
               >
@@ -1288,11 +1288,11 @@ export default function Financials({ data }: any) {
             <Box>
               <Typography
                 sx={{
-                  fontSize: "1.5rem",
+                  fontSize: "1.2rem",
                   fontWeight: 700,
                   color: "text.primary",
                   mt: 5,
-                  mb: 1.5,
+                  mb: 2,
                   ml: 0.2,
                 }}
               >
@@ -1405,11 +1405,11 @@ export default function Financials({ data }: any) {
             <Box>
               <Typography
                 sx={{
-                  fontSize: "1.5rem",
+                  fontSize: "1.2rem",
                   fontWeight: 700,
                   color: "text.primary",
                   mt: 5,
-                  mb: 1.5,
+                  mb: 2,
                   ml: 0.2,
                 }}
               >

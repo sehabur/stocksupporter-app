@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Preferences } from "@capacitor/preferences";
 import { useRouter } from "next/navigation";
 import {
   AppBar,
@@ -8,7 +9,6 @@ import {
   Button,
   Toolbar,
   Typography,
-  useMediaQuery,
   useTheme,
   IconButton,
   Dialog,
@@ -33,14 +33,21 @@ import {
   favoriteActions,
   indexInfoActions,
   latestPriceActions,
+  marketOpenStatusActions,
   themeColorActions,
 } from "_store";
+
 import SearchStockCard from "./cards/SearchStockCard";
+
 import IndexInfoCard from "./cards/IndexInfoCard";
+
 import {
   INDEX_INFO_FETCH_TIME_MS,
   LATEST_PRICE_FETCH_TIME_MS,
+  GAINER_LOSER_FETCH_TIME_MS,
+  SCREENER_FETCH_TIME_MS,
 } from "@/data/constants";
+
 import { getUser } from "_helper/dataFetch";
 
 const TransitionSlide = React.forwardRef(function Transition(
@@ -76,7 +83,11 @@ export default function Header() {
 
   const indexInfo = useSelector((state: any) => state.indexInfo);
 
-  // const auth = useSelector((state: any) => state.auth);
+  const auth = useSelector((state: any) => state.auth);
+
+  const marketOpenStatusReduxSlice = useSelector(
+    (state: any) => state.marketOpenStatus
+  );
 
   const [searchText, setSearchText] = useState("");
 
@@ -91,7 +102,7 @@ export default function Header() {
     React.useState<HTMLButtonElement | null>(null);
 
   const handleReloadPage = async () => {
-    await getIndexInfo();
+    await getIndexInfo(marketOpenStatusReduxSlice);
 
     const { pathname, search } = window.location;
     const url = pathname + search;
@@ -150,7 +161,58 @@ export default function Header() {
     }
   };
 
-  const getData = async () => {
+  const calcDataFetchEndTime = (marketOpenStatus: any) => {
+    const {
+      dataFetchStartHour,
+      dataFetchStartMinute,
+      dataFetchEndHour,
+      dataFetchEndMinute,
+    } = marketOpenStatus;
+
+    const now = new Date();
+    const hours = now.getUTCHours();
+    const minutes = now.getUTCMinutes();
+
+    const currentTimeInMinutes = hours * 60 + minutes;
+    const startTimeInMinutes = dataFetchStartHour * 60 + dataFetchStartMinute;
+
+    if (currentTimeInMinutes < startTimeInMinutes) {
+      const previousDay = new Date(now);
+      previousDay.setUTCDate(now.getUTCDate() - 1);
+      previousDay.setUTCHours(dataFetchEndHour, dataFetchEndMinute);
+      return previousDay;
+    } else {
+      const sameDay = new Date(now);
+      sameDay.setUTCHours(dataFetchEndHour, dataFetchEndMinute);
+      return sameDay;
+    }
+  };
+
+  const getIsMarketOpen = (marketOpenStatus: any) => {
+    const {
+      dataInsertionEnable,
+      openHour,
+      openMinute,
+      closeHour,
+      closeMinute,
+    } = marketOpenStatus;
+
+    const now = new Date();
+    const hours = now.getUTCHours();
+    const minutes = now.getUTCMinutes();
+
+    const currentTimeInMinutes = hours * 60 + minutes;
+    const startTimeInMinutes = openHour * 60 + openMinute;
+    const endTimeInMinutes = closeHour * 60 + closeMinute;
+
+    return (
+      dataInsertionEnable == 1 &&
+      currentTimeInMinutes >= startTimeInMinutes &&
+      currentTimeInMinutes <= endTimeInMinutes
+    );
+  };
+
+  const fetchLatestPriceFromApi = async () => {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/latestPrice`,
       {
@@ -164,10 +226,70 @@ export default function Header() {
       throw new Error("Failed to fetch data");
     }
     const initdata = await res.json();
+
+    await Preferences.set({
+      key: "latestPrice",
+      value: JSON.stringify({
+        data: initdata,
+        updatedAt: initdata[101].time,
+        pullTime: new Date().toISOString(),
+      }),
+    });
+
     dispatch(latestPriceActions.setData(initdata));
   };
 
-  const getIndexInfo = async () => {
+  const fetchGainerLoserDataFromApi = async () => {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/allGainerLoser`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    const initdata = await res.json();
+
+    await Preferences.set({
+      key: "allGainerLoser",
+      value: JSON.stringify({
+        data: initdata,
+        updatedAt: initdata[101].time,
+        pullTime: new Date().toISOString(),
+      }),
+    });
+  };
+
+  const fetchScreenerDataFromApi = async () => {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/screener`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({}),
+      }
+    );
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    const initdata = await res.json();
+
+    await Preferences.set({
+      key: "screener",
+      value: JSON.stringify({
+        data: initdata,
+        pullTime: new Date().toISOString(),
+      }),
+    });
+  };
+
+  const fetchIndexInfoFromApi = async () => {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/getIndexInfo`,
       {
@@ -181,7 +303,124 @@ export default function Header() {
       throw new Error("Failed to fetch data");
     }
     const initdata = await res.json();
+
+    await Preferences.set({
+      key: "indexInfo",
+      value: JSON.stringify({
+        data: initdata.Data,
+        pullTime: new Date().toISOString(),
+      }),
+    });
+
     dispatch(indexInfoActions.setData(initdata.Data));
+  };
+
+  const getMarketOpenStatus = async () => {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/getMarketStatus`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    const initdata = await res.json();
+    dispatch(marketOpenStatusActions.setData(initdata));
+    return { status: "success", data: initdata };
+  };
+
+  const getLatestPriceData = async (marketOpenStatus: any) => {
+    if (getIsMarketOpen(marketOpenStatus)) {
+      return await fetchLatestPriceFromApi();
+    }
+    const storage: { value: any } = await Preferences.get({
+      key: "latestPrice",
+    });
+    if (!storage.value) {
+      return await fetchLatestPriceFromApi();
+    }
+
+    const { data: latestPriceFromStorage, pullTime: pullTimeFromStorage } =
+      JSON.parse(storage.value);
+
+    const dataFetchEndTime = calcDataFetchEndTime(marketOpenStatus);
+
+    if (new Date(pullTimeFromStorage) < new Date(dataFetchEndTime)) {
+      return await fetchLatestPriceFromApi();
+    } else {
+      dispatch(latestPriceActions.setData(latestPriceFromStorage));
+    }
+  };
+
+  const getGainerLoserData = async (marketOpenStatus: any) => {
+    if (getIsMarketOpen(marketOpenStatus)) {
+      return await fetchGainerLoserDataFromApi();
+    }
+    const storage: { value: any } = await Preferences.get({
+      key: "allGainerLoser",
+    });
+    if (!storage.value) {
+      return await fetchGainerLoserDataFromApi();
+    }
+
+    const { pullTime: pullTimeFromStorage } = JSON.parse(storage.value);
+
+    const dataFetchEndTime = calcDataFetchEndTime(marketOpenStatus);
+
+    if (new Date(pullTimeFromStorage) < new Date(dataFetchEndTime)) {
+      return await fetchGainerLoserDataFromApi();
+    }
+  };
+
+  const getScreenerData = async (marketOpenStatus: any, authData: any) => {
+    if (!authData?.isPremiumEligible) {
+      return;
+    }
+
+    if (getIsMarketOpen(marketOpenStatus)) {
+      return await fetchScreenerDataFromApi();
+    }
+    const storage: { value: any } = await Preferences.get({
+      key: "screener",
+    });
+    if (!storage.value) {
+      return await fetchScreenerDataFromApi();
+    }
+
+    const { pullTime: pullTimeFromStorage } = JSON.parse(storage.value);
+
+    const dataFetchEndTime = calcDataFetchEndTime(marketOpenStatus);
+
+    if (new Date(pullTimeFromStorage) < new Date(dataFetchEndTime)) {
+      return await fetchScreenerDataFromApi();
+    }
+  };
+
+  const getIndexInfo = async (marketOpenStatus: any) => {
+    if (getIsMarketOpen(marketOpenStatus)) {
+      return await fetchIndexInfoFromApi();
+    }
+    const storage: { value: any } = await Preferences.get({
+      key: "indexInfo",
+    });
+    if (!storage.value) {
+      return await fetchIndexInfoFromApi();
+    }
+
+    const { data: indexInfoFromStorage, pullTime: pullTimeFromStorage } =
+      JSON.parse(storage.value);
+
+    const dataFetchEndTime = calcDataFetchEndTime(marketOpenStatus);
+
+    if (new Date(pullTimeFromStorage) < new Date(dataFetchEndTime)) {
+      return await fetchIndexInfoFromApi();
+    } else {
+      dispatch(indexInfoActions.setData(indexInfoFromStorage));
+    }
   };
 
   const getUserData = async () => {
@@ -202,25 +441,16 @@ export default function Header() {
     }
   };
 
-  // const getFavorites = async () => {
-  //   if (!auth) return;
-  //   const res = await fetch(
-  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/profile/${auth?._id}`,
-  //     {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${auth?.token}`,
-  //       },
-  //       next: { revalidate: 0 },
-  //     }
-  //   );
-  //   if (!res.ok) {
-  //     throw new Error("Failed to fetch data");
-  //   }
-  //   const initdata = await res.json();
-  //   dispatch(favoriteActions.setData(initdata.favorites));
-  // };
+  const getAppInitData = async () => {
+    setTheme();
+    getUserData();
+    const market: any = await getMarketOpenStatus();
+    if (market?.status === "success") {
+      getLatestPriceData(market.data);
+      getGainerLoserData(market.data);
+      getIndexInfo(market.data);
+    }
+  };
 
   useEffect(() => {
     if (searchText !== "") {
@@ -232,20 +462,27 @@ export default function Header() {
   }, [searchText]);
 
   useEffect(() => {
-    setTheme();
-    getData();
-    getIndexInfo();
-    getUserData();
-  }, []);
-
-  // useEffect(() => {
-  //   getFavorites();
-  // }, [auth]);
+    const interval = setInterval(() => {
+      getLatestPriceData(marketOpenStatusReduxSlice);
+    }, LATEST_PRICE_FETCH_TIME_MS);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [marketOpenStatusReduxSlice]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      getData();
-    }, LATEST_PRICE_FETCH_TIME_MS);
+      getGainerLoserData(marketOpenStatusReduxSlice);
+    }, GAINER_LOSER_FETCH_TIME_MS);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getScreenerData(marketOpenStatusReduxSlice, auth);
+    }, SCREENER_FETCH_TIME_MS);
     return () => {
       clearInterval(interval);
     };
@@ -255,32 +492,21 @@ export default function Header() {
     const interval = setInterval(() => {
       const { pathname } = window.location;
       if (pathname != "/") {
-        getIndexInfo();
+        getIndexInfo(marketOpenStatusReduxSlice);
       }
     }, INDEX_INFO_FETCH_TIME_MS);
     return () => {
       clearInterval(interval);
     };
+  }, [marketOpenStatusReduxSlice]);
+
+  useEffect(() => {
+    getAppInitData();
   }, []);
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     alertSchedule();
-  //   }, 60000);
-
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, [auth, latestPrice]);
-
-  // useEffect(() => {
-  //   const authDataFromStorage: any = localStorage.getItem("userInfo");
-  //   const data = JSON.parse(authDataFromStorage);
-
-  //   if (data) {
-  //     dispatch(authActions.login(data));
-  //   }
-  // }, []);
+  useEffect(() => {
+    getScreenerData(marketOpenStatusReduxSlice, auth);
+  }, [marketOpenStatusReduxSlice, auth]);
 
   return (
     <>

@@ -3,6 +3,7 @@ import React from "react";
 import { Box, Grid, Paper, Typography, Stack, Chip } from "@mui/material";
 import { useRouter } from "next/navigation";
 import FavoriteButton from "../buttons/FavoriteButton";
+import { isWithinPreviousTwoDays } from "_helper";
 
 const addPlusSign = (value: number) => {
   let result;
@@ -24,9 +25,11 @@ export default function SearchStockCard(props: any) {
     handleSearchDialogClose = () => {},
   } = props;
 
+  const router = useRouter();
+
   const itemType = item.type;
 
-  const router = useRouter();
+  const isSpotEnabled = isWithinPreviousTwoDays(item.recordDate);
 
   const handleButtonClick = () => {
     handleSearchDialogClose();
@@ -141,12 +144,30 @@ export default function SearchStockCard(props: any) {
               }}
             />
 
-            {item.haltStatus && item.haltStatus !== "none" && (
+            {item.haltStatus &&
+              item.haltStatus !== "none" &&
+              !isSpotEnabled && (
+                <Chip
+                  label="Halt"
+                  size="small"
+                  variant="outlined"
+                  color={item.haltStatus === "buy" ? "success" : "error"}
+                  sx={{
+                    ml: 0.8,
+                    fontSize: ".8rem",
+                    "& .MuiChip-label": {
+                      px: 0.7,
+                    },
+                  }}
+                />
+              )}
+
+            {isSpotEnabled && (
               <Chip
-                label="Halt"
+                label="Spot"
                 size="small"
                 variant="outlined"
-                color={item.haltStatus === "buy" ? "success" : "error"}
+                color="warning"
                 sx={{
                   ml: 0.8,
                   fontSize: ".8rem",

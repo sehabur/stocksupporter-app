@@ -46,27 +46,27 @@ const options: any = [
     tag: "nocfps",
   },
   {
-    header: "Market Cap (Crore)",
+    header: "Cash Dividend",
+    button: "Dividend",
+    tag: "dividend",
+  },
+  {
+    header: "Market Cap (Cr)",
     button: "Market Cap",
     tag: "marketCap",
   },
   {
-    header: "Dividend",
-    button: "Cash dividend",
-    tag: "dividend",
-  },
-  {
-    header: "Revenue (Crore)",
+    header: "Revenue (Cr)",
     button: "Revenue",
     tag: "revenue",
   },
   {
-    header: "Reserve & Surplus (Crore)",
+    header: "Reserve & Surpl. (Cr)",
     button: "Reserve",
     tag: "reserve",
   },
   {
-    header: "Total Asset (Crore)",
+    header: "Total Asset (Cr)",
     button: "Total Asset",
     tag: "totalAsset",
   },
@@ -90,13 +90,13 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 }));
 const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   "&.MuiToggleButtonGroup-grouped": {
-    borderRadius: "6px !important",
+    borderRadius: "5px !important",
     marginBottom: "10px",
     border: `1px solid lightgrey !important`,
     paddingLeft: "12px",
-    paddingTop: "4px",
-    paddingBottom: "4px",
     paddingRight: "12px",
+    paddingTop: "6px",
+    paddingBottom: "6px",
     "&.Mui-selected": {
       color: theme.palette.background.default,
       backgroundColor: theme.palette.text.secondary,
@@ -158,8 +158,8 @@ export default function TopFinancials(props: any) {
           Top Fundamentals
         </Button>
       </Box>
-      <Box sx={{ display: "flex" }}>
-        <Box sx={{ mt: 0.2, minWidth: 125 }}>
+      <Box sx={{ display: "flex", width: "100%" }}>
+        <Box sx={{ minWidth: 110 }}>
           <StyledToggleButtonGroup
             size="small"
             value={alignment}
@@ -169,20 +169,20 @@ export default function TopFinancials(props: any) {
             aria-label="Platform"
           >
             {options.map((item: any, index: number) => (
-              <StyledToggleButton value={item.tag} sx={{ px: 2 }} key={index}>
+              <StyledToggleButton value={item.tag} key={index}>
                 {item.button}
               </StyledToggleButton>
             ))}
           </StyledToggleButtonGroup>
         </Box>
-        <Box sx={{ ml: 2 }}>
+        <Box sx={{ ml: 1.5 }}>
           <TableContainer
             component={Paper}
             elevation={4}
             variant="outlined"
-            sx={{ borderRadius: 2, width: { xs: "100%", sm: 430 } }}
+            sx={{ borderRadius: 1.5, width: "100%" }}
           >
-            <Table size="small">
+            <Table sx={{ width: "100%" }} size="small">
               <TableHead>
                 <TableRow
                   sx={{
@@ -194,7 +194,7 @@ export default function TopFinancials(props: any) {
                     },
                   }}
                 >
-                  <TableCell>Trading Code</TableCell>
+                  <TableCell sx={{ height: 61 }}>Trading Code</TableCell>
                   <TableCell align="right">
                     {getColumnHead(alignment)}
                   </TableCell>

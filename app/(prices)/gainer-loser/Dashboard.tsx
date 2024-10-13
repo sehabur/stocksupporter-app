@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { pageTitleActions } from "_store";
 import { AUTO_RELOAD_TIME_MS } from "@/data/constants";
 import AutoReload from "@/components/shared/AutoReload";
+import { Preferences } from "@capacitor/preferences";
 
 const typeList = [
   {
@@ -147,21 +148,30 @@ export default function Dashboard() {
   async function getData() {
     try {
       setisLoading(true);
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/allGainerLoser`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (!res.ok) {
-        throw new Error("Failed to fetch data");
-      }
-      const resdata = await res.json();
+      const storage: { value: any } = await Preferences.get({
+        key: "allGainerLoser",
+      });
 
-      setinitdata(resdata);
+      let data = [];
+      if (storage.value) {
+        const valueFormStorage = JSON.parse(storage.value);
+        data = valueFormStorage.data;
+      } else {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/allGainerLoser`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (!res.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        data = await res.json();
+      }
+      setinitdata(data);
       setisLoading(false);
     } catch (error) {
       setisLoading(false);
@@ -181,6 +191,7 @@ export default function Dashboard() {
       sector: item.sector,
       category: item.category,
       haltStatus: item.haltStatus,
+      recordDate: item.recordDate,
       change: item[variantAlignment].change,
       percentChange: item[variantAlignment].percentChange,
       volume: item[variantAlignment].volume,

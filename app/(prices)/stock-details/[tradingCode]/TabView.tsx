@@ -227,7 +227,7 @@ export default function TabView(props: any) {
         </Tabs>
       </Box>
 
-      <Box sx={{ bgcolor: "red" }} ref={boxRef}></Box>
+      <Box ref={boxRef}></Box>
 
       {tabItems.map((item, index) => (
         <TabPanel value={value} index={index} key={index}>

@@ -1,28 +1,40 @@
 "use client";
 import React from "react";
-
-import {
-  AUTO_RELOAD_TIME_MS,
-  MARKET_CLOSE_HOUR,
-  MARKET_CLOSE_MINUTE,
-  MARKET_OPEN_HOUR,
-  MARKET_OPEN_MINUTE,
-} from "@/data/constants";
-
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 
-const getMarketOpenStatusByTime = async () => {
+import { AUTO_RELOAD_TIME_MS } from "@/data/constants";
+
+// const getMarketOpenStatusByTime = async () => {
+//   const now = new Date();
+//   const hours = now.getUTCHours();
+//   const minutes = now.getUTCMinutes();
+
+//   const currentTimeInMinutes = hours * 60 + minutes;
+
+//   const startTimeInMinutes = MARKET_OPEN_HOUR * 60 + MARKET_OPEN_MINUTE;
+//   const endTimeInMinutes = MARKET_CLOSE_HOUR * 60 + MARKET_CLOSE_MINUTE;
+
+//   return (
+//     currentTimeInMinutes >= startTimeInMinutes &&
+//     currentTimeInMinutes <= endTimeInMinutes
+//   );
+// };
+
+const getIsMarketOpen = (status: any) => {
+  const { dataInsertionEnable, openHour, openMinute, closeHour, closeMinute } =
+    status;
+
   const now = new Date();
   const hours = now.getUTCHours();
   const minutes = now.getUTCMinutes();
 
   const currentTimeInMinutes = hours * 60 + minutes;
-
-  const startTimeInMinutes = MARKET_OPEN_HOUR * 60 + MARKET_OPEN_MINUTE;
-  const endTimeInMinutes = MARKET_CLOSE_HOUR * 60 + MARKET_CLOSE_MINUTE;
+  const startTimeInMinutes = openHour * 60 + openMinute;
+  const endTimeInMinutes = closeHour * 60 + closeMinute;
 
   return (
+    dataInsertionEnable == 1 &&
     currentTimeInMinutes >= startTimeInMinutes &&
     currentTimeInMinutes <= endTimeInMinutes
   );
@@ -31,15 +43,13 @@ const getMarketOpenStatusByTime = async () => {
 export default function ({ enable = true }: { enable?: boolean }) {
   const router = useRouter();
 
-  const indexInfo = useSelector((state: any) => state.indexInfo);
+  const marketOpenStatus = useSelector((state: any) => state.marketOpenStatus);
 
   React.useEffect(() => {
     const interval = setInterval(async () => {
-      const isMarketOpenByTime = await getMarketOpenStatusByTime();
-      const isMarketClosedFromIndexInfo =
-        indexInfo?.marketOpenStatus === "Closed";
+      const isMarketOpen = getIsMarketOpen(marketOpenStatus);
 
-      if (enable && isMarketOpenByTime && !isMarketClosedFromIndexInfo) {
+      if (enable && isMarketOpen) {
         const { pathname, search } = window.location;
         router.push(
           `/reload?redirect=${encodeURIComponent(pathname + search)}`
@@ -50,7 +60,7 @@ export default function ({ enable = true }: { enable?: boolean }) {
     return () => {
       clearInterval(interval);
     };
-  }, [indexInfo]);
+  }, [marketOpenStatus]);
 
   return <></>;
 }

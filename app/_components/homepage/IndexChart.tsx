@@ -1,14 +1,10 @@
 "use client";
-import * as React from "react";
-
-import Link from "next/link";
+import React from "react";
 import AreaChart from "@/components/charts/AreaChart";
 import { DateTime } from "luxon";
-
 import {
   Box,
   Chip,
-  Grid,
   Paper,
   Stack,
   Typography,
@@ -16,7 +12,6 @@ import {
   useTheme,
   Button,
 } from "@mui/material";
-import { grey } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup, {
@@ -54,11 +49,11 @@ import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 //   textTransform: "none",
 // }));
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
-  // [`& .${toggleButtonGroupClasses.grouped}`]: {
-  //   marginRight: "24px",
-  //   border: 0,
-  //   borderRadius: 3,
-  // },
+  [`& .${toggleButtonGroupClasses.grouped}`]: {
+    // marginRight: "24px",
+    border: 0,
+    // borderRadius: 3,
+  },
 }));
 const StyledToggleButton = styled(ToggleButton)(({ theme }: any) => ({
   "&.MuiToggleButtonGroup-grouped": {
@@ -126,9 +121,6 @@ const formatChartData = (data: any) => {
 };
 
 export default function IndexChart({ indexData, handleButtonClick }: any) {
-  const theme = useTheme();
-  const matchesSmUp = useMediaQuery(theme.breakpoints.up("sm"));
-
   const [alignment, setAlignment] = React.useState("dsex");
 
   const [currentIndex, setCurrentIndex] = React.useState({
@@ -239,7 +231,7 @@ export default function IndexChart({ indexData, handleButtonClick }: any) {
         <Stack direction="row" alignItems="center" justifyContent="flex-start">
           <Typography
             sx={{
-              fontSize: "1.8rem",
+              fontSize: "1.6rem",
               color: "text,primary",
               fontWeight: 700,
               fontFamily: "'Nunito Sans', sans-serif",

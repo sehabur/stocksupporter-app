@@ -103,22 +103,36 @@ export default function Notifications() {
                     onClick={() => handleClick(item.tradingCode)}
                     key={index}
                   >
-                    <Box sx={{ display: "flex", alignItems: "flex-start" }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "flex-start",
+                      }}
+                    >
                       <Box sx={{ mr: 1 }}>
                         <FiberManualRecordRoundedIcon
                           sx={{
                             fontSize: ".7rem",
-                            mt: 0.7,
+                            mt: 0.8,
                             color: item?.isNew ? "error.main" : "divider",
                           }}
                         />
                       </Box>
                       <Box>
                         <Box
-                          sx={{ display: "flex", alignItems: "center", mb: 1 }}
+                          sx={{
+                            display: "flex",
+                            alignItems: "flex-start",
+                            flexWrap: "wrap",
+                            mb: 0.5,
+                          }}
                         >
                           <Typography
-                            sx={{ color: "primary.main", fontSize: "1rem" }}
+                            sx={{
+                              color: "primary.main",
+                              fontSize: "1rem",
+                              mr: 1.5,
+                            }}
                           >
                             {item.title}
                           </Typography>
@@ -131,18 +145,18 @@ export default function Notifications() {
                             }
                             size="small"
                             sx={{
-                              ml: 1.5,
                               borderRadius: 1,
                               fontSize: ".875rem",
                             }}
                           />
                         </Box>
-
-                        <Typography
-                          sx={{ color: "text.primary", fontSize: ".875rem" }}
-                        >
-                          {item.body}
-                        </Typography>
+                        <Box>
+                          <Typography
+                            sx={{ color: "text.primary", fontSize: ".875rem" }}
+                          >
+                            {item.body}
+                          </Typography>
+                        </Box>
                       </Box>
                     </Box>
                   </Paper>

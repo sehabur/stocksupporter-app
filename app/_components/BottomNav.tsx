@@ -53,6 +53,8 @@ import FeedOutlinedIcon from "@mui/icons-material/FeedOutlined";
 import MailOutlineOutlinedIcon from "@mui/icons-material/MailOutlineOutlined";
 import LiveHelpOutlinedIcon from "@mui/icons-material/LiveHelpOutlined";
 import AlarmOutlinedIcon from "@mui/icons-material/AlarmOutlined";
+import YouTubeIcon from "@mui/icons-material/YouTube";
+import FacebookRoundedIcon from "@mui/icons-material/FacebookRounded";
 // import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 // import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 // import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
@@ -255,6 +257,19 @@ const othersMenu = [
     icon: <PrivacyTipOutlinedIcon />,
     href: "/privacy",
   },
+  {
+    title: "Youtube channel",
+    label: "Youtube channel",
+    icon: <YouTubeIcon />,
+    href: "https://www.youtube.com/@Stocksupporter-x8l",
+    customIconColor: "error.main",
+  },
+  {
+    title: "Join us on Facebook",
+    label: "Join us on Facebook",
+    icon: <FacebookRoundedIcon />,
+    href: "https://www.facebook.com/profile.php?id=61566267416444",
+  },
 ];
 
 const userMenu = [
@@ -313,8 +328,6 @@ export default function BottomNav() {
   const pathname = usePathname();
 
   const auth = useSelector((state: any) => state.auth);
-
-  console.log(auth);
 
   const dispatch = useDispatch();
 
@@ -377,7 +390,7 @@ export default function BottomNav() {
             textAlign: "left",
             color: "text.primary",
             ".MuiButton-startIcon": {
-              color: "primary.main",
+              color: item.customIconColor || "primary.main",
             },
           }}
           disableRipple

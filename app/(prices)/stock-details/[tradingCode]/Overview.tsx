@@ -364,7 +364,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
                 <Box sx={{ textAlign: "center" }}>
                   <Typography
                     sx={{
-                      fontSize: ".9rem",
+                      fontSize: ".875rem",
                       color: "text.primary",
                       fontWeight: 500,
                     }}
@@ -373,7 +373,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
                   </Typography>
                   <Typography
                     sx={{
-                      fontSize: "1.2rem",
+                      fontSize: "1rem",
                       fontWeight: 700,
                       color: percentChangeData[item.field].color,
                     }}
@@ -533,7 +533,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
         <Box>
           <Typography
             sx={{
-              fontSize: "1.5rem",
+              fontSize: "1.2rem",
               fontWeight: 700,
               color: "text.primary",
               mt: 5,
@@ -559,7 +559,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
               <Typography
                 color="text.primary"
                 sx={{
-                  fontSize: { xs: "1.2rem", sm: "1.5rem" },
+                  fontSize: { xs: "1.1rem", sm: "1.5rem" },
                   fontWeight: 500,
                 }}
               >
@@ -567,7 +567,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
               </Typography>
               <Typography
                 color="text.secondary"
-                sx={{ ml: 0.7, fontSize: ".875rem" }}
+                sx={{ ml: 0.7, fontSize: ".8rem" }}
               >
                 BDT
               </Typography>
@@ -582,7 +582,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
               <Typography
                 color="text.primary"
                 sx={{
-                  fontSize: { xs: "1.2rem", sm: "1.5rem" },
+                  fontSize: "1.1rem",
                   fontWeight: 500,
                 }}
               >
@@ -590,7 +590,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
               </Typography>
               <Typography
                 color="text.secondary"
-                sx={{ ml: 0.7, fontSize: ".875rem" }}
+                sx={{ ml: 0.7, fontSize: ".8rem" }}
               >
                 BDT
               </Typography>
@@ -605,7 +605,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
               <Typography
                 color="text.primary"
                 sx={{
-                  fontSize: { xs: "1.2rem", sm: "1.5rem" },
+                  fontSize: "1.1rem",
                   fontWeight: 500,
                 }}
               >
@@ -614,7 +614,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
 
               <Typography
                 color="text.secondary"
-                sx={{ ml: 0.7, fontSize: ".875rem" }}
+                sx={{ ml: 0.7, fontSize: ".8rem" }}
               >
                 BDT
               </Typography>
@@ -629,7 +629,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
               <Typography
                 color="text.primary"
                 sx={{
-                  fontSize: { xs: "1.2rem", sm: "1.5rem" },
+                  fontSize: "1.1rem",
                   fontWeight: 500,
                 }}
               >
@@ -651,7 +651,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
               <Typography
                 color="text.primary"
                 sx={{
-                  fontSize: { xs: "1.2rem", sm: "1.5rem" },
+                  fontSize: "1.1rem",
                   fontWeight: 500,
                 }}
               >
@@ -659,7 +659,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
               </Typography>
               <Typography
                 color="text.secondary"
-                sx={{ ml: 0.7, fontSize: ".875rem" }}
+                sx={{ ml: 0.7, fontSize: ".8rem" }}
               >
                 Crore
               </Typography>
@@ -673,7 +673,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
               <Typography
                 color="text.primary"
                 sx={{
-                  fontSize: { xs: "1.2rem", sm: "1.5rem" },
+                  fontSize: "1.1rem",
                   fontWeight: 500,
                 }}
               >
@@ -681,7 +681,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
               </Typography>
               {/* <Typography
                 color="text.secondary"
-                sx={{ ml: 0.7, fontSize: ".875rem" }}
+                sx={{ ml: 0.7, fontSize: ".8rem" }}
               >
                 Crore
               </Typography> */}
@@ -696,7 +696,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
               <Typography
                 color="text.primary"
                 sx={{
-                  fontSize: { xs: "1.2rem", sm: "1.5rem" },
+                  fontSize: "1.1rem",
                   fontWeight: 500,
                 }}
               >
@@ -704,7 +704,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
               </Typography>
               <Typography
                 color="text.secondary"
-                sx={{ ml: 0.7, fontSize: ".875rem" }}
+                sx={{ ml: 0.7, fontSize: ".8rem" }}
               >
                 BDT
               </Typography>
@@ -719,7 +719,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
               <Typography
                 color="text.primary"
                 sx={{
-                  fontSize: { xs: "1.2rem", sm: "1.5rem" },
+                  fontSize: "1.1rem",
                   fontWeight: 500,
                 }}
               >
@@ -727,7 +727,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
               </Typography>
               <Typography
                 color="text.secondary"
-                sx={{ ml: 0.7, fontSize: ".875rem" }}
+                sx={{ ml: 0.7, fontSize: ".8rem" }}
               >
                 BDT
               </Typography>
@@ -741,7 +741,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
               <Typography
                 color="text.primary"
                 sx={{
-                  fontSize: { xs: "1.2rem", sm: "1.5rem" },
+                  fontSize: "1.1rem",
                   fontWeight: 500,
                 }}
               >
@@ -749,7 +749,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
               </Typography>
               <Typography
                 color="text.secondary"
-                sx={{ ml: 0.7, fontSize: ".875rem" }}
+                sx={{ ml: 0.7, fontSize: ".8rem" }}
               >
                 BDT
               </Typography>
@@ -781,7 +781,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
               <Typography
                 color="text.primary"
                 sx={{
-                  fontSize: { xs: "1.2rem", sm: "1.5rem" },
+                  fontSize: "1.1rem",
                   fontWeight: 500,
                 }}
               >
@@ -789,7 +789,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
               </Typography>
               <Typography
                 color="text.secondary"
-                sx={{ ml: 0.7, fontSize: ".875rem" }}
+                sx={{ ml: 0.7, fontSize: ".8rem" }}
               >
                 {dates.isCircuitEnabled ? "BDT" : ""}
               </Typography>
@@ -804,7 +804,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
               <Typography
                 color="text.primary"
                 sx={{
-                  fontSize: { xs: "1.2rem", sm: "1.5rem" },
+                  fontSize: "1.1rem",
                   fontWeight: 500,
                 }}
               >
@@ -812,7 +812,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
               </Typography>
               <Typography
                 color="text.secondary"
-                sx={{ ml: 0.7, fontSize: ".875rem" }}
+                sx={{ ml: 0.7, fontSize: ".8rem" }}
               >
                 {dates.isCircuitEnabled ? "BDT" : ""}
               </Typography>
@@ -820,15 +820,15 @@ export default function Overview({ stock, handleButtonClick }: any) {
           </Grid>
         </Grid>
 
-        {/* <Divider light sx={{ my: 2 }} /> */}
+        <Divider light sx={{ my: 3 }} />
 
         <Box>
           <Typography
             sx={{
-              fontSize: "1.5rem",
+              fontSize: "1.2rem",
               fontWeight: 700,
               color: "text.primary",
-              mt: 5,
+              // mt: 5,
               mb: 2,
             }}
           >
@@ -910,15 +910,15 @@ export default function Overview({ stock, handleButtonClick }: any) {
               <Typography
                 color="text.primary"
                 sx={{
-                  fontSize: { xs: "1.2rem", sm: "1.5rem" },
+                  fontSize: "1.1rem",
                   fontWeight: 500,
                   mr: 0.7,
                 }}
               >
                 {(stock.fundamentals.marketCap / 10).toFixed(2)}
               </Typography>
-              <Typography color="text.secondary" sx={{ fontSize: ".875rem" }}>
-                Crore
+              <Typography color="text.secondary" sx={{ fontSize: ".8rem" }}>
+                CR
               </Typography>
             </Stack>
           </Grid>
@@ -930,15 +930,15 @@ export default function Overview({ stock, handleButtonClick }: any) {
               <Typography
                 color="text.primary"
                 sx={{
-                  fontSize: { xs: "1.2rem", sm: "1.5rem" },
+                  fontSize: "1.1rem",
                   fontWeight: 500,
                   mr: 0.7,
                 }}
               >
                 {(stock.fundamentals.paidUpCap / 10).toFixed(2)}
               </Typography>
-              <Typography color="text.secondary" sx={{ fontSize: ".875rem" }}>
-                Crore
+              <Typography color="text.secondary" sx={{ fontSize: ".8rem" }}>
+                CR
               </Typography>
             </Stack>
           </Grid>
@@ -950,15 +950,15 @@ export default function Overview({ stock, handleButtonClick }: any) {
               <Typography
                 color="text.primary"
                 sx={{
-                  fontSize: { xs: "1.2rem", sm: "1.5rem" },
+                  fontSize: "1.1rem",
                   fontWeight: 500,
                   mr: 0.7,
                 }}
               >
                 {(stock.fundamentals.authCap / 10).toFixed(2)}
               </Typography>
-              <Typography color="text.secondary" sx={{ fontSize: ".875rem" }}>
-                Crore
+              <Typography color="text.secondary" sx={{ fontSize: ".8rem" }}>
+                CR
               </Typography>
             </Stack>
           </Grid>
@@ -971,15 +971,15 @@ export default function Overview({ stock, handleButtonClick }: any) {
               <Typography
                 color="text.primary"
                 sx={{
-                  fontSize: { xs: "1.2rem", sm: "1.5rem" },
+                  fontSize: "1.1rem",
                   fontWeight: 500,
                   mr: 0.7,
                 }}
               >
                 {(stock.fundamentals.totalShares / 10000000).toFixed(2)}
               </Typography>
-              <Typography color="text.secondary" sx={{ fontSize: ".875rem" }}>
-                Crore
+              <Typography color="text.secondary" sx={{ fontSize: ".8rem" }}>
+                CR
               </Typography>
             </Stack>
           </Grid>
@@ -992,15 +992,15 @@ export default function Overview({ stock, handleButtonClick }: any) {
               <Typography
                 color="text.primary"
                 sx={{
-                  fontSize: { xs: "1.2rem", sm: "1.5rem" },
+                  fontSize: "1.1rem",
                   fontWeight: 500,
                   mr: 0.7,
                 }}
               >
                 {(stock.fundamentals.shortTermLoan / 10).toFixed(2)}
               </Typography>
-              <Typography color="text.secondary" sx={{ fontSize: ".875rem" }}>
-                Crore
+              <Typography color="text.secondary" sx={{ fontSize: ".8rem" }}>
+                CR
               </Typography>
             </Stack>
           </Grid>
@@ -1013,15 +1013,15 @@ export default function Overview({ stock, handleButtonClick }: any) {
               <Typography
                 color="text.primary"
                 sx={{
-                  fontSize: { xs: "1.2rem", sm: "1.5rem" },
+                  fontSize: "1.1rem",
                   fontWeight: 500,
                   mr: 0.7,
                 }}
               >
                 {(stock.fundamentals.longTermLoan / 10).toFixed(2)}
               </Typography>
-              <Typography color="text.secondary" sx={{ fontSize: ".875rem" }}>
-                Crore
+              <Typography color="text.secondary" sx={{ fontSize: ".8rem" }}>
+                CR
               </Typography>
             </Stack>
           </Grid>
@@ -1034,7 +1034,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
               <Typography
                 color="text.primary"
                 sx={{
-                  fontSize: { xs: "1.2rem", sm: "1.5rem" },
+                  fontSize: "1.1rem",
                   fontWeight: 500,
                 }}
               >
@@ -1042,7 +1042,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
               </Typography>
               <Typography
                 color="text.secondary"
-                sx={{ ml: 0.7, fontSize: ".875rem" }}
+                sx={{ ml: 0.7, fontSize: ".8rem" }}
               >
                 BDT
               </Typography>
@@ -1057,7 +1057,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
               <Typography
                 color="text.primary"
                 sx={{
-                  fontSize: { xs: "1.1rem", sm: "1.4rem" },
+                  fontSize: { xs: "1rem", sm: "1.4rem" },
                   fontWeight: 500,
                 }}
               >
@@ -1077,7 +1077,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
               <Typography
                 color="text.primary"
                 sx={{
-                  fontSize: { xs: "1.1rem", sm: "1.4rem" },
+                  fontSize: { xs: "1rem", sm: "1.4rem" },
                   fontWeight: 500,
                 }}
               >
@@ -1104,10 +1104,12 @@ export default function Overview({ stock, handleButtonClick }: any) {
           </Grid>
         </Grid>
 
-        <Box sx={{ mt: { xs: 6, sm: 8 }, mb: { xs: 2, sm: 4 } }}>
+        <Divider light sx={{ my: 3 }} />
+
+        <Box sx={{ mt: { xs: 0, sm: 8 }, mb: { xs: 2, sm: 4 } }}>
           <Typography
             color="text.primary"
-            sx={{ fontSize: "1.3rem", fontWeight: 700 }}
+            sx={{ fontSize: "1.2rem", fontWeight: 700 }}
           >
             About {stock.fundamentals.companyName}
           </Typography>

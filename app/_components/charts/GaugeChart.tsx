@@ -24,67 +24,13 @@ export default function GaugeChart({ rsi }: any) {
   };
   return (
     <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
+    // sx={{
+    //   display: "flex",
+    //   alignItems: "center",
+    //   justifyContent: "center",
+    // }}
     >
-      <Box sx={{ mt: 2 }}>
-        <Stack
-          direction="row"
-          alignItems="flex-start"
-          spacing={1.5}
-          sx={{ my: 1 }}
-        >
-          <SquareRoundedIcon sx={{ color: colors[0], fontSize: ".875rem" }} />
-          <Typography
-            sx={{
-              fontSize: ".875rem",
-              color: "text.secondary",
-              lineHeight: 0.8,
-            }}
-          >
-            Bear <Typography>0-40</Typography>
-          </Typography>
-        </Stack>
-
-        <Stack
-          direction="row"
-          alignItems="flex-start"
-          spacing={1.5}
-          sx={{ my: 1 }}
-        >
-          <SquareRoundedIcon sx={{ color: colors[1], fontSize: ".875rem" }} />
-          <Typography
-            sx={{
-              fontSize: ".875rem",
-              color: "text.secondary",
-              lineHeight: 0.8,
-            }}
-          >
-            Neutral <Typography>40-60</Typography>
-          </Typography>
-        </Stack>
-        <Stack
-          direction="row"
-          alignItems="flex-start"
-          spacing={1.5}
-          sx={{ my: 1 }}
-        >
-          <SquareRoundedIcon sx={{ color: colors[2], fontSize: ".875rem" }} />
-          <Typography
-            sx={{
-              fontSize: ".875rem",
-              color: "text.secondary",
-              lineHeight: 0.8,
-            }}
-          >
-            Bull <Typography> 60-100</Typography>
-          </Typography>
-        </Stack>
-      </Box>
-      <Box sx={{ width: "70vw" }}>
+      <Box sx={{ width: "75vw", mx: "auto" }}>
         <GaugeComponent
           type="semicircle"
           pointer={{
@@ -128,6 +74,64 @@ export default function GaugeChart({ rsi }: any) {
           }}
           value={rsi}
         />
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 1.5,
+        }}
+      >
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="center"
+          spacing={0.5}
+        >
+          <SquareRoundedIcon sx={{ color: colors[0], fontSize: ".875rem" }} />
+          <Typography
+            sx={{
+              fontSize: ".875rem",
+              color: "text.secondary",
+            }}
+          >
+            Bear(0-40)
+          </Typography>
+        </Stack>
+
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="center"
+          spacing={0.5}
+        >
+          <SquareRoundedIcon sx={{ color: colors[1], fontSize: ".875rem" }} />
+          <Typography
+            sx={{
+              fontSize: ".875rem",
+              color: "text.secondary",
+            }}
+          >
+            Neutral(40-60)
+          </Typography>
+        </Stack>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="center"
+          spacing={0.5}
+        >
+          <SquareRoundedIcon sx={{ color: colors[2], fontSize: ".875rem" }} />
+          <Typography
+            sx={{
+              fontSize: ".875rem",
+              color: "text.secondary",
+            }}
+          >
+            Bull(60-100)
+          </Typography>
+        </Stack>
       </Box>
     </Box>
   );

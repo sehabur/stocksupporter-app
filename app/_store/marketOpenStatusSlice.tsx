@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const latestPriceSlice = createSlice({
-  name: "latestPrice",
-  initialState: [],
+const marketOpenStatusSlice = createSlice({
+  name: "marketOpenStatus",
+  initialState: {},
   reducers: {
     setData: (state: any, { payload }: { payload: any }) => {
       return payload;
@@ -10,4 +10,4 @@ const latestPriceSlice = createSlice({
   },
 });
 
-export default latestPriceSlice;
+export default marketOpenStatusSlice;

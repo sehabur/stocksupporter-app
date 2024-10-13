@@ -101,14 +101,14 @@ export default function IndexInfoCard({ data }: any) {
         }}
       >
         <Box>
-          <Typography color="text.primary" sx={{ fontSize: ".7rem" }}>
+          <Typography color="text.primary" sx={{ fontSize: ".8em" }}>
             VOLUME
           </Typography>
           <Stack direction="row" alignItems="baseline">
             <Typography
               color="text.primary"
               sx={{
-                fontSize: "1rem",
+                fontSize: "1.1rem",
                 fontWeight: 700,
                 fontFamily: "'Nunito Sans', sans-serif",
               }}
@@ -117,22 +117,22 @@ export default function IndexInfoCard({ data }: any) {
             </Typography>
             <Typography
               color="text.secondary"
-              sx={{ ml: 0.5, fontSize: ".7rem" }}
+              sx={{ ml: 0.5, fontSize: ".8rem" }}
             >
-              Cr
+              CR
             </Typography>
           </Stack>
         </Box>
         <Divider orientation="vertical" flexItem variant="middle" />
         <Box>
-          <Typography color="text.primary" sx={{ fontSize: ".7rem" }}>
+          <Typography color="text.primary" sx={{ fontSize: ".8rem" }}>
             VALUE
           </Typography>
           <Stack direction="row" alignItems="baseline">
             <Typography
               color="text.primary"
               sx={{
-                fontSize: "1rem",
+                fontSize: "1.1rem",
                 fontWeight: 700,
                 fontFamily: "'Nunito Sans', sans-serif",
               }}
@@ -141,22 +141,22 @@ export default function IndexInfoCard({ data }: any) {
             </Typography>
             <Typography
               color="text.secondary"
-              sx={{ ml: 0.5, fontSize: ".7rem" }}
+              sx={{ ml: 0.5, fontSize: ".8rem" }}
             >
-              Cr
+              CR
             </Typography>
           </Stack>
         </Box>
         <Divider orientation="vertical" flexItem variant="middle" />
         <Box>
-          <Typography color="text.primary" sx={{ fontSize: ".7rem" }}>
+          <Typography color="text.primary" sx={{ fontSize: ".8rem" }}>
             TRADE
           </Typography>
           <Stack direction="row" alignItems="baseline">
             <Typography
               color="text.primary"
               sx={{
-                fontSize: "1rem",
+                fontSize: "1.1rem",
                 fontWeight: 700,
                 fontFamily: "'Nunito Sans', sans-serif",
               }}

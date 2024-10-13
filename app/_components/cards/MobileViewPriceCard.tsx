@@ -4,6 +4,7 @@ import { Box, Grid, Paper, Typography, Stack, Chip } from "@mui/material";
 import { useRouter } from "next/navigation";
 import FavoriteButton from "../buttons/FavoriteButton";
 import AlertButton from "../buttons/AlertButton";
+import { isWithinPreviousTwoDays } from "_helper";
 
 const addPlusSign = (value: number) => {
   let result;
@@ -21,6 +22,8 @@ export default function MobileViewPriceCard({ item }: any) {
   const router = useRouter();
 
   const itemType = item?.type;
+
+  const isSpotEnabled = isWithinPreviousTwoDays(item.recordDate);
 
   const handleButtonClick = () => {
     let href = "";
@@ -129,12 +132,30 @@ export default function MobileViewPriceCard({ item }: any) {
                     : "success.main",
               }}
             />
-            {item.haltStatus && item.haltStatus !== "none" && (
+            {item.haltStatus &&
+              item.haltStatus !== "none" &&
+              !isSpotEnabled && (
+                <Chip
+                  label="Halt"
+                  size="small"
+                  variant="outlined"
+                  color={item.haltStatus === "buy" ? "success" : "error"}
+                  sx={{
+                    ml: 0.7,
+                    fontSize: ".8rem",
+                    "& .MuiChip-label": {
+                      px: 0.7,
+                    },
+                  }}
+                />
+              )}
+
+            {isSpotEnabled && (
               <Chip
-                label="Halt"
+                label="Spot"
                 size="small"
                 variant="outlined"
-                color={item.haltStatus === "buy" ? "success" : "error"}
+                color="warning"
                 sx={{
                   ml: 0.7,
                   fontSize: ".8rem",

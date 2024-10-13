@@ -30,6 +30,7 @@ import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import { useDispatch } from "react-redux";
 import { pageTitleActions } from "_store";
 import AlertButton from "@/components/buttons/AlertButton";
+import { isWithinPreviousTwoDays } from "_helper";
 
 const addPlusSign = (value: number) => {
   let result;
@@ -106,6 +107,8 @@ export default function Dashboard({ tradingCode }: any) {
   const latestPriceData = getLatestPrice(stock.latest);
 
   const textColor = getTextColor(stock.latest?.change);
+
+  const isSpotEnabled = isWithinPreviousTwoDays(stock.fundamentals?.recordDate);
 
   async function getStockDetails() {
     try {
@@ -193,7 +196,7 @@ export default function Dashboard({ tradingCode }: any) {
                 <Typography
                   sx={{
                     color: "text.primary",
-                    fontSize: "1.8rem",
+                    fontSize: "1.6rem",
                     fontWeight: 700,
                     fontFamily: "'Nunito Sans', sans-serif",
                   }}
@@ -204,7 +207,7 @@ export default function Dashboard({ tradingCode }: any) {
                 <Typography
                   sx={{
                     color: "text.secondary",
-                    fontSize: "1rem",
+                    fontSize: ".875rem",
                     ml: 0.8,
                     mr: 2,
                     mt: 0.5,
@@ -216,7 +219,7 @@ export default function Dashboard({ tradingCode }: any) {
                 <Typography
                   sx={{
                     color: textColor,
-                    fontSize: "1.3rem",
+                    fontSize: "1.2rem",
                     fontWeight: 700,
                     fontFamily: "'Nunito Sans', sans-serif",
                     mr: 2,
@@ -228,7 +231,7 @@ export default function Dashboard({ tradingCode }: any) {
                 <Typography
                   sx={{
                     color: textColor,
-                    fontSize: "1.3rem",
+                    fontSize: "1.2rem",
                     fontWeight: 700,
                     fontFamily: "'Nunito Sans', sans-serif",
                     mr: 2,
@@ -246,6 +249,20 @@ export default function Dashboard({ tradingCode }: any) {
                     size="small"
                     variant="outlined"
                     color={stock.haltStatus == "buy" ? "success" : "error"}
+                    sx={{
+                      borderRadius: 6,
+                      fontSize: ".875rem",
+                      mr: 1.5,
+                    }}
+                  />
+                )}
+
+                {isSpotEnabled && (
+                  <Chip
+                    label="Spot"
+                    size="small"
+                    variant="outlined"
+                    color="warning"
                     sx={{
                       borderRadius: 6,
                       fontSize: ".875rem",
@@ -280,7 +297,7 @@ export default function Dashboard({ tradingCode }: any) {
                   <Typography
                     sx={{
                       color: "text.secondary",
-                      fontSize: "1rem",
+                      fontSize: ".9rem",
                     }}
                   >
                     {latestPriceData.time}

@@ -65,29 +65,53 @@ const options: any = [
   },
 ];
 
+// const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
+//   [`& .${toggleButtonGroupClasses.grouped}`]: {
+//     border: 0,
+//   },
+// }));
+
+// const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
+//   "&.MuiToggleButtonGroup-grouped": {
+//     borderRadius: "24px !important",
+//     border: `1px solid lightgrey !important`,
+//     marginRight: "8px",
+//     paddingLeft: "12px",
+//     paddingTop: "3px",
+//     paddingBottom: "3px",
+//     paddingRight: "12px",
+//     whiteSpace: "nowrap",
+//     "&.Mui-selected": {
+//       color: grey[50],
+//       backgroundColor: theme.palette.primary.main,
+//     },
+//   },
+//   color: theme.palette.text.primary,
+//   backgroundColor: theme.palette.divider,
+// }));
+
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   [`& .${toggleButtonGroupClasses.grouped}`]: {
     border: 0,
   },
 }));
-
 const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   "&.MuiToggleButtonGroup-grouped": {
     borderRadius: "24px !important",
-    border: `1px solid lightgrey !important`,
     marginRight: "8px",
+    border: `1px solid lightgrey !important`,
     paddingLeft: "12px",
     paddingTop: "3px",
     paddingBottom: "3px",
     paddingRight: "12px",
     whiteSpace: "nowrap",
     "&.Mui-selected": {
-      color: grey[50],
-      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.background.default,
+      backgroundColor: theme.palette.text.secondary,
     },
   },
   color: theme.palette.text.primary,
-  backgroundColor: theme.palette.divider,
+  textTransform: "none",
 }));
 
 export default function News() {
@@ -306,8 +330,8 @@ export default function News() {
                     </Stack>
                   </Typography>
                   <Typography>
-                    {item.description.slice(0, 135) +
-                      (item.description.length > 135 ? ".." : "")}
+                    {item.description.slice(0, 125) +
+                      (item.description.length > 125 ? ".." : "")}
                   </Typography>
                 </CardContent>
                 <CardActions sx={{ pt: 0, pl: 1.5 }}>

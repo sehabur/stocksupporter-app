@@ -152,8 +152,8 @@ export default function News({ news }: any) {
                     </Stack>
                   </Typography>
                   <Typography sx={{ fontSize: ".9rem" }}>
-                    {item.description.slice(0, 135) +
-                      (item.description.length > 135 ? ".." : "")}
+                    {item.description.slice(0, 125) +
+                      (item.description.length > 125 ? ".." : "")}
                   </Typography>
                 </CardContent>
                 <CardActions sx={{ pt: 0, pl: 1.5 }}>
