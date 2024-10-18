@@ -157,17 +157,33 @@ export default function EditComp() {
         >
           Update
         </Button>
+
         <Box sx={{ mt: 1, ml: 0.5 }}>
-          <Typography
-            component={Link}
-            href="/"
-            sx={{
-              textDecoration: "underline",
-              color: "primary.main",
-            }}
-          >
-            Go back to homepage
-          </Typography>
+          <Box sx={{ mb: 1.5 }}>
+            <Typography
+              component={Link}
+              href="/manage-password/change"
+              sx={{
+                textDecoration: "underline",
+                color: "warning.main",
+                fontSize: "1rem",
+              }}
+            >
+              Change password
+            </Typography>
+          </Box>
+          <Box>
+            <Typography
+              component={Link}
+              href="/"
+              sx={{
+                textDecoration: "underline",
+                color: "primary.main",
+              }}
+            >
+              Go back to homepage
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </Box>

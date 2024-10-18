@@ -75,7 +75,7 @@ export default function IndexMover({ data, handleButtonClick }: any) {
           <Typography
             onClick={() => {
               handleButtonClick(
-                `/stock-details/${params.value}`,
+                `/stock-details?tradingCode=${params.value}`,
                 `${params.value} Details`
               );
             }}
@@ -90,8 +90,8 @@ export default function IndexMover({ data, handleButtonClick }: any) {
       },
     },
     {
-      field: "ltp",
-      headerName: "LTP (BDT)",
+      field: "close",
+      headerName: "Price (BDT)",
       align: "left",
       headerAlign: "left",
       width: 100,

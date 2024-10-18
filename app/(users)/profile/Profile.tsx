@@ -81,21 +81,23 @@ export default function Profile() {
               ) : (
                 <>
                   <Chip
+                    size="small"
                     icon={<CheckCircleOutlineRoundedIcon />}
                     label="FREE"
                     color="success"
                     variant="outlined"
+                    sx={{ px: 0.6, py: 1 }}
                   />
                 </>
               )}
             </Box>
 
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1.5, mt: 4 }}>
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mt: 4 }}>
               <Button
                 size="small"
                 component={Link}
                 href="/profile/edit"
-                variant="contained"
+                variant="outlined"
                 color="primary"
                 sx={{ px: 2, py: 0.8 }}
               >
@@ -106,7 +108,7 @@ export default function Profile() {
                   component={Link}
                   href="/pricing"
                   variant="contained"
-                  color="warning"
+                  color="primary"
                   sx={{ px: 2, py: 0.8 }}
                 >
                   Get Premium

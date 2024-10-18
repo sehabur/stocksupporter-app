@@ -38,21 +38,21 @@ import ReactTimeAgo from "react-time-ago";
 const colors = ["#00A25B", "#2962ff", "#f23645"];
 
 const getType = (
-  item: { ltp: number },
-  prevItem: { ltp: number; type: string },
+  item: { close: number },
+  prevItem: { close: number; type: string },
   lastType: string
 ) => {
-  if (item.ltp > prevItem.ltp) {
+  if (item.close > prevItem.close) {
     return {
       type: "Buy",
       color: colors[0],
     };
-  } else if (item.ltp < prevItem.ltp) {
+  } else if (item.close < prevItem.close) {
     return {
       type: "Sell",
       color: colors[2],
     };
-  } else if (item.ltp === prevItem.ltp) {
+  } else if (item.close === prevItem.close) {
     return {
       type: lastType,
       color: colors[1],
@@ -88,7 +88,7 @@ const formatData = (data: any) => {
         id: i,
         time: DateTime.fromISO(item.time).toFormat("HH:mm"),
         timeIso: DateTime.fromISO(item.time),
-        ltp: item.ltp,
+        close: item.close,
         value: Number((item.value - prevItem.value).toFixed(3)),
         volume: Number((item.volume - prevItem.volume).toFixed(2)),
         trade: Number((item.trade - prevItem.trade).toFixed(2)),
@@ -107,7 +107,7 @@ const formatData = (data: any) => {
       const value = {
         id: i,
         time: DateTime.fromISO(item.time).toFormat("HH:mm"),
-        ltp: item.ltp,
+        close: item.close,
         value: item.value,
         volume: item.volume,
         trade: item.trade,
@@ -238,7 +238,7 @@ export default function Trades(props: any) {
                       >
                         <TableCell>{row.time}</TableCell>
                         <TableCell>{row.type}</TableCell>
-                        <TableCell>{row.ltp}</TableCell>
+                        <TableCell>{row.close}</TableCell>
                         <TableCell>{row.volume}</TableCell>
                         <TableCell>{row.value}</TableCell>
                         <TableCell>{row.trade}</TableCell>
@@ -299,7 +299,7 @@ export default function Trades(props: any) {
             }}
             color="text.primary"
           >
-            {lastTrade?.volume || 0} shares @ {lastTrade?.ltp || 0} BDT
+            {lastTrade?.volume || 0} shares @ {lastTrade?.close || 0} BDT
           </Typography>
 
           {lastTrade?.timeIso && (

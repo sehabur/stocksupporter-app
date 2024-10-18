@@ -3,17 +3,12 @@ import React from "react";
 import { Box, Button } from "@mui/material";
 import EastRoundedIcon from "@mui/icons-material/EastRounded";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { pageTitleActions } from "_store";
 
-export default function SeeMoreButton({ href, title }: any) {
+export default function SeeMoreButton({ href }: any) {
   const router = useRouter();
-
-  const dispatch = useDispatch();
 
   const handleButtonClick = () => {
     router.push(href);
-    dispatch(pageTitleActions.setPageTitle(title));
   };
 
   return (

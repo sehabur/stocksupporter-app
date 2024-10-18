@@ -84,10 +84,7 @@ export default function GainerLoser({ data, handleButtonClick }: any) {
         <Box sx={{ mx: 1 }}>
           <Button
             onClick={() => {
-              handleButtonClick(
-                `/gainer-loser?type=gainer&variant=day`,
-                `Top shares`
-              );
+              handleButtonClick(`/gainer-loser?type=gainer&variant=day`);
             }}
             color="primary"
             endIcon={<ArrowForwardIosRoundedIcon />}

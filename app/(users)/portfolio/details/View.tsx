@@ -111,7 +111,7 @@ export default function View() {
                 <TableCell align="left">
                   <Typography
                     component={Link}
-                    href={`/stock-details/${stock.tradingCode}`}
+                    href={`/stock-details?tradingCode=${stock.tradingCode}`}
                     sx={{
                       color: "primary.main",
                       ":hover": { textDecoration: "underline" },

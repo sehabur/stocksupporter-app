@@ -88,7 +88,7 @@ export const filterOptions = [
     ],
   },
   {
-    name: "ltp",
+    name: "close",
     label: "Price",
     desc: "Price",
     unit: "BDT",
@@ -121,7 +121,7 @@ export const filterOptions = [
       { type: "default", value: "50;100", text: "50 to 100 BDT" },
       { type: "default", value: "100;200", text: "100 to 200 BDT" },
       { type: "default", value: "200;500", text: "200 to 500 BDT" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
@@ -151,7 +151,7 @@ export const filterOptions = [
       { type: "default", value: "10000000;null", text: "Over 10M" },
       { type: "default", value: "20000000;null", text: "Over 20M" },
 
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   // {
@@ -188,7 +188,7 @@ export const filterOptions = [
       {
         type: "custom",
         value: "null;null",
-        text: "Custom (Premium only)",
+        text: "Custom range",
       },
     ],
   },
@@ -221,7 +221,7 @@ export const filterOptions = [
       {
         type: "custom",
         value: "null;null",
-        text: "Custom (Premium only)",
+        text: "Custom range",
       },
     ],
   },
@@ -285,7 +285,7 @@ export const filterOptions = [
       { type: "default", value: "10;null", text: "Over 10 Crore" },
       { type: "default", value: "15;null", text: "Over 15 Crore" },
       { type: "default", value: "20;null", text: "Over 20 Crore" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
 
@@ -312,7 +312,7 @@ export const filterOptions = [
       { type: "default", value: "5;null", text: "Over 5" },
       { type: "default", value: "10;null", text: "Over 10" },
 
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
@@ -338,7 +338,7 @@ export const filterOptions = [
       { type: "default", value: "50;null", text: "Over 50" },
       { type: "default", value: "100;null", text: "Over 100" },
 
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
@@ -364,7 +364,7 @@ export const filterOptions = [
       { type: "default", value: "5;null", text: "Over 5" },
       { type: "default", value: "10;null", text: "Over 10" },
 
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
 
@@ -394,7 +394,7 @@ export const filterOptions = [
       { type: "default", value: "30;null", text: "Over 30" },
       { type: "default", value: "35;null", text: "Over 35" },
       { type: "default", value: "40;null", text: "Over 40" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
@@ -425,7 +425,7 @@ export const filterOptions = [
       { type: "default", value: "4;null", text: "Over 4" },
       { type: "default", value: "5;null", text: "Over 5" },
       { type: "default", value: "10;null", text: "Over 10" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
@@ -461,13 +461,13 @@ export const filterOptions = [
       { type: "default", value: "9;null", text: "Over 9" },
       { type: "default", value: "10;null", text: "Over 10" },
 
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
     name: "pbv",
-    label: "Price/Book value ratio",
-    desc: "Price/Book value ratio",
+    label: "Price/Bookvalue ratio",
+    desc: "Price/Bookvalue ratio",
     unit: "Ratio",
     visible: 1,
     columnOrder: 100,
@@ -497,7 +497,7 @@ export const filterOptions = [
       { type: "default", value: "9;null", text: "Over 9" },
       { type: "default", value: "10;null", text: "Over 10" },
 
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
@@ -537,7 +537,7 @@ export const filterOptions = [
       { type: "default", value: "40;null", text: "Over 40" },
       { type: "default", value: "50;null", text: "Over 50" },
 
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
@@ -563,7 +563,7 @@ export const filterOptions = [
       { type: "default", value: "5;null", text: "Over 5" },
       { type: "default", value: "10;null", text: "Over 10" },
 
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
@@ -594,7 +594,7 @@ export const filterOptions = [
       { type: "default", value: "30;null", text: "Over +30%" },
       { type: "default", value: "40;null", text: "Over +40%" },
       { type: "default", value: "50;null", text: "Over +50%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
@@ -625,7 +625,7 @@ export const filterOptions = [
       { type: "default", value: "30;null", text: "Over +30%" },
       { type: "default", value: "40;null", text: "Over +40%" },
       { type: "default", value: "50;null", text: "Over +50%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   // {
@@ -663,7 +663,7 @@ export const filterOptions = [
       { type: "default", value: "5;null", text: "Over 5%" },
       { type: "default", value: "8;null", text: "Over 8%" },
       { type: "default", value: "10;null", text: "Over 10%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
@@ -684,7 +684,7 @@ export const filterOptions = [
       { type: "default", value: "5;null", text: "Over 5%" },
       { type: "default", value: "10;null", text: "Over 10%" },
 
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
@@ -705,13 +705,13 @@ export const filterOptions = [
       { type: "default", value: "5;null", text: "Over 5%" },
       { type: "default", value: "10;null", text: "Over 10%" },
 
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
 
   {
     name: "epsGrowthOneYear",
-    label: "EPS growth 1 year",
+    label: "EPS growth 1 yr",
     desc: "EPS growth 1 year",
     unit: "%",
     suffix: "%",
@@ -734,12 +734,12 @@ export const filterOptions = [
       { type: "default", value: "20;null", text: "Over 20%" },
       { type: "default", value: "25;null", text: "Over 25%" },
       { type: "default", value: "30;null", text: "Over 30%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
     name: "epsGrowthFiveYear",
-    label: "EPS growth 5 year",
+    label: "EPS growth 5 yr",
     desc: "EPS growth 5 year",
     unit: "%",
     suffix: "%",
@@ -762,13 +762,13 @@ export const filterOptions = [
       { type: "default", value: "20;null", text: "Over 20%" },
       { type: "default", value: "25;null", text: "Over 25%" },
       { type: "default", value: "30;null", text: "Over 30%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
     name: "epsGrowthQuarter",
-    label: "EPS growth qtr over qtr",
-    desc: "EPS growth qtr over qtr",
+    label: "EPS growth qtr to qtr",
+    desc: "EPS growth qtr to qtr",
     unit: "%",
     suffix: "%",
     visible: 1,
@@ -790,12 +790,12 @@ export const filterOptions = [
       { type: "default", value: "20;null", text: "Over 20%" },
       { type: "default", value: "25;null", text: "Over 25%" },
       { type: "default", value: "30;null", text: "Over 30%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
     name: "navGrowthOneYear",
-    label: "NAV growth 1 year",
+    label: "NAV growth 1 yr",
     desc: "NAV growth 1 year",
     unit: "%",
     suffix: "%",
@@ -818,13 +818,13 @@ export const filterOptions = [
       { type: "default", value: "20;null", text: "Over 20%" },
       { type: "default", value: "25;null", text: "Over 25%" },
       { type: "default", value: "30;null", text: "Over 30%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
     name: "navGrowthQuarter",
-    label: "NAV growth qtr over qtr",
-    desc: "NAV growth qtr over qtr",
+    label: "NAV growth qtr to qtr",
+    desc: "NAV growth qtr to qtr",
     unit: "%",
     suffix: "%",
     visible: 1,
@@ -846,12 +846,12 @@ export const filterOptions = [
       { type: "default", value: "20;null", text: "Over 20%" },
       { type: "default", value: "25;null", text: "Over 25%" },
       { type: "default", value: "30;null", text: "Over 30%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
     name: "nocfpsGrowthOneYear",
-    label: "NOCFPS growth 1 year",
+    label: "NOCFPS growth 1 yr",
     desc: "NOCFPS growth 1 year",
     unit: "%",
     suffix: "%",
@@ -874,13 +874,13 @@ export const filterOptions = [
       { type: "default", value: "20;null", text: "Over 20%" },
       { type: "default", value: "25;null", text: "Over 25%" },
       { type: "default", value: "30;null", text: "Over 30%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
     name: "nocfpsGrowthQuarter",
-    label: "NOCFPS growth qtr over qtr",
-    desc: "NOCFPS growth qtr over qtr",
+    label: "NOCFPS growth qtr to qtr",
+    desc: "NOCFPS growth qtr to qtr",
     unit: "%",
     suffix: "%",
     visible: 1,
@@ -902,12 +902,12 @@ export const filterOptions = [
       { type: "default", value: "20;null", text: "Over 20%" },
       { type: "default", value: "25;null", text: "Over 25%" },
       { type: "default", value: "30;null", text: "Over 30%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
     name: "revenueGrowthOneYear",
-    label: "Revenue growth 1 year",
+    label: "Revenue growth 1 yr",
     desc: "Revenue growth 1 year",
     unit: "%",
     suffix: "%",
@@ -930,12 +930,12 @@ export const filterOptions = [
       { type: "default", value: "20;null", text: "Over 20%" },
       { type: "default", value: "25;null", text: "Over 25%" },
       { type: "default", value: "30;null", text: "Over 30%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
     name: "revenueGrowthFiveYear",
-    label: "Revenue growth 5 year",
+    label: "Revenue growth 5 yr",
     desc: "Revenue growth 5 year",
     unit: "%",
     suffix: "%",
@@ -958,12 +958,12 @@ export const filterOptions = [
       { type: "default", value: "20;null", text: "Over 20%" },
       { type: "default", value: "25;null", text: "Over 25%" },
       { type: "default", value: "30;null", text: "Over 30%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
     name: "totalAssetGrowthOneYear",
-    label: "Total asset growth 1 year",
+    label: "Total asset growth 1 yr",
     desc: "Total asset growth 1 year",
     unit: "%",
     suffix: "%",
@@ -986,12 +986,12 @@ export const filterOptions = [
       { type: "default", value: "20;null", text: "Over 20%" },
       { type: "default", value: "25;null", text: "Over 25%" },
       { type: "default", value: "30;null", text: "Over 30%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
     name: "totalAssetGrowthFiveYear",
-    label: "Total asset growth 5 year",
+    label: "Total asset growth 5 yr",
     desc: "Total asset growth 5 year",
     unit: "%",
     suffix: "%",
@@ -1014,12 +1014,12 @@ export const filterOptions = [
       { type: "default", value: "20;null", text: "Over 20%" },
       { type: "default", value: "25;null", text: "Over 25%" },
       { type: "default", value: "30;null", text: "Over 30%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
     name: "netIncomeGrowthOneYear",
-    label: "Net income growth 1 year",
+    label: "Net income growth 1 yr",
     desc: "Net income growth 1 year",
     unit: "%",
     suffix: "%",
@@ -1042,12 +1042,12 @@ export const filterOptions = [
       { type: "default", value: "20;null", text: "Over 20%" },
       { type: "default", value: "25;null", text: "Over 25%" },
       { type: "default", value: "30;null", text: "Over 30%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
     name: "netIncomeGrowthFiveYear",
-    label: "Net income growth 5 year",
+    label: "Net income growth 5 yr",
     desc: "Net income growth 5 year",
     unit: "%",
     suffix: "%",
@@ -1070,12 +1070,12 @@ export const filterOptions = [
       { type: "default", value: "20;null", text: "Over 20%" },
       { type: "default", value: "25;null", text: "Over 25%" },
       { type: "default", value: "30;null", text: "Over 30%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
     name: "totalLiabilitiesGrowthOneYear",
-    label: "Total liabilities growth 1 year",
+    label: "Total liab growth 1 yr",
     desc: "Total liabilities growth 1 year",
     unit: "%",
     suffix: "%",
@@ -1098,12 +1098,12 @@ export const filterOptions = [
       { type: "default", value: "20;null", text: "Over 20%" },
       { type: "default", value: "25;null", text: "Over 25%" },
       { type: "default", value: "30;null", text: "Over 30%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
     name: "operatingProfitGrowthOneYear",
-    label: "Operating profit growth 1 year",
+    label: "Oprt prof growth 1 yr",
     desc: "Operating profit growth 1 year",
     unit: "%",
     suffix: "%",
@@ -1126,7 +1126,7 @@ export const filterOptions = [
       { type: "default", value: "20;null", text: "Over 20%" },
       { type: "default", value: "25;null", text: "Over 25%" },
       { type: "default", value: "30;null", text: "Over 30%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
@@ -1158,7 +1158,7 @@ export const filterOptions = [
       { type: "default", value: "70;null", text: "Over 70%" },
       { type: "default", value: "80;null", text: "Over 80%" },
       { type: "default", value: "90;null", text: "Over 90%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
@@ -1190,7 +1190,7 @@ export const filterOptions = [
       { type: "default", value: "70;null", text: "Over 70%" },
       { type: "default", value: "80;null", text: "Over 80%" },
       { type: "default", value: "90;null", text: "Over 90%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
@@ -1222,7 +1222,7 @@ export const filterOptions = [
       { type: "default", value: "70;null", text: "Over 70%" },
       { type: "default", value: "80;null", text: "Over 80%" },
       { type: "default", value: "90;null", text: "Over 90%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
@@ -1254,7 +1254,7 @@ export const filterOptions = [
       { type: "default", value: "70;null", text: "Over 70%" },
       { type: "default", value: "80;null", text: "Over 80%" },
       { type: "default", value: "90;null", text: "Over 90%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
@@ -1286,7 +1286,7 @@ export const filterOptions = [
       { type: "default", value: "70;null", text: "Over 70%" },
       { type: "default", value: "80;null", text: "Over 80%" },
       { type: "default", value: "90;null", text: "Over 90%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
@@ -1318,7 +1318,7 @@ export const filterOptions = [
       { type: "default", value: "70;null", text: "Over 70%" },
       { type: "default", value: "80;null", text: "Over 80%" },
       { type: "default", value: "90;null", text: "Over 90%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
@@ -1340,7 +1340,7 @@ export const filterOptions = [
       { type: "default", value: "5;null", text: "Over +5%" },
       { type: "default", value: "10;null", text: "Over +10%" },
       { type: "default", value: "20;null", text: "Over +20%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
@@ -1362,7 +1362,7 @@ export const filterOptions = [
       { type: "default", value: "5;null", text: "Over +5%" },
       { type: "default", value: "10;null", text: "Over +10%" },
       { type: "default", value: "20;null", text: "Over +20%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
@@ -1385,7 +1385,7 @@ export const filterOptions = [
       { type: "default", value: "null;500", text: "Under 500 Crore" },
       { type: "default", value: "null;1000", text: "Under 1000 Crore" },
       { type: "default", value: "null;2000", text: "Under 2000 Crore" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
@@ -1421,7 +1421,7 @@ export const filterOptions = [
       { type: "default", value: "8;null", text: "Up 8%" },
       { type: "default", value: "9;null", text: "Up 9%" },
       { type: "default", value: "10;null", text: "Up 10%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
@@ -1456,7 +1456,7 @@ export const filterOptions = [
       { type: "default", value: "30;null", text: "Up 30%" },
       { type: "default", value: "50;null", text: "Up 50%" },
       { type: "default", value: "100;null", text: "Up 100%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
@@ -1491,7 +1491,7 @@ export const filterOptions = [
       { type: "default", value: "30;null", text: "Up 30%" },
       { type: "default", value: "50;null", text: "Up 50%" },
       { type: "default", value: "100;null", text: "Up 100%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
@@ -1526,7 +1526,7 @@ export const filterOptions = [
       { type: "default", value: "30;null", text: "Up 30%" },
       { type: "default", value: "50;null", text: "Up 50%" },
       { type: "default", value: "100;null", text: "Up 100%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
@@ -1561,7 +1561,7 @@ export const filterOptions = [
       { type: "default", value: "30;null", text: "Up 30%" },
       { type: "default", value: "50;null", text: "Up 50%" },
       { type: "default", value: "100;null", text: "Up 100%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
@@ -1596,7 +1596,7 @@ export const filterOptions = [
       { type: "default", value: "30;null", text: "Up 30%" },
       { type: "default", value: "50;null", text: "Up 50%" },
       { type: "default", value: "100;null", text: "Up 100%" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
@@ -1625,12 +1625,12 @@ export const filterOptions = [
       { type: "default", value: "3;null", text: "Over 3" },
       { type: "default", value: "3.5;null", text: "Over 3.5" },
       { type: "default", value: "4;null", text: "Over 4" },
-      { type: "custom", value: "null;null", text: "Custom (Premium only)" },
+      { type: "custom", value: "null;null", text: "Custom range" },
     ],
   },
   {
     name: "sma20",
-    label: "SMA (20)",
+    label: "SMA(20)",
     desc: "SMA (20 Day)",
     unit: "",
     visible: 1,
@@ -1648,12 +1648,12 @@ export const filterOptions = [
   },
   {
     name: "sma50",
-    label: "SMA (50)",
+    label: "SMA(50)",
     desc: "SMA (50 Day)",
     unit: "",
     visible: 1,
     placement: "technical",
-    columnOrder: 100,
+    columnOrder: 1009,
     options: [
       { type: "default", value: "ltp;sma50;gt", text: "Price above SMA50" },
       { type: "default", value: "ltp;sma50;lt", text: "Price below SMA50" },
@@ -1666,7 +1666,7 @@ export const filterOptions = [
   },
   {
     name: "sma200",
-    label: "SMA (200)",
+    label: "SMA(200)",
     desc: "SMA (200 Day)",
     unit: "",
     visible: 1,
@@ -1684,7 +1684,7 @@ export const filterOptions = [
   },
   {
     name: "ema20",
-    label: "EMA (20)",
+    label: "EMA(20)",
     desc: "EMA (20 Day)",
     unit: "",
     visible: 1,
@@ -1702,12 +1702,12 @@ export const filterOptions = [
   },
   {
     name: "ema50",
-    label: "EMA (50)",
+    label: "EMA(50)",
     desc: "EMA (50 Day)",
     unit: "",
     visible: 1,
     placement: "technical",
-    columnOrder: 100,
+    columnOrder: 1010,
     options: [
       { type: "default", value: "ltp;ema50;gt", text: "Price above EMA50" },
       { type: "default", value: "ltp;ema50;lt", text: "Price below EMA50" },
@@ -1720,7 +1720,7 @@ export const filterOptions = [
   },
   {
     name: "ema200",
-    label: "EMA (200)",
+    label: "EMA(200)",
     desc: "EMA (200 Day)",
     unit: "",
     visible: 1,
@@ -1738,12 +1738,12 @@ export const filterOptions = [
   },
   {
     name: "rsi",
-    label: "RSI (14)",
+    label: "RSI(14)",
     desc: "Relative Strength Index (14)",
     unit: "",
     visible: 1,
     placement: "technical",
-    columnOrder: 100,
+    columnOrder: 1008,
     options: [
       { type: "default", value: "10;null", text: "Over 10" },
       { type: "default", value: "20;null", text: "Over 20" },
@@ -1768,7 +1768,7 @@ export const filterOptions = [
   },
   {
     name: "adx",
-    label: "ADX (14)",
+    label: "ADX(14)",
     desc: "Average Directional Index (14)",
     unit: "",
     visible: 1,
@@ -1828,7 +1828,7 @@ export const filterOptions = [
   },
   {
     name: "mfi",
-    label: "MFI (10)",
+    label: "MFI(10)",
     desc: "Money Flow Index (10)",
     unit: "",
     visible: 1,
@@ -1858,7 +1858,7 @@ export const filterOptions = [
   },
   {
     name: "macd",
-    label: "MACD (12, 26)",
+    label: "MACD(12, 26)",
     desc: "MACD Level (12, 26)",
     unit: "",
     visible: 1,
@@ -1892,7 +1892,7 @@ export const filterOptions = [
   },
   {
     name: "williamR",
-    label: "Williams %R (14)",
+    label: "Williams %R(14)",
     desc: "Williams Percent Range (14)",
     unit: "",
     visible: 1,

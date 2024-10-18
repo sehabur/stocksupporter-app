@@ -26,7 +26,7 @@ export default function Notifications() {
   const [data, setdata] = React.useState([]);
 
   const handleClick = (tradingCode: string) => {
-    const url = `/stock-details/${tradingCode}`;
+    const url = `/stock-details?tradingCode=${tradingCode}`;
     router.push(url);
   };
 
@@ -114,7 +114,7 @@ export default function Notifications() {
                           sx={{
                             fontSize: ".7rem",
                             mt: 0.8,
-                            color: item?.isNew ? "error.main" : "divider",
+                            color: item?.isUnread ? "error.main" : "divider",
                           }}
                         />
                       </Box>

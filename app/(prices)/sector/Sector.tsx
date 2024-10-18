@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import SectorSummaryCard from "./sectorCard";
+import SectorSummaryCard from "./SectorSummaryCard";
 import { Box } from "@mui/material";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import { useDispatch } from "react-redux";

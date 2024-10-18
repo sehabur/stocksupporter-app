@@ -104,8 +104,8 @@ export const darkTheme = createTheme({
     mode: "dark",
     ...darkPalleteColors,
     secondaryBackground: "#101010",
-    priceCardBgColor: "#232323",
-    searchCardBgColor: "#292929",
+    priceCardBgColor: "#212121",
+    searchCardBgColor: "#282828",
     appCardBgColor: "#252525",
     financePageBgcolor: "#191919B3", // 70% -> B3
     financeCardTitlecolor: "#252529",

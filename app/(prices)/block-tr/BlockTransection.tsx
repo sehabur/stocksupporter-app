@@ -61,7 +61,7 @@ export default function BlockTransection() {
 
   dispatch(pageTitleActions.setPageTitle("Block Transections"));
 
-  const handleButtonClick = (href: string, title: string) => {
+  const handleButtonClick = (href: string) => {
     router.push(href);
   };
 
@@ -238,8 +238,7 @@ export default function BlockTransection() {
                   <Typography
                     onClick={() => {
                       handleButtonClick(
-                        `/stock-details/${row.tradingCode}`,
-                        `${row.tradingCode} Details`
+                        `/stock-details?tradingCode=${row.tradingCode}`
                       );
                     }}
                     sx={{

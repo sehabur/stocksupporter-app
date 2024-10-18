@@ -42,7 +42,7 @@ export default function Home() {
 
   dispatch(pageTitleActions.setPageTitle("Homepage"));
 
-  const handleButtonClick = (href: string, title: string) => {
+  const handleButtonClick = (href: string) => {
     router.push(href);
   };
 
@@ -253,9 +253,9 @@ export default function Home() {
               )}
             </Box>
 
-            <Divider light />
+            {/* <Divider light /> */}
 
-            <Box sx={{ mb: 1 }}>
+            <Box>
               <Box>
                 {indexData && sectorData && (
                   <MarketMoverChart
@@ -266,7 +266,7 @@ export default function Home() {
               </Box>
             </Box>
 
-            <Divider light />
+            <Divider />
 
             <Box>
               {gainerLoserData && (

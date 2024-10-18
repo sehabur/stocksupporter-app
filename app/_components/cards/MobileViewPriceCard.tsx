@@ -29,13 +29,13 @@ export default function MobileViewPriceCard({ item }: any) {
     let href = "";
     switch (item.type) {
       case "index":
-        href = `/index-details/${item.tradingCode}`;
+        href = `/index-details?tradingCode=${item.tradingCode}`;
         break;
       case "sector":
-        href = `/sector/chart/${item.sectorTag}`;
+        href = `/sector/chart?sector=${item.sectorTag}`;
         break;
       case "stock":
-        href = `/stock-details/${item.tradingCode}`;
+        href = `/stock-details?tradingCode=${item.tradingCode}`;
         break;
     }
     router.push(href);
@@ -195,7 +195,7 @@ export default function MobileViewPriceCard({ item }: any) {
                       : "success.main",
                 }}
               >
-                {item.ltp.toFixed(1)}
+                {item.close.toFixed(1)}
               </Typography>
             </Box>
             <Box sx={{ display: "flex", gap: 0.2 }}>

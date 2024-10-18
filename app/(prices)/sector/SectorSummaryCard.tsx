@@ -43,9 +43,8 @@ export default function SectorSummaryCard({ data }: { data: any }) {
     setAnchorEl(null);
   };
 
-  const handleButtonClick = (href: string, title: string) => {
+  const handleButtonClick = (href: string) => {
     router.push(href);
-    dispatch(pageTitleActions.setPageTitle(title));
   };
 
   const open = Boolean(anchorEl);
@@ -152,10 +151,7 @@ export default function SectorSummaryCard({ data }: { data: any }) {
             <Box sx={{ mt: 0.5 }}>
               <Button
                 onClick={() => {
-                  handleButtonClick(
-                    `/sector/chart/${sectorTag}`,
-                    `${data.sector} sector`
-                  );
+                  handleButtonClick(`/sector/chart?sector=${sectorTag}`);
                 }}
                 variant="outlined"
                 size="small"
@@ -173,10 +169,7 @@ export default function SectorSummaryCard({ data }: { data: any }) {
               </Button>
               <Button
                 onClick={() => {
-                  handleButtonClick(
-                    `/latest-price?sector=${sectorTag}`,
-                    "Latest price"
-                  );
+                  handleButtonClick(`/latest-price?sector=${sectorTag}`);
                 }}
                 variant="outlined"
                 size="small"
@@ -201,7 +194,7 @@ export default function SectorSummaryCard({ data }: { data: any }) {
                     : "success.main",
               }}
             >
-              {data.ltp.toFixed(1)}
+              {data.close.toFixed(1)}
             </Typography>
             <Chip
               label={data.change}
@@ -249,10 +242,7 @@ export default function SectorSummaryCard({ data }: { data: any }) {
               <Button
                 key={item}
                 onClick={() => {
-                  handleButtonClick(
-                    `/stock-details/${item}`,
-                    `${item} Details`
-                  );
+                  handleButtonClick(`/stock-details?tradingCode=${item}`);
                 }}
                 variant="text"
                 size="small"

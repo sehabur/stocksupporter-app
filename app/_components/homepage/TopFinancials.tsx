@@ -139,7 +139,7 @@ export default function TopFinancials(props: any) {
       <Box>
         <Button
           onClick={() => {
-            handleButtonClick(`/screener`, `Screener`);
+            handleButtonClick(`/screener`);
           }}
           color="primary"
           endIcon={<ArrowForwardIosRoundedIcon />}
@@ -225,7 +225,7 @@ export default function TopFinancials(props: any) {
                       <Typography
                         onClick={() => {
                           handleButtonClick(
-                            `/stock-details/${row.tradingCode}`,
+                            `/stock-details?tradingCode=${row.tradingCode}`,
                             `${row.tradingCode} Details`
                           );
                         }}
@@ -244,7 +244,7 @@ export default function TopFinancials(props: any) {
                     </TableCell>
                     {matchesSmUp && (
                       <>
-                        <TableCell align="right">{row.ltp}</TableCell>
+                        <TableCell align="right">{row.close}</TableCell>
                         <TableCell align="right">{row.percentChange}</TableCell>
                       </>
                     )}

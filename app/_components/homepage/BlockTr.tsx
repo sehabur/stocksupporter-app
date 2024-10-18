@@ -51,7 +51,7 @@ export default function BlockTr({ data, handleButtonClick }: any) {
         >
           <Button
             onClick={() => {
-              handleButtonClick(`/block-tr`, `Block Transections`);
+              handleButtonClick(`/block-tr`);
             }}
             color="primary"
             endIcon={<ArrowForwardIosRoundedIcon />}
@@ -120,7 +120,7 @@ export default function BlockTr({ data, handleButtonClick }: any) {
                     <Typography
                       onClick={() => {
                         handleButtonClick(
-                          `/stock-details/${row.tradingCode}`,
+                          `/stock-details?tradingCode=${row.tradingCode}`,
                           `${row.tradingCode} Details`
                         );
                       }}

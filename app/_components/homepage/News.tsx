@@ -1,8 +1,5 @@
 "use client";
 import { useState } from "react";
-
-import Link from "next/link";
-
 import {
   Box,
   Typography,
@@ -12,7 +9,6 @@ import {
   DialogTitle,
   DialogContent,
   IconButton,
-  Chip,
 } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -28,7 +24,6 @@ import ToggleButtonGroup, {
 import CardActionArea from "@mui/material/CardActionArea";
 
 import SeeMoreButton from "@/components/buttons/SeeMoreButton";
-import { DateTime } from "luxon";
 
 const options: any = [
   {
@@ -170,7 +165,7 @@ export default function News({ data, handleButtonClick }: any) {
       <Box>
         <Button
           onClick={() => {
-            handleButtonClick(`/latest-news`, `News`);
+            handleButtonClick(`/latest-news`);
           }}
           color="primary"
           endIcon={<ArrowForwardIosRoundedIcon />}
@@ -263,7 +258,7 @@ export default function News({ data, handleButtonClick }: any) {
             </Card>
           ))}
         </Box>
-        <SeeMoreButton href="/latest-news" title="News" />
+        <SeeMoreButton href="/latest-news" />
       </Box>
     </Box>
   );

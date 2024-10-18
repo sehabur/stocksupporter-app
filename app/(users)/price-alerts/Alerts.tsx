@@ -311,7 +311,7 @@ export default function Alerts() {
                           <Box>
                             <Typography
                               component={Link}
-                              href={`/stock-details/${alert.tradingCode}`}
+                              href={`/stock-details?tradingCode=${alert.tradingCode}`}
                               sx={{
                                 color: "primary.main",
                                 fontSize: "1rem",

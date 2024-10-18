@@ -4,7 +4,7 @@ import React from "react";
 import dynamic from "next/dynamic";
 import { Box, Stack, Typography, useTheme } from "@mui/material";
 
-import SquareRoundedIcon from "@mui/icons-material/SquareRounded";
+import CircleRoundedIcon from "@mui/icons-material/CircleRounded";
 import { grey } from "@mui/material/colors";
 
 const GaugeComponent = dynamic(() => import("react-gauge-component"), {
@@ -23,14 +23,8 @@ export default function GaugeChart({ rsi }: any) {
     needle: theme.palette.mode == "light" ? grey[400] : grey[800],
   };
   return (
-    <Box
-    // sx={{
-    //   display: "flex",
-    //   alignItems: "center",
-    //   justifyContent: "center",
-    // }}
-    >
-      <Box sx={{ width: "75vw", mx: "auto" }}>
+    <Box>
+      <Box sx={{ width: "70vw", mx: "auto" }}>
         <GaugeComponent
           type="semicircle"
           pointer={{
@@ -40,7 +34,7 @@ export default function GaugeChart({ rsi }: any) {
           }}
           arc={{
             padding: 0.02,
-            width: 0.13,
+            width: 0.12,
             subArcs: [
               {
                 limit: 40,
@@ -89,10 +83,10 @@ export default function GaugeChart({ rsi }: any) {
           justifyContent="center"
           spacing={0.5}
         >
-          <SquareRoundedIcon sx={{ color: colors[0], fontSize: ".875rem" }} />
+          <CircleRoundedIcon sx={{ color: colors[0], fontSize: ".875rem" }} />
           <Typography
             sx={{
-              fontSize: ".875rem",
+              fontSize: ".8rem",
               color: "text.secondary",
             }}
           >
@@ -106,10 +100,10 @@ export default function GaugeChart({ rsi }: any) {
           justifyContent="center"
           spacing={0.5}
         >
-          <SquareRoundedIcon sx={{ color: colors[1], fontSize: ".875rem" }} />
+          <CircleRoundedIcon sx={{ color: colors[1], fontSize: ".875rem" }} />
           <Typography
             sx={{
-              fontSize: ".875rem",
+              fontSize: ".8rem",
               color: "text.secondary",
             }}
           >
@@ -122,10 +116,10 @@ export default function GaugeChart({ rsi }: any) {
           justifyContent="center"
           spacing={0.5}
         >
-          <SquareRoundedIcon sx={{ color: colors[2], fontSize: ".875rem" }} />
+          <CircleRoundedIcon sx={{ color: colors[2], fontSize: ".875rem" }} />
           <Typography
             sx={{
-              fontSize: ".875rem",
+              fontSize: ".8rem",
               color: "text.secondary",
             }}
           >

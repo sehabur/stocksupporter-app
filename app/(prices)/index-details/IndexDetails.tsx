@@ -35,7 +35,7 @@ const getLatestPrice = (latest: any) => {
       time: "",
     };
   }
-  const price = latest.ltp.toFixed(2);
+  const price = latest.close.toFixed(2);
   const time = DateTime.fromISO(latest.time)
     .plus({ hours: 6 })
     .toFormat("dd MMM, HH:mm");
@@ -57,9 +57,6 @@ const indexDataInitState = {
 };
 
 export default function IndexDetails({ tradingCode }: any) {
-  // const params = useParams();
-  // const { tradingCode } = params;
-
   const dispatch = useDispatch();
 
   dispatch(pageTitleActions.setPageTitle(tradingCode.slice(2)));

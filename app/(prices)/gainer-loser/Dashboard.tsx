@@ -187,7 +187,7 @@ export default function Dashboard() {
       id: item._id,
       tradingCode: item.tradingCode,
       type: item.type,
-      ltp: item.ltp,
+      close: item.close,
       sector: item.sector,
       category: item.category,
       haltStatus: item.haltStatus,

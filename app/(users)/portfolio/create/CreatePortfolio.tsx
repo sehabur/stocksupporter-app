@@ -7,6 +7,7 @@ import { Box, TextField, Button } from "@mui/material";
 import Alert from "@mui/material/Alert/Alert";
 import KeyboardBackspaceRoundedIcon from "@mui/icons-material/KeyboardBackspaceRounded";
 import { useRouter } from "next/navigation";
+import Spinner from "@/components/shared/Spinner";
 
 export default function CreatePortfolio() {
   const [formData, setFormData] = React.useState({
@@ -22,6 +23,8 @@ export default function CreatePortfolio() {
 
   const auth = useSelector((state: any) => state.auth);
 
+  const [isLoading, setIsLoading] = React.useState(false);
+
   function handleInputChange(e: any) {
     setFormData((prevState: any) => ({
       ...prevState,
@@ -31,14 +34,14 @@ export default function CreatePortfolio() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+    setIsLoading(true);
     try {
       const reqBody = {
         name: formData.name,
         commission: formData.commission,
         user: auth._id,
       };
-      console.log(reqBody);
+
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/portfolio`,
         {
@@ -59,9 +62,11 @@ export default function CreatePortfolio() {
         setErrorMessage(data.message || "Something went wrong");
         setSuccessMessage("");
       }
+      setIsLoading(false);
     } catch (error) {
       setErrorMessage("Something went wrong");
       setSuccessMessage("");
+      setIsLoading(false);
     }
   };
 
@@ -74,6 +79,7 @@ export default function CreatePortfolio() {
         maxWidth: 400,
       }}
     >
+      {isLoading && <Spinner />}
       <Box sx={{ width: "100%" }}>
         {successMessage && <Alert severity="success">{successMessage}</Alert>}
         {errorMessage && <Alert severity="error">{errorMessage}</Alert>}

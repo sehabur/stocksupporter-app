@@ -1,7 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Preferences } from "@capacitor/preferences";
+import Link from "next/link";
+
 import {
   Box,
   Grid,
@@ -12,6 +15,7 @@ import {
   InputAdornment,
   IconButton,
   useTheme,
+  ListItemText,
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -19,36 +23,24 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { styled } from "@mui/material/styles";
-
-import CloseIcon from "@mui/icons-material/Close";
-import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
-import EastRoundedIcon from "@mui/icons-material/EastRounded";
-
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 import {
   DataGrid,
   GridColDef,
   GridToolbar,
   gridClasses,
 } from "@mui/x-data-grid";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
+import CloseIcon from "@mui/icons-material/Close";
+import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
+import EastRoundedIcon from "@mui/icons-material/EastRounded";
+import AutoAwesomeOutlinedIcon from "@mui/icons-material/AutoAwesomeOutlined";
+import StarBorderRoundedIcon from "@mui/icons-material/StarBorderRounded";
 
 import { filterOptions } from "./filters";
 import styles from "./Main.module.css";
 import PremiumDialogContent from "@/components/shared/PremiumDialogContent";
 import { pageTitleActions } from "_store";
-import { Preferences } from "@capacitor/preferences";
-
-const startingFields = ["category", "tradingCode", "sector"];
-
-const endingFields = [
-  "ltp",
-  "pricePercentChange",
-  "volume",
-  "pe",
-  "marketCap",
-  "totalShares",
-];
 
 const StripedDataGrid = styled(DataGrid)(({ theme }: any) => ({
   [`& .${gridClasses.row}.even`]: {
@@ -56,72 +48,44 @@ const StripedDataGrid = styled(DataGrid)(({ theme }: any) => ({
   },
 }));
 
-const initialTextFieldInput = {
-  sector: "",
-  category: "",
-  ltp: "",
-  volume: "",
-  marketCap: "",
-  paidUpCap: "",
-  totalShares: "",
-  epsCurrent: "",
-  navCurrent: "",
-  nocfpsCurrent: "",
-  pe: "",
-  de: "",
-  ps: "",
-  pbv: "",
-  pcf: "",
-  currentRatio: "",
-  roe: "",
-  roa: "",
-  dividendYield: "",
-  cashDividend: "",
-  stockDividend: "",
-  revenueGrowthOneYear: "",
-  revenueGrowthFiveYear: "",
-  epsGrowthOneYear: "",
-  epsGrowthFiveYear: "",
-  epsGrowthQuarter: "",
-  navGrowthOneYear: "",
-  navGrowthQuarter: "",
-  nocfpsGrowthOneYear: "",
-  nocfpsGrowthQuarter: "",
-  totalAssetGrowthOneYear: "",
-  totalAssetGrowthFiveYear: "",
-  netIncomeGrowthOneYear: "",
-  netIncomeGrowthFiveYear: "",
-  totalLiabilitiesGrowthOneYear: "",
-  operatingProfitGrowthOneYear: "",
-  directorShareHolding: "",
-  govtShareHolding: "",
-  publicShareHolding: "",
-  foreignShareHolding: "",
-  instituteShareHolding: "",
-  freeFloatShare: "",
-  directorShareHoldingChange: "",
-  instituteShareHoldingChange: "",
-  reserve: "",
-  pricePercentChange: "",
-  pricePercentChangeOneWeek: "",
-  pricePercentChangeOneMonth: "",
-  pricePercentChangeSixMonth: "",
-  pricePercentChangeOneYear: "",
-  pricePercentChangeFiveYear: "",
-  beta: "",
-  sma20: "",
-  sma50: "",
-  sma200: "",
-  ema20: "",
-  ema50: "",
-  ema200: "",
-  rsi14: "",
-  candlestick: "",
-  patterns: "",
+const startingFields = [
+  "category",
+  "tradingCode",
+  "sector",
+  "close",
+  "pricePercentChange",
+  "volume",
+  "pe",
+  "marketCap",
+  "totalShares",
+];
+
+const getQueryParamObject = (queryString: string) => {
+  const queryParams: any = {};
+  const urlSearchParams = new URLSearchParams(queryString);
+
+  urlSearchParams.forEach((value, key) => {
+    queryParams[key] = value;
+  });
+
+  if (window.location.pathname == "/screener") {
+    return queryParams;
+  } else {
+    return {};
+  }
+};
+
+const createQueryString = (params: any) => {
+  const urlSearchParams = new URLSearchParams(params);
+  return `?${urlSearchParams.toString()}`;
 };
 
 export default function Main() {
   const dispatch = useDispatch();
+
+  const router = useRouter();
+
+  const searchParams = useSearchParams();
 
   const theme = useTheme();
 
@@ -129,13 +93,11 @@ export default function Main() {
 
   const auth = useSelector((state: any) => state.auth);
 
+  const [queryParams, setQueryParams] = useState<any>({});
+
   const [formInputs, setFormInputs] = useState<any>({});
 
-  const [textFieldInput, setTextFieldInput] = useState<any>(
-    initialTextFieldInput
-  );
-
-  // const [openPremiumDialog, setOpenPremiumDialog] = useState(false);
+  const [textFieldInput, setTextFieldInput] = useState<any>({});
 
   const [openFilterOptionsDialog, setOpenFilterOptionsDialog] = useState(false);
 
@@ -146,6 +108,8 @@ export default function Main() {
   const [columnVisibilityModel, setColumnVisibilityModel] = useState<any>({});
 
   const [filters, setFilters] = useState<any>(filterOptions);
+
+  const [resetKey, setresetKey] = useState(1);
 
   const [customRangeMenuContent, setCustomRangeMenuContent] = useState<any>({
     title: "",
@@ -160,15 +124,6 @@ export default function Main() {
 
   const [openCustomRangeMenu, setCustomRangeMenuOpen] =
     useState<boolean>(false);
-
-  const router = useRouter();
-
-  // const dispatch = useDispatch();
-
-  const handleButtonClick = (href: string, title: string) => {
-    router.push(href);
-    // dispatch(pageTitleActions.setPageTitle(title));
-  };
 
   const columns: GridColDef[] = [...filterOptions]
     .sort((a: any, b: any) => a.columnOrder - b.columnOrder)
@@ -185,12 +140,8 @@ export default function Main() {
         column.renderCell = (params: any) => {
           return (
             <Typography
-              onClick={() => {
-                handleButtonClick(
-                  `/stock-details/${params.value}`,
-                  `${params.value} Details`
-                );
-              }}
+              component={Link}
+              href={`/stock-details?tradingCode=${params.value}`}
             >
               {params.value}
             </Typography>
@@ -210,14 +161,6 @@ export default function Main() {
       return column;
     });
 
-  // const handlePremiumDialogOpen = () => {
-  //   setOpenPremiumDialog(true);
-  // };
-
-  // const handlePremiumDialogClose = () => {
-  //   setOpenPremiumDialog(false);
-  // };
-
   const handleFilterOptionsDialogOpen = () => {
     setOpenFilterOptionsDialog(true);
   };
@@ -232,7 +175,10 @@ export default function Main() {
 
   const handleResetFilters = () => {
     setFormInputs({});
-    setTextFieldInput(initialTextFieldInput);
+    setTextFieldInput({});
+    setFilters(filterOptions);
+    setresetKey((state) => state + 1);
+    router.push(createQueryString({}));
   };
 
   const handleMenuItemClick = (
@@ -256,20 +202,18 @@ export default function Main() {
       });
     } else if (type === "default") {
       if (value === "any") {
-        delete formInputs[name];
-        setFormInputs({ ...formInputs });
-
-        delete textFieldInput[name];
-        setTextFieldInput({ ...textFieldInput });
+        setQueryParams((state: any) => {
+          delete state[name];
+          return state;
+        });
+        router.push(createQueryString(queryParams));
       } else {
-        setFormInputs({
-          ...formInputs,
-          [name]: value,
-        });
-        setTextFieldInput({
-          ...formInputs,
-          [name]: value,
-        });
+        router.push(
+          createQueryString({
+            ...queryParams,
+            [name]: value,
+          })
+        );
       }
     }
   };
@@ -285,77 +229,24 @@ export default function Main() {
     const min = event.target[2].value !== "" ? event.target[2].value : "null";
     const max = event.target[4].value !== "" ? event.target[4].value : "null";
 
-    setFormInputs({
-      ...formInputs,
-      [name]: min + ";" + max,
-    });
-
-    setTextFieldInput({
-      ...textFieldInput,
-      [name]: "null;null",
-    });
-
     setFilters((prevState: any) => {
       const index = prevState.findIndex((item: any) => item.name === name);
       const lastIndex = prevState[index].options.length - 1;
       prevState[index].options[
         lastIndex
       ].text = `Custom (Min: ${min}, Max: ${max} ${prevState[index].unit})`;
-
+      // prevState[index].options[lastIndex].value = min + ";" + max;
       return prevState;
     });
+
     setCustomRangeMenuOpen(false);
-  };
 
-  const fetchDataFromApi = async () => {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/screener`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formInputs),
-      }
+    router.push(
+      createQueryString({
+        ...queryParams,
+        [name]: min + ";" + max,
+      })
     );
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    const data = await res.json();
-    return data;
-  };
-
-  const getScreenerData = async () => {
-    try {
-      setLoading(true);
-      const fieldSet: any = new Set([
-        ...startingFields,
-        ...Object.keys(formInputs),
-        ...endingFields,
-      ]);
-      setscreenerDatafields([...fieldSet]);
-
-      let data = [];
-
-      if (Object.keys(formInputs).length === 0) {
-        const storage: { value: any } = await Preferences.get({
-          key: "screener",
-        });
-
-        if (storage.value) {
-          const valueFormStorage = JSON.parse(storage.value);
-          data = valueFormStorage.data;
-        } else {
-          data = await fetchDataFromApi();
-        }
-      } else {
-        data = await fetchDataFromApi();
-      }
-      setScreenerData(data);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-    }
   };
 
   const customFilterMenu = (
@@ -381,66 +272,70 @@ export default function Main() {
                 mx: "auto",
               }}
             >
-              <TextField
-                name="title"
-                hidden
-                value={customRangeMenuContent.name}
-                sx={{ display: "none" }}
-              />
-              <Typography sx={{ fontSize: "1rem", mr: 2, mb: 1 }}>
-                Min Value:
-              </Typography>
-              <TextField
-                type="number"
-                name="minValue"
-                defaultValue={customRangeMenuContent.min}
-                sx={{ mr: 1, mb: 2 }}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end" variant="filled">
-                      {customRangeMenuContent.unit}
-                    </InputAdornment>
-                  ),
-                }}
-                inputProps={{
-                  step: 0.01,
-                }}
-              />
-              <Typography sx={{ fontSize: "1rem", mr: 2, mb: 1 }}>
-                Max Value:
-              </Typography>
-              <TextField
-                type="number"
-                name="maxValue"
-                defaultValue={customRangeMenuContent.max}
-                sx={{ mr: 1 }}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      {customRangeMenuContent.unit}
-                    </InputAdornment>
-                  ),
-                }}
-                inputProps={{
-                  step: 0.01,
-                }}
-              />
+              <Box sx={{ mb: 1 }}>
+                <TextField
+                  name="title"
+                  hidden
+                  value={customRangeMenuContent.name}
+                  sx={{ display: "none" }}
+                />
+                <Typography sx={{ fontSize: "1rem", mr: 2, mb: 1 }}>
+                  Min value:
+                </Typography>
+                <TextField
+                  type="number"
+                  name="minValue"
+                  defaultValue={customRangeMenuContent.min}
+                  sx={{ mr: 1, mb: 2 }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end" variant="filled">
+                        {customRangeMenuContent.unit}
+                      </InputAdornment>
+                    ),
+                  }}
+                  inputProps={{
+                    step: 0.01,
+                  }}
+                />
+              </Box>
+              <Box sx={{ mb: 2 }}>
+                <Typography sx={{ fontSize: "1rem", mr: 2, mb: 1 }}>
+                  Max value:
+                </Typography>
+                <TextField
+                  type="number"
+                  name="maxValue"
+                  defaultValue={customRangeMenuContent.max}
+                  sx={{ mr: 1 }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        {customRangeMenuContent.unit}
+                      </InputAdornment>
+                    ),
+                  }}
+                  inputProps={{
+                    step: 0.01,
+                  }}
+                />
+              </Box>
             </Box>
           </DialogContent>
-          <DialogActions sx={{ mx: 2, my: 1 }}>
+          <DialogActions sx={{ mr: 2, my: 1 }}>
             <Button
               onClick={() => handleCustomRangeMenuClose()}
               variant="outlined"
-              color="warning"
-              sx={{ mr: 1, px: 2.5 }}
+              color="primary"
+              sx={{ mr: 1, px: 2 }}
             >
               Cancel
             </Button>
             <Button
               type="submit"
-              color="success"
+              color="primary"
               variant="contained"
-              sx={{ px: 2.5 }}
+              sx={{ px: 3 }}
             >
               Save
             </Button>
@@ -453,7 +348,7 @@ export default function Main() {
   const technicalFilters = filters
     .filter((item: any) => item.visible === 1 && item.placement == "technical")
     .map((filter: any) => (
-      <Grid item xs={6} sm={2.4} key={filter.name}>
+      <Grid item xs={6} sm={2.4} key={filter.name + resetKey.toString()}>
         <TextField
           variant="outlined"
           select
@@ -461,15 +356,26 @@ export default function Main() {
           name={filter.name}
           fullWidth
           size="small"
-          value={textFieldInput[filter.name]}
+          value={
+            textFieldInput[filter.name]
+              ? filter.options.some(
+                  (item: any) => item.value === textFieldInput[filter.name]
+                )
+                ? textFieldInput[filter.name]
+                : "null;null"
+              : ""
+          }
           color="success"
           focused={formInputs[filter.name]}
         >
           <Typography
             sx={{
               px: 2,
-              pb: 0.7,
+              pb: 0.8,
+              pt: 0.3,
               color: "primary.main",
+              fontSize: ".9rem",
+              fontWeight: 700,
             }}
           >
             {filter.desc}
@@ -505,7 +411,7 @@ export default function Main() {
                 )
               }
             >
-              {option.text}
+              {option.text} {option.value == "null;null" && "⭐"}
             </MenuItem>
           ))}
         </TextField>
@@ -515,7 +421,7 @@ export default function Main() {
   const fundamentalalFilters = filters
     .filter((item: any) => item.visible === 1 && item.placement != "technical")
     .map((filter: any) => (
-      <Grid item xs={6} sm={2.4} key={filter.name}>
+      <Grid item xs={6} sm={2.4} key={filter.name + resetKey.toString()}>
         <TextField
           variant="outlined"
           select
@@ -523,15 +429,26 @@ export default function Main() {
           name={filter.name}
           fullWidth
           size="small"
-          value={textFieldInput[filter.name]}
+          value={
+            textFieldInput[filter.name]
+              ? filter.options.some(
+                  (item: any) => item.value === textFieldInput[filter.name]
+                )
+                ? textFieldInput[filter.name]
+                : "null;null"
+              : ""
+          }
           color="success"
           focused={formInputs[filter.name]}
         >
           <Typography
             sx={{
               px: 2,
-              pb: 0.7,
+              pb: 0.8,
+              pt: 0.3,
               color: "primary.main",
+              fontSize: ".9rem",
+              fontWeight: 700,
             }}
           >
             {filter.desc}
@@ -567,7 +484,7 @@ export default function Main() {
                 )
               }
             >
-              {option.text}
+              {option.text} {option.value == "null;null" && " ⭐"}
             </MenuItem>
           ))}
         </TextField>
@@ -625,14 +542,9 @@ export default function Main() {
       <DialogContent dividers sx={{ p: 0, m: 0 }}>
         <Box
           sx={{
-            // display: "flex",
-            // flexDirection: "row",
-            // alignItems: "center",
-            // justifyContent: "space-around",
             borderBottom: 1,
             borderColor: "divider",
             px: 1.5,
-            // flexWrap: "wrap",
           }}
         >
           <Tabs
@@ -640,7 +552,6 @@ export default function Main() {
             onChange={handleTabChange}
             textColor="secondary"
             indicatorColor="secondary"
-            // variant="fullWidth"
             centered
           >
             <Tab
@@ -710,34 +621,84 @@ export default function Main() {
     </Dialog>
   );
 
+  const fetchDataFromApi = async () => {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/screener`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formInputs),
+      }
+    );
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    const data = await res.json();
+    return data;
+  };
+
+  const getScreenerData = async () => {
+    try {
+      setLoading(true);
+      const fieldSet: any = new Set([
+        ...startingFields,
+        ...Object.keys(formInputs),
+      ]);
+      setscreenerDatafields([...fieldSet]);
+
+      let data = [];
+
+      if (Object.keys(formInputs).length === 0) {
+        const storage: { value: any } = await Preferences.get({
+          key: "screener",
+        });
+
+        if (storage.value) {
+          const valueFormStorage = JSON.parse(storage.value);
+          data = valueFormStorage.data;
+        } else {
+          data = await fetchDataFromApi();
+        }
+      } else {
+        data = await fetchDataFromApi();
+      }
+      setScreenerData(data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    let column: any = {};
+    for (let item of filterOptions) {
+      column[item.name] =
+        screenerDatafields.indexOf(item.name) === -1 ? false : true;
+    }
+    setColumnVisibilityModel(column);
+  }, [screenerDatafields]);
+
   useEffect(() => {
     getScreenerData();
   }, [formInputs]);
 
   useEffect(() => {
-    let column: any = {};
+    const queryParamObj = getQueryParamObject(window?.location?.search);
+    setQueryParams({ ...queryParamObj });
+    setTextFieldInput({ ...queryParamObj });
+    setFormInputs({ ...queryParamObj });
+  }, [searchParams]);
 
-    for (let item of filterOptions) {
-      column[item.name] =
-        screenerDatafields.indexOf(item.name) === -1 ? false : true;
-    }
-
-    setColumnVisibilityModel(column);
-  }, [screenerDatafields]);
+  useEffect(() => {}, [searchParams]);
 
   return (
     <Box>
       {customFilterMenu}
+
       {filterOptionsDialog}
 
-      {/* <Dialog
-        open={openPremiumDialog}
-        fullWidth
-        maxWidth="sm"
-        disableScrollLock={true}
-      >
-        <PremiumDialogContent />
-      </Dialog> */}
       {!auth?.isPremiumEligible && (
         <Box
           sx={{
@@ -749,6 +710,7 @@ export default function Main() {
           <PremiumDialogContent />
         </Box>
       )}
+
       {auth?.isPremiumEligible && (
         <Box>
           <Box sx={{ maxWidth: 425, mx: 2, pt: 1.5 }}>

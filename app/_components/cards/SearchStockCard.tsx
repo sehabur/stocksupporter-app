@@ -38,13 +38,13 @@ export default function SearchStockCard(props: any) {
       let href = "";
       switch (item.type) {
         case "index":
-          href = `/index-details/${item.tradingCode}`;
+          href = `/index-details?tradingCode=${item.tradingCode}`;
           break;
         case "sector":
-          href = `/sector/chart/${item.sectorTag}`;
+          href = `/sector/chart?sector=${item.sectorTag}`;
           break;
         case "stock":
-          href = `/stock-details/${item.tradingCode}`;
+          href = `/stock-details?tradingCode=${item.tradingCode}`;
           break;
       }
       router.push(href);
@@ -203,7 +203,7 @@ export default function SearchStockCard(props: any) {
                     : "success.main",
               }}
             >
-              {item.ltp.toFixed(2)}
+              {item.close.toFixed(2)}
             </Typography>
 
             {favoriteButton && (

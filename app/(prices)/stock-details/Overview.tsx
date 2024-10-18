@@ -93,7 +93,7 @@ const formatCandleChartData = (data: any) => {
     const item = data[i];
 
     const open = item.open !== 0 ? item.open : item.ycp;
-    const close = item.ltp;
+    const close = item.close;
 
     if (close === 0) {
       candle.push({
@@ -145,13 +145,23 @@ const calcPercentChange = (current: any, previous: any) => {
 };
 
 const formatPercentChangeData = (latestdata: any, lastdaydata: any) => {
+  const { close, ycp } = latestdata;
+
+  const {
+    oneWeekBeforeData,
+    oneMonthBeforeData,
+    sixMonthBeforeData,
+    oneYearBeforeData,
+    fiveYearBeforeData,
+  } = lastdaydata;
+
   return {
-    today: calcPercentChange(latestdata.ltp, latestdata.ycp),
-    oneWeek: calcPercentChange(latestdata.ltp, lastdaydata.oneWeekBeforeData),
-    oneMonth: calcPercentChange(latestdata.ltp, lastdaydata.oneMonthBeforeData),
-    sixMonth: calcPercentChange(latestdata.ltp, lastdaydata.sixMonthBeforeData),
-    oneYear: calcPercentChange(latestdata.ltp, lastdaydata.oneYearBeforeData),
-    fiveYear: calcPercentChange(latestdata.ltp, lastdaydata.fiveYearBeforeData),
+    today: calcPercentChange(close, ycp),
+    oneWeek: calcPercentChange(close, oneWeekBeforeData),
+    oneMonth: calcPercentChange(close, oneMonthBeforeData),
+    sixMonth: calcPercentChange(close, sixMonthBeforeData),
+    oneYear: calcPercentChange(close, oneYearBeforeData),
+    fiveYear: calcPercentChange(close, fiveYearBeforeData),
   };
 };
 
@@ -234,14 +244,14 @@ export default function Overview({ stock, handleButtonClick }: any) {
       ? "#f45e6a"
       : "#00A25B";
 
-  const minuteChartData: any = stock.minute
-    // .filter((item: any) => item.ltp !== 0 || item.close !== 0)
-    .map((item: { time: string; ltp: number; ycp: number }) => {
+  const minuteChartData: any = stock.minute.map(
+    (item: { time: string; close: number; ycp: number }) => {
       return {
         time: DateTime.fromISO(item.time).plus({ hours: 6 }).toUnixInteger(),
-        value: item.ltp !== 0 ? item.ltp : item.ycp,
+        value: item.close !== 0 ? item.close : item.ycp,
       };
-    });
+    }
+  );
 
   const dailyCandleData = formatCandleChartData(stock.daily);
   const weeklyCandleData = formatCandleChartData(stock.weekly);

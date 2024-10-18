@@ -95,9 +95,8 @@ export default function Dashboard() {
 
   dispatch(pageTitleActions.setPageTitle("Index movers"));
 
-  const handleButtonClick = (href: string, title: string) => {
+  const handleButtonClick = (href: string) => {
     router.push(href);
-    // dispatch(pageTitleActions.setPageTitle(title));
   };
 
   async function getData() {
@@ -139,10 +138,7 @@ export default function Dashboard() {
         return (
           <Typography
             onClick={() => {
-              handleButtonClick(
-                `/stock-details/${params.value}`,
-                `${params.value} sector`
-              );
+              handleButtonClick(`/stock-details?tradingCode=${params.value}`);
             }}
             sx={{
               color: "primary.main",
@@ -156,8 +152,8 @@ export default function Dashboard() {
       cellClassName: styles.tradingCodeCell,
     },
     {
-      field: "ltp",
-      headerName: "LTP (BDT)",
+      field: "close",
+      headerName: "Price (BDT)",
       align: "left",
       headerAlign: "left",
       width: 100,

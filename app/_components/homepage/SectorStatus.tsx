@@ -1,7 +1,7 @@
 "use client";
-import * as React from "react";
+import React from "react";
 
-import { Grid, Paper, Typography } from "@mui/material";
+import { Paper, Typography } from "@mui/material";
 
 import HorizontalStackedBarChartValue from "@/components/charts/HorizontalStackedBarChartValue";
 import HorizontalStackedBarChartGain from "@/components/charts/HorizontalStackedBarChartGain";

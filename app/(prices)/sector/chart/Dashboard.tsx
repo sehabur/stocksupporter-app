@@ -59,7 +59,7 @@ const getLatestPrice = (latest: any) => {
       time: "",
     };
   }
-  const price = latest.ltp.toFixed(2);
+  const price = latest.close.toFixed(2);
   const time = DateTime.fromISO(latest.time)
     .plus({ hours: 6 })
     .toFormat("dd MMM, HH:mm");
@@ -86,23 +86,23 @@ const calcPercentChange = (current: any, previous: any) => {
 };
 
 const formatPercentChangeData = (latestdata: any, lastdaydata: any) => {
-  console.log(lastdaydata);
+  const { close, ycp } = latestdata;
+
+  const {
+    oneWeekBeforeData,
+    oneMonthBeforeData,
+    sixMonthBeforeData,
+    oneYearBeforeData,
+    fiveYearBeforeData,
+  } = lastdaydata;
+
   return {
-    today: calcPercentChange(latestdata?.ltp, latestdata?.ycp),
-    oneWeek: calcPercentChange(latestdata?.ltp, lastdaydata?.oneWeekBeforeData),
-    oneMonth: calcPercentChange(
-      latestdata?.ltp,
-      lastdaydata?.oneMonthBeforeData
-    ),
-    sixMonth: calcPercentChange(
-      latestdata?.ltp,
-      lastdaydata?.sixMonthBeforeData
-    ),
-    oneYear: calcPercentChange(latestdata?.ltp, lastdaydata?.oneYearBeforeData),
-    fiveYear: calcPercentChange(
-      latestdata?.ltp,
-      lastdaydata?.fiveYearBeforeData
-    ),
+    today: calcPercentChange(close, ycp),
+    oneWeek: calcPercentChange(close, oneWeekBeforeData),
+    oneMonth: calcPercentChange(close, oneMonthBeforeData),
+    sixMonth: calcPercentChange(close, sixMonthBeforeData),
+    oneYear: calcPercentChange(close, oneYearBeforeData),
+    fiveYear: calcPercentChange(close, fiveYearBeforeData),
   };
 };
 
@@ -599,7 +599,7 @@ export default function Dashboard({ sectorTag }: any) {
                   >
                     {Math.max(
                       data?.lastDay?.oneYearHigh,
-                      data.latest.ltp
+                      data.latest.close
                     )?.toFixed(2) || "--"}
                   </Typography>
                 </Stack>
@@ -618,7 +618,7 @@ export default function Dashboard({ sectorTag }: any) {
                   >
                     {Math.min(
                       data?.lastDay?.oneYearLow,
-                      data.latest.ltp
+                      data.latest.close
                     )?.toFixed(2) || "--"}
                   </Typography>
                 </Stack>
