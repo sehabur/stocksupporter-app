@@ -1,6 +1,9 @@
 "use client";
-import * as React from "react";
+import React from "react";
+
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter, useSearchParams } from "next/navigation";
+
 import { Box } from "@mui/material";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup, {
@@ -8,13 +11,11 @@ import ToggleButtonGroup, {
 } from "@mui/material/ToggleButtonGroup";
 import { grey } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
+
 import MobileViewPriceCard from "@/components/cards/MobileViewPriceCard";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
-import { useDispatch } from "react-redux";
+
 import { pageTitleActions } from "_store";
-import { AUTO_RELOAD_TIME_MS } from "@/data/constants";
-import AutoReload from "@/components/shared/AutoReload";
-import { Preferences } from "@capacitor/preferences";
 
 const typeList = [
   {
@@ -121,6 +122,10 @@ const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
 }));
 
 export default function Dashboard() {
+  const dispatch = useDispatch();
+
+  dispatch(pageTitleActions.setPageTitle("Top shares"));
+
   const router = useRouter();
 
   const searchParams = useSearchParams();
@@ -129,13 +134,11 @@ export default function Dashboard() {
 
   const variant = searchParams.get("variant");
 
-  const dispatch = useDispatch();
+  const allGainerLoser = useSelector((state: any) => state.allGainerLoser);
 
   const [data, setdata] = React.useState<any>([]);
 
   const [initdata, setinitdata] = React.useState<any>([]);
-
-  const [isLoading, setisLoading] = React.useState(false);
 
   const [isScroll, setisScroll] = React.useState(false);
 
@@ -143,44 +146,9 @@ export default function Dashboard() {
 
   const [variantAlignment, setVariantAlignment] = React.useState<any>(variant);
 
-  dispatch(pageTitleActions.setPageTitle("Top shares"));
-
-  async function getData() {
-    try {
-      setisLoading(true);
-      const storage: { value: any } = await Preferences.get({
-        key: "allGainerLoser",
-      });
-
-      let data = [];
-      if (storage.value) {
-        const valueFormStorage = JSON.parse(storage.value);
-        data = valueFormStorage.data;
-      } else {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/allGainerLoser`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        if (!res.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        data = await res.json();
-      }
-      setinitdata(data);
-      setisLoading(false);
-    } catch (error) {
-      setisLoading(false);
-    }
-  }
-
   React.useEffect(() => {
-    getData();
-  }, []);
+    setinitdata(allGainerLoser?.data);
+  }, [allGainerLoser]);
 
   React.useEffect(() => {
     let newData = initdata.map((item: any) => ({
@@ -245,8 +213,7 @@ export default function Dashboard() {
 
   return (
     <Box sx={{ py: 0 }}>
-      <LoadingSpinner open={isLoading} />
-      <AutoReload />
+      <LoadingSpinner open={!allGainerLoser?.dataFetched} />
       <Box
         sx={{
           pt: 1.5,
@@ -309,26 +276,6 @@ export default function Dashboard() {
             ))}
           </StyledToggleButtonGroup>
         </Box>
-        {/* <Box
-          sx={{
-            my: 2,
-            maxWidth: 280,
-            mx: "auto",
-            textAlign: "center",
-          }}
-        >
-          <Typography sx={{ fontSize: "1.2rem" }} color="text.primary">
-            {selectedData?.pageTitle}
-          </Typography>
-          <Typography
-            sx={{
-              fontSize: ".875rem",
-            }}
-            color="text.secondary"
-          >
-            {selectedData?.pageSubtitle}
-          </Typography>
-        </Box> */}
       </Box>
       {/* <Box sx={{ height: 90 }}></Box> */}
       <Box sx={{ px: 1, pt: 0.1, pb: 2, bgcolor: "secondaryBackground" }}>

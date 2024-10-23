@@ -2,20 +2,18 @@
 import React from "react";
 
 import { Provider } from "react-redux";
-
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en.json";
 import ru from "javascript-time-ago/locale/ru.json";
 
 import "./globals.css";
 import ThemeRegistry from "./ThemeRegistry";
-import BottomNav from "./_components/BottomNav";
-import Header from "./_components/Header";
+import BottomNav from "@/components/BottomNav";
+import Header from "@/components/Header";
 import store from "./_store";
-import { NavigationEvent } from "./_components/shared/NavigationEvent";
-import DeeplinkListener from "./_components/shared/DeeplinkListener";
-import NetworkStatus from "./_components/shared/NetworkStatus";
-import FirebaseAnalyticsComp from "./_components/shared/FirebaseAnalyticsComp";
+import { NavigationEvent } from "@/components/shared/NavigationEvent";
+import NetworkStatus from "@/components/shared/NetworkStatus";
+import AppUpdateDialog from "@/components/dialogs/AppUpdateDialog";
 
 TimeAgo.addDefaultLocale(en);
 TimeAgo.addLocale(ru);
@@ -34,6 +32,10 @@ export default function RootLayout({ children }: any) {
           href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
           rel="stylesheet"
         />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+          rel="stylesheet"
+        />
       </head>
       <body>
         <Provider store={store}>
@@ -42,8 +44,7 @@ export default function RootLayout({ children }: any) {
             {children}
             <NavigationEvent />
             <NetworkStatus />
-            <FirebaseAnalyticsComp />
-            {/* <DeeplinkListener /> */}
+            <AppUpdateDialog />
             <BottomNav />
           </ThemeRegistry>
         </Provider>

@@ -11,7 +11,7 @@ import {
   Dialog,
   MenuItem,
 } from "@mui/material";
-import ToastMessage from "./ToastMessage";
+import ToastMessage from "../shared/ToastMessage";
 import { useSelector } from "react-redux";
 
 export default function AlertSetDialog({

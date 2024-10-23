@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Preferences } from "@capacitor/preferences";
 import { useRouter } from "next/navigation";
+import { App } from "@capacitor/app";
 import {
   AppBar,
   Box,
@@ -29,6 +30,7 @@ import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
 import { TransitionProps } from "@mui/material/transitions";
 
 import {
+  allGainerLoserActions,
   authActions,
   favoriteActions,
   indexInfoActions,
@@ -49,6 +51,7 @@ import {
 } from "@/data/constants";
 
 import { getUser } from "_helper/dataFetch";
+import { calcDataFetchEndTime, getIsMarketOpen } from "_helper";
 
 const TransitionSlide = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -161,57 +164,6 @@ export default function Header() {
     }
   };
 
-  const calcDataFetchEndTime = (marketOpenStatus: any) => {
-    const {
-      dataFetchStartHour,
-      dataFetchStartMinute,
-      dataFetchEndHour,
-      dataFetchEndMinute,
-    } = marketOpenStatus;
-
-    const now = new Date();
-    const hours = now.getUTCHours();
-    const minutes = now.getUTCMinutes();
-
-    const currentTimeInMinutes = hours * 60 + minutes;
-    const startTimeInMinutes = dataFetchStartHour * 60 + dataFetchStartMinute;
-
-    if (currentTimeInMinutes < startTimeInMinutes) {
-      const previousDay = new Date(now);
-      previousDay.setUTCDate(now.getUTCDate() - 1);
-      previousDay.setUTCHours(dataFetchEndHour, dataFetchEndMinute);
-      return previousDay;
-    } else {
-      const sameDay = new Date(now);
-      sameDay.setUTCHours(dataFetchEndHour, dataFetchEndMinute);
-      return sameDay;
-    }
-  };
-
-  const getIsMarketOpen = (marketOpenStatus: any) => {
-    const {
-      dataInsertionEnable,
-      openHour,
-      openMinute,
-      closeHour,
-      closeMinute,
-    } = marketOpenStatus;
-
-    const now = new Date();
-    const hours = now.getUTCHours();
-    const minutes = now.getUTCMinutes();
-
-    const currentTimeInMinutes = hours * 60 + minutes;
-    const startTimeInMinutes = openHour * 60 + openMinute;
-    const endTimeInMinutes = closeHour * 60 + closeMinute;
-
-    return (
-      dataInsertionEnable == 1 &&
-      currentTimeInMinutes >= startTimeInMinutes &&
-      currentTimeInMinutes <= endTimeInMinutes
-    );
-  };
-
   const fetchLatestPriceFromApi = async () => {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/latestPrice`,
@@ -262,6 +214,8 @@ export default function Header() {
         pullTime: new Date().toISOString(),
       }),
     });
+
+    dispatch(allGainerLoserActions.setData(initdata));
   };
 
   const fetchScreenerDataFromApi = async () => {
@@ -337,6 +291,7 @@ export default function Header() {
     if (getIsMarketOpen(marketOpenStatus)) {
       return await fetchLatestPriceFromApi();
     }
+
     const storage: { value: any } = await Preferences.get({
       key: "latestPrice",
     });
@@ -360,6 +315,7 @@ export default function Header() {
     if (getIsMarketOpen(marketOpenStatus)) {
       return await fetchGainerLoserDataFromApi();
     }
+
     const storage: { value: any } = await Preferences.get({
       key: "allGainerLoser",
     });
@@ -448,7 +404,7 @@ export default function Header() {
     if (market?.status === "success") {
       getLatestPriceData(market.data);
       getGainerLoserData(market.data);
-      getIndexInfo(market.data);
+      // getIndexInfo(market.data);
     }
   };
 

@@ -1,11 +1,19 @@
 "use client";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
 import SectorChart from "./SectorChart";
 import { sectorList } from "@/data/dse";
 
-import { Box, Button, Grid, Paper, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  Grid,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
 import Link from "next/link";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import { useDispatch } from "react-redux";
@@ -86,6 +94,8 @@ const calcPercentChange = (current: any, previous: any) => {
 };
 
 const formatPercentChangeData = (latestdata: any, lastdaydata: any) => {
+  if (!latestdata || !lastdaydata) return null;
+
   const { close, ycp } = latestdata;
 
   const {
@@ -106,7 +116,11 @@ const formatPercentChangeData = (latestdata: any, lastdaydata: any) => {
   };
 };
 
-export default function Dashboard({ sectorTag }: any) {
+export default function Dashboard() {
+  const searchParams = useSearchParams();
+
+  const sectorTag = searchParams.get("sector");
+
   const [data, setdata] = React.useState<any>(null);
 
   const [fetched, setfetched] = React.useState<boolean>(false);
@@ -119,7 +133,7 @@ export default function Dashboard({ sectorTag }: any) {
 
   const dispatch = useDispatch();
 
-  dispatch(pageTitleActions.setPageTitle(sector.name));
+  dispatch(pageTitleActions.setPageTitle(sector?.name));
 
   const percentChangeData: any = formatPercentChangeData(
     data?.latest,
@@ -197,7 +211,7 @@ export default function Dashboard({ sectorTag }: any) {
                   fontWeight: 500,
                 }}
               >
-                {sector.name}
+                {sector?.name}
               </Typography>
 
               <Box
@@ -280,10 +294,10 @@ export default function Dashboard({ sectorTag }: any) {
               </Typography>
             </Box>
             <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
-              <FavoriteButton tradingCode={sector.name} />
+              <FavoriteButton tradingCode={sector?.name} />
               <Button
                 component={Link}
-                href={`/supercharts?symbol=${encodeURIComponent(sector.name)}`}
+                href={`/supercharts?symbol=${encodeURIComponent(sector?.name)}`}
                 sx={{ borderRadius: 2, py: 1.05 }}
                 variant="contained"
               >
@@ -291,6 +305,9 @@ export default function Dashboard({ sectorTag }: any) {
               </Button>
             </Box>
           </Box>
+
+          <Divider light />
+
           <Box sx={{ pt: 2, pb: 1, px: 1.5 }}>
             <SectorChart data={data} />
           </Box>
@@ -701,7 +718,7 @@ export default function Dashboard({ sectorTag }: any) {
               }}
             >
               {sectorList
-                .filter((item: any) => item.tag !== sectorTag)
+                ?.filter((item: any) => item.tag !== sectorTag)
                 .map((item: any, index: number) => (
                   <Paper
                     key={index}

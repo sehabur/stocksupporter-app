@@ -26,7 +26,7 @@ import { fundamentalsTooltip } from "@/data/info";
 import FundamentalInfoCard from "./_component/FundamentalInfoCard";
 import YearlyStackedColumnChart from "@/components/charts/YearlyStackedColumnChart";
 import FundamentalsDialogContent from "./_component/FundamentalsDialogContent";
-import PremiumDialogContent from "@/components/shared/PremiumDialogContent";
+import PremiumDialogContent from "@/components/dialogs/PremiumDialogContent";
 import PieChartShareHolding from "@/components/charts/PieChartShareholding";
 
 const formatYearlyData = (data: any, divideFactor = 1, nonZero = false) => {

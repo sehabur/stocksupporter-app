@@ -30,10 +30,13 @@ export default function FAQ() {
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1d-content"
                 id="panel1d-header"
+                sx={{ fontSize: ".9rem" }}
               >
                 {item.ques}
               </AccordionSummary>
-              <AccordionDetails>{item.ans}</AccordionDetails>
+              <AccordionDetails sx={{ fontSize: "1rem" }}>
+                {item.ans}
+              </AccordionDetails>
             </Accordion>
             {/* <Divider variant="middle" /> */}
           </Box>

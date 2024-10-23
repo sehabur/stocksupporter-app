@@ -24,7 +24,7 @@ export default function GaugeChart({ rsi }: any) {
   };
   return (
     <Box>
-      <Box sx={{ width: "70vw", mx: "auto" }}>
+      <Box sx={{ width: "75%", mx: "auto" }}>
         <GaugeComponent
           type="semicircle"
           pointer={{

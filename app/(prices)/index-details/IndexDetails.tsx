@@ -3,9 +3,9 @@ import React from "react";
 
 import { DateTime } from "luxon";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 
-import { Box, Typography, Chip, Button, Tooltip } from "@mui/material";
+import { Box, Typography, Chip, Button, Tooltip, Divider } from "@mui/material";
 import DoDisturbOnRoundedIcon from "@mui/icons-material/DoDisturbOnRounded";
 import RadioButtonCheckedRoundedIcon from "@mui/icons-material/RadioButtonCheckedRounded";
 
@@ -56,7 +56,11 @@ const indexDataInitState = {
   marketOpenStatus: "Closed",
 };
 
-export default function IndexDetails({ tradingCode }: any) {
+export default function IndexDetails() {
+  const searchParams = useSearchParams();
+
+  const tradingCode: string = searchParams.get("tradingCode") || "";
+
   const dispatch = useDispatch();
 
   dispatch(pageTitleActions.setPageTitle(tradingCode.slice(2)));
@@ -258,6 +262,8 @@ export default function IndexDetails({ tradingCode }: any) {
               </Button>
             </Box>
           </Box>
+
+          <Divider light />
 
           <Box>
             <Overview stock={stock} />

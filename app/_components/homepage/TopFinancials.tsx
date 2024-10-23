@@ -15,6 +15,7 @@ import {
   useMediaQuery,
   Paper,
   Button,
+  Grid,
 } from "@mui/material";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import Table from "@mui/material/Table";
@@ -90,7 +91,7 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 }));
 const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   "&.MuiToggleButtonGroup-grouped": {
-    borderRadius: "5px !important",
+    borderRadius: "4px !important",
     marginBottom: "10px",
     border: `1px solid lightgrey !important`,
     paddingLeft: "12px",
@@ -158,103 +159,109 @@ export default function TopFinancials(props: any) {
           Top Fundamentals
         </Button>
       </Box>
-      <Box sx={{ display: "flex", width: "100%" }}>
-        <Box sx={{ minWidth: 110 }}>
-          <StyledToggleButtonGroup
-            size="small"
-            value={alignment}
-            exclusive
-            orientation="vertical"
-            onChange={handleAlignmentChange}
-            aria-label="Platform"
-          >
-            {options.map((item: any, index: number) => (
-              <StyledToggleButton value={item.tag} key={index}>
-                {item.button}
-              </StyledToggleButton>
-            ))}
-          </StyledToggleButtonGroup>
-        </Box>
-        <Box sx={{ ml: 1.5 }}>
-          <TableContainer
-            component={Paper}
-            elevation={4}
-            variant="outlined"
-            sx={{ borderRadius: 1.5, width: "100%" }}
-          >
-            <Table sx={{ width: "100%" }} size="small">
-              <TableHead>
-                <TableRow
-                  sx={{
-                    ".MuiTableCell-head": {
-                      fontSize: "1rem",
-                      fontWeight: 500,
-                      bgcolor: "financeCardTitlecolor",
-                      color: "text.secondary",
-                    },
-                  }}
-                >
-                  <TableCell sx={{ height: 61 }}>Trading Code</TableCell>
-                  <TableCell align="right">
-                    {getColumnHead(alignment)}
-                  </TableCell>
-                  {matchesSmUp && (
-                    <>
-                      <TableCell align="right">LTP</TableCell>
-                      <TableCell align="right">Change(%)</TableCell>
-                    </>
-                  )}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {data[alignment]?.map((row: any) => (
+      <Grid container spacing={1}>
+        <Grid item xs={4}>
+          <Box sx={{ minWidth: 110 }}>
+            <StyledToggleButtonGroup
+              size="small"
+              value={alignment}
+              exclusive
+              orientation="vertical"
+              onChange={handleAlignmentChange}
+              aria-label="Platform"
+            >
+              {options.map((item: any, index: number) => (
+                <StyledToggleButton value={item.tag} key={index}>
+                  {item.button}
+                </StyledToggleButton>
+              ))}
+            </StyledToggleButtonGroup>
+          </Box>
+        </Grid>
+        <Grid item xs={8}>
+          <Box>
+            <TableContainer
+              component={Paper}
+              elevation={4}
+              variant="outlined"
+              sx={{ borderRadius: 1.5, width: "100%" }}
+            >
+              <Table sx={{ width: "100%" }} size="small">
+                <TableHead>
                   <TableRow
-                    hover={true}
                     sx={{
-                      ".MuiTableCell": {
+                      ".MuiTableCell-head": {
                         fontSize: "1rem",
                         fontWeight: 500,
+                        bgcolor: "financeCardTitlecolor",
+                        color: "text.secondary",
                       },
-                      //   "&:nth-of-type(odd)": {
-                      //     backgroundColor: "financePageBgcolor",
-                      //   },
                     }}
-                    key={row._id}
                   >
-                    <TableCell align="left">
-                      <Typography
-                        onClick={() => {
-                          handleButtonClick(
-                            `/stock-details?tradingCode=${row.tradingCode}`,
-                            `${row.tradingCode} Details`
-                          );
-                        }}
-                        sx={{
-                          color: "primary.main",
-                          ":hover": { textDecoration: "underline" },
-                        }}
-                      >
-                        {row.tradingCode}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="right" sx={{ fontSize: "1rem" }}>
-                      {alignment === "dividend"
-                        ? row.value
-                        : row.value.toFixed(2)}
+                    <TableCell sx={{ height: 61 }}>Trading Code</TableCell>
+                    <TableCell align="right">
+                      {getColumnHead(alignment)}
                     </TableCell>
                     {matchesSmUp && (
                       <>
-                        <TableCell align="right">{row.close}</TableCell>
-                        <TableCell align="right">{row.percentChange}</TableCell>
+                        <TableCell align="right">LTP</TableCell>
+                        <TableCell align="right">Change(%)</TableCell>
                       </>
                     )}
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
-      </Box>
+                </TableHead>
+                <TableBody>
+                  {data[alignment]?.map((row: any) => (
+                    <TableRow
+                      hover={true}
+                      sx={{
+                        ".MuiTableCell": {
+                          fontSize: "1rem",
+                          fontWeight: 500,
+                        },
+                        //   "&:nth-of-type(odd)": {
+                        //     backgroundColor: "financePageBgcolor",
+                        //   },
+                      }}
+                      key={row._id}
+                    >
+                      <TableCell align="left">
+                        <Typography
+                          onClick={() => {
+                            handleButtonClick(
+                              `/stock-details?tradingCode=${row.tradingCode}`,
+                              `${row.tradingCode} Details`
+                            );
+                          }}
+                          sx={{
+                            color: "primary.main",
+                            ":hover": { textDecoration: "underline" },
+                          }}
+                        >
+                          {row.tradingCode}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="right" sx={{ fontSize: "1rem" }}>
+                        {alignment === "dividend"
+                          ? row.value
+                          : row.value.toFixed(2)}
+                      </TableCell>
+                      {matchesSmUp && (
+                        <>
+                          <TableCell align="right">{row.close}</TableCell>
+                          <TableCell align="right">
+                            {row.percentChange}
+                          </TableCell>
+                        </>
+                      )}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
+        </Grid>
+      </Grid>
     </Box>
   );
 }

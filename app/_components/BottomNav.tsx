@@ -12,6 +12,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  Divider,
   IconButton,
   Slide,
   Typography,
@@ -64,51 +65,7 @@ import FacebookRoundedIcon from "@mui/icons-material/FacebookRounded";
 import { authActions, favoriteActions } from "_store";
 import ToastMessage from "./shared/ToastMessage";
 import DarkThemeButton from "./buttons/DarkThemeButton";
-
-// const menuOutlined = [
-//   {
-//     value: 0,
-//     title: "Home",
-//     label: "Home",
-//     icon: <HomeOutlinedIcon />,
-//     href: "/",
-//   },
-//   {
-//     value: 1,
-//     title: "Favorites",
-//     label: "Favorites",
-//     icon: <FavoriteBorderRoundedIcon />,
-//     href: "/",
-//   },
-//   {
-//     value: 2,
-//     title: "Top",
-//     label: "Top",
-//     icon: <EmojiEventsOutlinedIcon />,
-//     href: "/",
-//   },
-//   {
-//     value: 3,
-//     title: "Shares",
-//     label: "Shares",
-//     icon: <CandlestickChartOutlinedIcon />,
-//     href: "/",
-//   },
-//   {
-//     value: 4,
-//     title: "Screener",
-//     label: "Screener",
-//     icon: <FilterAltOutlinedIcon />,
-//     href: "/",
-//   },
-//   {
-//     value: 5,
-//     title: "More",
-//     label: "More",
-//     icon: <MenuRoundedIcon />,
-//     href: "/",
-//   },
-// ];
+import { Browser } from "@capacitor/browser";
 
 const mainMenu = [
   {
@@ -263,12 +220,14 @@ const othersMenu = [
     icon: <YouTubeIcon />,
     href: "https://www.youtube.com/@Stocksupporter-x8l",
     customIconColor: "error.main",
+    type: "external",
   },
   {
     title: "Join us on Facebook",
     label: "Join us on Facebook",
     icon: <FacebookRoundedIcon />,
     href: "https://www.facebook.com/profile.php?id=61566267416444",
+    type: "external",
   },
 ];
 
@@ -323,6 +282,9 @@ export default function BottomNav() {
 
   const [logoutSuccess, setLogoutSuccess] = React.useState(false);
 
+  const [build, setbuild] = React.useState("");
+  const [version, setversion] = React.useState("");
+
   const router = useRouter();
 
   const pathname = usePathname();
@@ -361,9 +323,21 @@ export default function BottomNav() {
     setOpenDialog(false);
   };
 
-  const handleMenuItemClick = (href: string) => {
-    router.push(href);
+  const handleMenuItemClick = (href: string, type = null) => {
+    if (type == "external") {
+      openExternalLink(href);
+    } else {
+      router.push(href);
+    }
     handleDialogClose();
+  };
+
+  const openExternalLink = async (url: string) => {
+    try {
+      await Browser.open({ url });
+    } catch (error) {
+      console.error("Error opening external link:", error);
+    }
   };
 
   const getMenuItem = (item: any, index: any) => (
@@ -381,7 +355,7 @@ export default function BottomNav() {
           width: "100%",
         }}
         component={Button}
-        onClick={() => handleMenuItemClick(item.href)}
+        onClick={() => handleMenuItemClick(item.href, item.type)}
         variant="outlined"
       >
         <Button
@@ -606,6 +580,39 @@ export default function BottomNav() {
               <Box sx={{ pb: 2.5 }}>
                 <Typography color="text.secondary">Theme</Typography>
                 <DarkThemeButton />
+              </Box>
+
+              <Divider light />
+
+              <Box
+                sx={{
+                  my: 1,
+                  pl: 2,
+                  pr: 1.2,
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <Box>
+                  <img
+                    src={
+                      theme.palette.mode === "dark"
+                        ? "/images/logo/logo-full-dark.png"
+                        : "/images/logo/logo-full-light.png"
+                    }
+                    style={{
+                      width: "auto",
+                      marginTop: "5px",
+                      height: "30px",
+                    }}
+                    alt="logo of stocksupporter"
+                  />
+                </Box>
+
+                <Typography color="text.secondary" sx={{ fontSize: "1rem" }}>
+                  v{version}
+                </Typography>
               </Box>
             </Box>
           </DialogContent>

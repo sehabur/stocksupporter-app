@@ -1,6 +1,7 @@
 "use client";
-import AreaChart from "@/components/charts/AreaChart";
-import CandlestickVolumeChart from "@/components/charts/CandlestickVolumeChart";
+import React from "react";
+import { DateTime } from "luxon";
+import Link from "next/link";
 import {
   Box,
   Grid,
@@ -8,31 +9,19 @@ import {
   useTheme,
   useMediaQuery,
   Paper,
-  Card,
-  CardActionArea,
-  CardContent,
-  Slider,
   Divider,
   Button,
+  Stack,
 } from "@mui/material";
-import { DateTime } from "luxon";
-import React from "react";
-import { grey } from "@mui/material/colors";
-import OverviewCard from "@/components/cards/OverviewCard";
-import Link from "next/link";
-
 import { styled } from "@mui/material/styles";
-
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup, {
   toggleButtonGroupClasses,
 } from "@mui/material/ToggleButtonGroup";
-
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
-import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
-import NavigateNextRoundedIcon from "@mui/icons-material/NavigateNextRounded";
-import Stack from "@mui/material/Stack";
-import { constants } from "crypto";
+
+import AreaChart from "@/components/charts/AreaChart";
+import CandlestickVolumeChart from "@/components/charts/CandlestickVolumeChart";
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   [`& .${toggleButtonGroupClasses.grouped}`]: {
@@ -174,7 +163,7 @@ const agmDateCalculation = (
   recordDateInit: string,
   declarationDateInit: string
 ) => {
-  const todayDate = DateTime.now().setZone("Asia/Dhaka");
+  const todayDate = DateTime.utc().startOf("day");
 
   let agmPrefix = "";
   let recordPrefix = "";
@@ -203,7 +192,7 @@ const agmDateCalculation = (
   if (declarationDateInit) {
     const declarationDateFormatted = DateTime.fromISO(declarationDateInit);
 
-    if (declarationDateFormatted == todayDate) {
+    if (declarationDateFormatted.toMillis() == todayDate.toMillis()) {
       isCircuitEnabled = false;
     }
     declarationDate = declarationDateFormatted.toFormat("dd MMM yyyy");
@@ -368,13 +357,13 @@ export default function Overview({ stock, handleButtonClick }: any) {
           }}
           elevation={0}
         >
-          <Grid container rowGap={2}>
+          <Grid container rowSpacing={2}>
             {changeDays.map((item: any) => (
-              <Grid item xs={4}>
+              <Grid item xs={4} key={item.field}>
                 <Box sx={{ textAlign: "center" }}>
                   <Typography
                     sx={{
-                      fontSize: ".875rem",
+                      fontSize: ".9rem",
                       color: "text.primary",
                       fontWeight: 500,
                     }}
@@ -396,150 +385,6 @@ export default function Overview({ stock, handleButtonClick }: any) {
           </Grid>
         </Paper>
 
-        {/* <Paper
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "space-around",
-            mt: 3,
-            mb: 4,
-            pt: 1.8,
-            pb: 1.5,
-            px: 2,
-            borderRadius: 2,
-            bgcolor: "appCardBgColor",
-            rowGap: 2,
-            columnGap: 5,
-          }}
-          elevation={0}
-        >
-          <Box sx={{ textAlign: "center" }}>
-            <Typography
-              sx={{
-                fontSize: ".9rem",
-                color: "text.primary",
-                fontWeight: 500,
-              }}
-            >
-              Today
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: "1.2rem",
-                fontWeight: 700,
-                color: percentChangeData.today.color,
-              }}
-            >
-              {percentChangeData.today.text}
-            </Typography>
-          </Box>
-
-          <Box sx={{ textAlign: "center" }}>
-            <Typography
-              sx={{
-                fontSize: ".9rem",
-                color: "text.primary",
-                fontWeight: 500,
-              }}
-            >
-              1 Week
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: "1.2rem",
-                fontWeight: 700,
-                color: percentChangeData.oneWeek.color,
-              }}
-            >
-              {percentChangeData.oneWeek.text}
-            </Typography>
-          </Box>
-
-          <Box sx={{ textAlign: "center" }}>
-            <Typography
-              sx={{
-                fontSize: ".9rem",
-                color: "text.primary",
-                fontWeight: 500,
-              }}
-            >
-              1 Month
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: "1.2rem",
-                fontWeight: 700,
-                color: percentChangeData.oneMonth.color,
-              }}
-            >
-              {percentChangeData.oneMonth.text}
-            </Typography>
-          </Box>
-
-          <Box sx={{ textAlign: "center" }}>
-            <Typography
-              sx={{
-                fontSize: ".9rem",
-                color: "text.primary",
-                fontWeight: 500,
-              }}
-            >
-              6 Month
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: "1.2rem",
-                fontWeight: 700,
-                color: percentChangeData.sixMonth.color,
-              }}
-            >
-              {percentChangeData.sixMonth.text}
-            </Typography>
-          </Box>
-
-          <Box sx={{ textAlign: "center" }}>
-            <Typography
-              sx={{
-                fontSize: ".9rem",
-                color: "text.primary",
-                fontWeight: 500,
-              }}
-            >
-              1 Year
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: "1.2rem",
-                fontWeight: 700,
-                color: percentChangeData.oneYear.color,
-              }}
-            >
-              {percentChangeData.oneYear.text}
-            </Typography>
-          </Box>
-
-          <Box sx={{ textAlign: "center" }}>
-            <Typography
-              sx={{
-                fontSize: ".9rem",
-                color: "text.primary",
-                fontWeight: 500,
-              }}
-            >
-              5 Year
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: "1.2rem",
-                fontWeight: 700,
-                color: percentChangeData.fiveYear.color,
-              }}
-            >
-              {percentChangeData.fiveYear.text || "--"}
-            </Typography>
-          </Box>
-        </Paper> */}
-
         <Box>
           <Typography
             sx={{
@@ -558,7 +403,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
           container
           alignItems="flex-start"
           justifyContent="flex-start"
-          rowSpacing={2}
+          rowSpacing={2.5}
           columnSpacing={2}
         >
           <Grid item xs={4}>
@@ -795,7 +640,9 @@ export default function Overview({ stock, handleButtonClick }: any) {
                   fontWeight: 500,
                 }}
               >
-                {dates.isCircuitEnabled ? stock.fundamentals.circuitUp : "No"}
+                {dates.isCircuitEnabled
+                  ? stock.fundamentals.circuitUp
+                  : "No limit"}
               </Typography>
               <Typography
                 color="text.secondary"
@@ -818,7 +665,9 @@ export default function Overview({ stock, handleButtonClick }: any) {
                   fontWeight: 500,
                 }}
               >
-                {dates.isCircuitEnabled ? stock.fundamentals.circuitLow : "No"}
+                {dates.isCircuitEnabled
+                  ? stock.fundamentals.circuitLow
+                  : "No limit"}
               </Typography>
               <Typography
                 color="text.secondary"
@@ -850,7 +699,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
           container
           alignItems="flex-start"
           justifyContent="flex-start"
-          rowSpacing={2}
+          rowSpacing={2.5}
           columnSpacing={2}
         >
           <Grid item xs={4}>
@@ -865,7 +714,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
                   fontWeight: 500,
                 }}
               >
-                {stock.fundamentals.pe?.value || "--"}
+                {stock.fundamentals.pe?.value || "-"}
               </Typography>
             </Stack>
           </Grid>
@@ -1007,7 +856,9 @@ export default function Overview({ stock, handleButtonClick }: any) {
                   mr: 0.7,
                 }}
               >
-                {(stock.fundamentals.shortTermLoan / 10).toFixed(2)}
+                {stock.fundamentals.shortTermLoan !== 0
+                  ? (stock.fundamentals.shortTermLoan / 10).toFixed(2)
+                  : 0}
               </Typography>
               <Typography color="text.secondary" sx={{ fontSize: ".8rem" }}>
                 CR
@@ -1028,36 +879,15 @@ export default function Overview({ stock, handleButtonClick }: any) {
                   mr: 0.7,
                 }}
               >
-                {(stock.fundamentals.longTermLoan / 10).toFixed(2)}
+                {stock.fundamentals.longTermLoan !== 0
+                  ? (stock.fundamentals.longTermLoan / 10).toFixed(2)
+                  : 0}
               </Typography>
               <Typography color="text.secondary" sx={{ fontSize: ".8rem" }}>
                 CR
               </Typography>
             </Stack>
           </Grid>
-
-          {/* <Grid item xs={4}>
-            <Typography color="text.secondary" sx={{ fontSize: ".875rem" }}>
-              Face Value
-            </Typography>
-            <Stack direction="row" alignItems="baseline">
-              <Typography
-                color="text.primary"
-                sx={{
-                  fontSize: "1.1rem",
-                  fontWeight: 500,
-                }}
-              >
-                {stock.fundamentals.faceValue}
-              </Typography>
-              <Typography
-                color="text.secondary"
-                sx={{ ml: 0.7, fontSize: ".8rem" }}
-              >
-                BDT
-              </Typography>
-            </Stack>
-          </Grid> */}
 
           <Grid item xs={4}>
             <Typography color="text.secondary" sx={{ fontSize: ".875rem" }}>
@@ -1071,7 +901,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
                   fontWeight: 500,
                 }}
               >
-                {dates.agmDate || "--"}
+                {dates.agmDate || "-"}
               </Typography>
             </Stack>
           </Grid>
@@ -1091,7 +921,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
                   fontWeight: 500,
                 }}
               >
-                {dates.recordDate || "--"}
+                {dates.recordDate || "-"}
               </Typography>
             </Stack>
           </Grid>

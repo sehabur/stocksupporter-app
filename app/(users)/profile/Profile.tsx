@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { Avatar, Box, Button, Chip, Divider, Typography } from "@mui/material";
 import WorkspacePremiumRoundedIcon from "@mui/icons-material/WorkspacePremiumRounded";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
-import SigninDialogContent from "@/components/shared/SigninDialogContent";
+import SigninDialogContent from "@/components/dialogs/SigninDialogContent";
 
 export default function Profile() {
   const auth = useSelector((state: any) => state.auth);

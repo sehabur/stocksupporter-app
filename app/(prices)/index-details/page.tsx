@@ -7,9 +7,7 @@ import IndexDetails from "./IndexDetails";
 //   }));
 // }
 
-export default async function Page({ searchParams }: any) {
-  const { tradingCode } = searchParams;
-
+export default async function Page() {
   return (
     <Box
       component="main"
@@ -18,7 +16,7 @@ export default async function Page({ searchParams }: any) {
         minHeight: "100vh",
       }}
     >
-      <IndexDetails tradingCode={tradingCode} />
+      <IndexDetails />
     </Box>
   );
 }

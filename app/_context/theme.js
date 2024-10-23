@@ -57,7 +57,8 @@ const darkPalleteColors = {
 
 const defaultSettings = {
   typography: {
-    fontFamily: "'DM Sans', sans-serif",
+    // fontFamily: "'DM Sans', sans-serif",
+    fontFamily: "'Poppins', sans-serif",
     body1: {
       fontSize: ".875rem",
       fontWeight: 500,
@@ -104,9 +105,9 @@ export const darkTheme = createTheme({
     mode: "dark",
     ...darkPalleteColors,
     secondaryBackground: "#101010",
-    priceCardBgColor: "#212121",
+    priceCardBgColor: "#212123",
     searchCardBgColor: "#282828",
-    appCardBgColor: "#252525",
+    appCardBgColor: "#252529",
     financePageBgcolor: "#191919B3", // 70% -> B3
     financeCardTitlecolor: "#252529",
     chartGridColor: "#494949",

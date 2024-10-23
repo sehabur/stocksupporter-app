@@ -24,7 +24,7 @@ import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import { favoriteActions, pageTitleActions } from "_store";
 import ToastMessage from "@/components/shared/ToastMessage";
 import MobileViewPriceCard from "@/components/cards/MobileViewPriceCard";
-import SigninDialogContent from "@/components/shared/SigninDialogContent";
+import SigninDialogContent from "@/components/dialogs/SigninDialogContent";
 import { useRouter } from "next/navigation";
 import { AUTO_RELOAD_TIME_MS } from "@/data/constants";
 import AutoReload from "@/components/shared/AutoReload";

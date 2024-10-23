@@ -9,15 +9,13 @@ import Dashboard from "./Dashboard";
 //   }));
 // }
 
-export default async function Sector({ searchParams }: any) {
-  const { sector } = searchParams;
-
+export default async function Sector() {
   return (
     <Box
       component="main"
       sx={{ bgcolor: "background.default", minHeight: "100vh" }}
     >
-      <Dashboard sectorTag={sector} />
+      <Dashboard />
     </Box>
   );
 }

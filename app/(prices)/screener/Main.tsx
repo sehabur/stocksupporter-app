@@ -39,7 +39,7 @@ import StarBorderRoundedIcon from "@mui/icons-material/StarBorderRounded";
 
 import { filterOptions } from "./filters";
 import styles from "./Main.module.css";
-import PremiumDialogContent from "@/components/shared/PremiumDialogContent";
+import PremiumDialogContent from "@/components/dialogs/PremiumDialogContent";
 import { pageTitleActions } from "_store";
 
 const StripedDataGrid = styled(DataGrid)(({ theme }: any) => ({

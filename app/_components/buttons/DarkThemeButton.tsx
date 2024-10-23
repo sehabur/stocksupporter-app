@@ -16,7 +16,7 @@ export default function DarkThemeButton() {
   };
 
   return (
-    <Stack direction="row" alignItems="center" sx={{ py: 1, pl: 2.5, pr: 2 }}>
+    <Stack direction="row" alignItems="center" sx={{ py: 1, pl: 2.5, pr: 1.2 }}>
       <DarkModeOutlinedIcon color="primary" />
       <FormControl fullWidth>
         <FormControlLabel

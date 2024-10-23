@@ -1,50 +1,20 @@
 "use client";
 import React from "react";
-
 import { useRouter, useSearchParams } from "next/navigation";
-
 import { useDispatch, useSelector } from "react-redux";
 
 import { Box } from "@mui/material";
-
-import MobileViewPriceCard from "@/components/cards/MobileViewPriceCard";
-
 import { styled } from "@mui/material/styles";
-
-import { sectorList } from "@/data/dse";
-import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup, {
   toggleButtonGroupClasses,
 } from "@mui/material/ToggleButtonGroup";
-import { grey } from "@mui/material/colors";
+
+import LoadingSpinner from "@/components/shared/LoadingSpinner";
+import { sectorList } from "@/data/dse";
+import MobileViewPriceCard from "@/components/cards/MobileViewPriceCard";
 import { pageTitleActions } from "_store";
 import { AUTO_RELOAD_TIME_MS } from "@/data/constants";
-
-// const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
-//   [`& .${toggleButtonGroupClasses.grouped}`]: {
-//     border: 0,
-//   },
-// }));
-// const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
-//   "&.MuiToggleButtonGroup-grouped": {
-//     borderRadius: "24px !important",
-//     border: `1px solid lightgrey !important`,
-//     marginRight: "8px",
-//     paddingLeft: "12px",
-//     paddingTop: "3px",
-//     paddingBottom: "3px",
-//     paddingRight: "12px",
-//     whiteSpace: "nowrap",
-//     "&.Mui-selected": {
-//       color: grey[50],
-//       backgroundColor: theme.palette.primary.main,
-//     },
-//   },
-//   color: theme.palette.text.primary,
-//   backgroundColor: theme.palette.divider,
-//   textTransform: "none",
-// }));
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   [`& .${toggleButtonGroupClasses.grouped}`]: {
@@ -98,8 +68,8 @@ export default function SharePrice() {
   const scrollToButton = () => {
     if (buttonRefs.current[sector]) {
       buttonRefs.current[sector].scrollIntoView({
-        behavior: "auto", // Smooth scrolling
-        block: "center", // Align to the center of the scrollable container
+        behavior: "auto",
+        block: "center",
         inline: "center",
       });
     }

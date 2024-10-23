@@ -7,7 +7,7 @@ import FiberManualRecordRoundedIcon from "@mui/icons-material/FiberManualRecordR
 
 import { authActions, pageTitleActions } from "_store";
 
-import SigninDialogContent from "@/components/shared/SigninDialogContent";
+import SigninDialogContent from "@/components/dialogs/SigninDialogContent";
 import { useRouter } from "next/navigation";
 import { DateTime } from "luxon";
 import ReactTimeAgo from "react-time-ago";

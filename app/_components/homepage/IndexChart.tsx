@@ -23,36 +23,9 @@ import RadioButtonCheckedRoundedIcon from "@mui/icons-material/RadioButtonChecke
 import Tooltip from "@mui/material/Tooltip";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
-// const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
-//   [`& .${toggleButtonGroupClasses.grouped}`]: {
-//     marginRight: "24px",
-//     border: 0,
-//     borderRadius: 3,
-//   },
-// }));
-// const StyledToggleButton = styled(ToggleButton)(({ theme }: any) => ({
-//   "&.MuiToggleButtonGroup-grouped": {
-//     borderRadius: "24px !important",
-//     marginRight: "16px",
-//     paddingLeft: "20px",
-//     paddingTop: "2px",
-//     paddingBottom: "2px",
-//     paddingRight: "20px",
-//     "&.Mui-selected": {
-//       color: grey[50],
-//       backgroundColor: theme.palette.toggleButtonBgColor,
-//     },
-//   },
-//   color: theme.palette.text.primary,
-//   backgroundColor: theme.palette.financeCardTitlecolor,
-//   fontSize: ".9rem",
-//   textTransform: "none",
-// }));
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   [`& .${toggleButtonGroupClasses.grouped}`]: {
-    // marginRight: "24px",
     border: 0,
-    // borderRadius: 3,
   },
 }));
 const StyledToggleButton = styled(ToggleButton)(({ theme }: any) => ({
@@ -176,7 +149,7 @@ export default function IndexChart({ indexData, handleButtonClick }: any) {
         <Button
           onClick={() => {
             handleButtonClick(
-              `/index-details/${currentIndex.tradingCode}`,
+              `/index-details?tradingCode=${currentIndex.tradingCode}`,
               `${currentIndex.title} Details`
             );
           }}

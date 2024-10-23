@@ -28,7 +28,7 @@ import { alpha } from "@mui/material/styles";
 import { DateTime } from "luxon";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import { useSelector } from "react-redux";
-import PremiumDialogContent from "@/components/shared/PremiumDialogContent";
+import PremiumDialogContent from "@/components/dialogs/PremiumDialogContent";
 
 function formatPatternName(text: string) {
   return (text.charAt(0).toUpperCase() + text.slice(1)).replaceAll("_", " ");

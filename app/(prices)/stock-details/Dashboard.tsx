@@ -19,7 +19,12 @@ import { DateTime } from "luxon";
 import { grey } from "@mui/material/colors";
 import Link from "next/link";
 
-import { redirect, useParams, useRouter } from "next/navigation";
+import {
+  redirect,
+  useParams,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 
 import DoDisturbOnRoundedIcon from "@mui/icons-material/DoDisturbOnRounded";
 import RadioButtonCheckedRoundedIcon from "@mui/icons-material/RadioButtonCheckedRounded";
@@ -91,12 +96,16 @@ const stockInitState = {
   haltStatus: "none",
 };
 
-export default function Dashboard({ tradingCode }: any) {
+export default function Dashboard() {
+  const searchParams = useSearchParams();
+
+  const tradingCode: string = searchParams.get("tradingCode") || "";
+
   const dispatch = useDispatch();
 
-  const router = useRouter();
-
   dispatch(pageTitleActions.setPageTitle(tradingCode));
+
+  const router = useRouter();
 
   const [stock, setstock] = React.useState<any>(stockInitState);
 
@@ -127,6 +136,7 @@ export default function Dashboard({ tradingCode }: any) {
       }
       const initdata = await res.json();
       setstock(initdata);
+
       setfetched(true);
       setisLoading(false);
     } catch (error) {

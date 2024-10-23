@@ -216,16 +216,20 @@ export default function News({ data, handleButtonClick }: any) {
         <Box>
           {news.slice(0, 4).map((item: any) => (
             <Card
-              sx={{ minWidth: 275, my: 1.2, bgcolor: "priceCardBgColor" }}
+              sx={{ minWidth: 275, my: 1.4, bgcolor: "priceCardBgColor" }}
               variant="outlined"
               key={item._id}
             >
               <CardActionArea onClick={() => handleItemClick(item)}>
-                <CardContent sx={{ py: 1 }}>
-                  <Typography noWrap sx={{ fontWeight: 700, fontSize: "1rem" }}>
+                <CardContent sx={{ py: 1.5 }}>
+                  <Typography
+                    noWrap
+                    gutterBottom
+                    sx={{ fontWeight: 600, fontSize: "1rem" }}
+                  >
                     {item.title}
                   </Typography>
-                  <Typography color="text.secondary">
+                  <Typography color="text.secondary" gutterBottom>
                     <Stack direction="row" alignItems="center">
                       <ScheduleRoundedIcon
                         color="success"
@@ -236,22 +240,11 @@ export default function News({ data, handleButtonClick }: any) {
                         locale="en-US"
                         style={{ color: "#089981" }}
                       />
-                      {/* <Chip
-                        label={DateTime.fromISO(item.date).toFormat(
-                          "dd MMM, yyyy"
-                        )}
-                        size="small"
-                        sx={{
-                          ml: 3,
-                          borderRadius: 1,
-                          fontSize: ".9rem",
-                        }}
-                      /> */}
                     </Stack>
                   </Typography>
-                  <Typography>
-                    {item.description.slice(0, 125) +
-                      (item.description.length > 125 ? ".." : "")}
+                  <Typography sx={{ fontSize: ".8rem" }}>
+                    {item.description.slice(0, 130) +
+                      (item.description.length > 130 ? ".." : "")}
                   </Typography>
                 </CardContent>
               </CardActionArea>

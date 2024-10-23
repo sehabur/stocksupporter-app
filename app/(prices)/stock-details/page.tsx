@@ -13,9 +13,7 @@ import { Box } from "@mui/material";
 //   }));
 // }
 
-export default async function StockDetails({ searchParams }: any) {
-  const { tradingCode } = searchParams;
-
+export default async function StockDetails() {
   return (
     <Box
       component="main"
@@ -26,7 +24,7 @@ export default async function StockDetails({ searchParams }: any) {
         mx: "auto",
       }}
     >
-      <Dashboard tradingCode={tradingCode} />
+      <Dashboard />
     </Box>
   );
 }

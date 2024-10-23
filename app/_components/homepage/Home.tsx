@@ -1,5 +1,9 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
+
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Box, Divider, Typography } from "@mui/material";
 
@@ -14,31 +18,39 @@ import Ipo from "@/components/homepage/Ipo";
 import Beta from "@/components/homepage/Beta";
 import IndexMover from "@/components/homepage/IndexMover";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
-
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { indexInfoActions, pageTitleActions } from "_store";
 import { AUTO_RELOAD_TIME_MS } from "@/data/constants";
+
+import { indexInfoActions, pageTitleActions } from "_store";
 import AutoReload from "../shared/AutoReload";
+import { Preferences } from "@capacitor/preferences";
+import { calcDataFetchEndTime, getIsMarketOpen } from "_helper";
 
 export default function Home() {
-  const [indexData, setindexData] = React.useState<any>(null);
-  const [sectorData, setsectorData] = React.useState(null);
-  const [gainerLoserData, setgainerLoserData] = React.useState();
-  const [blockTrData, setblockTrData] = React.useState();
-  const [newsData, setnewsData] = React.useState();
-  const [topFinancialsData, settopFinancialsData] = React.useState();
-  const [ipo, setipo] = React.useState();
-  const [beta, setbeta] = React.useState();
-  const [indexMover, setindexMover] = React.useState();
-  const [isLoading, setisLoading] = React.useState(false);
+  const [indexData, setindexData] = useState<{ latest: {}; rsi: number }>();
 
-  const [datafetched, setdatafetched] = React.useState(false);
+  const [sectorData, setsectorData] = useState();
+
+  const [blockTrData, setblockTrData] = useState();
+
+  const [newsData, setnewsData] = useState();
+
+  const [topFinancialsData, settopFinancialsData] = useState();
+
+  const [ipo, setipo] = useState();
+
+  const [beta, setbeta] = useState();
+
+  const [indexMover, setindexMover] = useState();
+
+  const [isLoading, setisLoading] = useState(false);
+
+  const [datafetched, setdatafetched] = useState(false);
 
   const router = useRouter();
 
   const dispatch = useDispatch();
+
+  const marketOpenStatus = useSelector((state: any) => state.marketOpenStatus);
 
   dispatch(pageTitleActions.setPageTitle("Homepage"));
 
@@ -46,154 +58,9 @@ export default function Home() {
     router.push(href);
   };
 
-  async function getIndexData() {
+  async function fetchDataFromApi(endpoint: string, storageKey: string) {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/indexMinuteData`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    const data = await res.json();
-    setindexData(data);
-  }
-  async function getGainerLoserData() {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/topGainerLoser`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    const data = await res.json();
-    setgainerLoserData(data);
-  }
-  async function getIpo() {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/ipo`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    const data = await res.json();
-    setipo(data);
-  }
-  async function getSectorData() {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/sectorGainValueSummary`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    const data = await res.json();
-    setsectorData(data);
-  }
-  async function getBlockTr() {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/blockTr/lastday`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    const data = await res.json();
-    setblockTrData(data);
-  }
-  async function getNews() {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/news/all?limit=500`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    const data = await res.json();
-    setnewsData(data);
-  }
-  async function getTopFinancials() {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/topFinancials?setlimit=12`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    const data = await res.json();
-    settopFinancialsData(data);
-  }
-  async function getBeta() {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/allStockBeta?type=top&count=8`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    const data = await res.json();
-    setbeta(data);
-  }
-  async function getIndexMover() {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/indexMover?type=top&count=8`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    const data = await res.json();
-    setindexMover(data);
-  }
-
-  async function getIndexInfo() {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/getIndexInfo`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/${endpoint}`,
       {
         method: "GET",
         headers: {
@@ -205,35 +72,305 @@ export default function Home() {
       throw new Error("Failed to fetch data");
     }
     const initdata = await res.json();
-    dispatch(indexInfoActions.setData(initdata.Data));
+
+    await Preferences.set({
+      key: storageKey,
+      value: JSON.stringify({
+        data: initdata,
+        pullTime: new Date().toISOString(),
+      }),
+    });
+    return initdata;
   }
+
+  const getDataByStoreValidate = async (
+    endpoint: string,
+    storageKey: string,
+    isCustomDataFetchEndTime: boolean = false,
+    customDataFetchEndTimeValue: string = ""
+  ) => {
+    if (getIsMarketOpen(marketOpenStatus)) {
+      return await fetchDataFromApi(endpoint, storageKey);
+    }
+
+    const storage: { value: any } = await Preferences.get({
+      key: storageKey,
+    });
+
+    if (!storage.value) {
+      return await fetchDataFromApi(endpoint, storageKey);
+    }
+
+    const { data: dataFromStorage, pullTime } = JSON.parse(storage.value);
+
+    let dataFetchEndTime;
+
+    if (isCustomDataFetchEndTime) {
+      dataFetchEndTime = new Date(customDataFetchEndTimeValue);
+    } else {
+      dataFetchEndTime = calcDataFetchEndTime(marketOpenStatus);
+    }
+
+    // console.log(endpoint, dataFetchEndTime);
+
+    if (new Date(pullTime) < new Date(dataFetchEndTime)) {
+      return await fetchDataFromApi(endpoint, storageKey);
+    } else {
+      return dataFromStorage;
+    }
+  };
 
   async function getData() {
-    try {
-      setisLoading(true);
-      await Promise.all([
-        getIndexData(),
-        getSectorData(),
-        getGainerLoserData(),
-        getBlockTr(),
-        getNews(),
-        getTopFinancials(),
-        getIpo(),
-        getBeta(),
-        getIndexMover(),
-      ]);
-      setdatafetched(true);
-      setisLoading(false);
-    } catch (error) {
-      setisLoading(false);
-      setdatafetched(false);
-    }
+    setisLoading(true);
+    const indexMinuteData = await getDataByStoreValidate(
+      "indexMinuteData",
+      "indexMinuteDataHomepage"
+    );
+    setindexData(indexMinuteData);
+
+    const sectorGainValueSummary = await getDataByStoreValidate(
+      "sectorGainValueSummary",
+      "sectorGainValueSummaryHomepage"
+    );
+    setsectorData(sectorGainValueSummary);
+
+    const news = await getDataByStoreValidate(
+      "news/all?limit=250",
+      "newsHomepage"
+    );
+    setnewsData(news);
+
+    const topFinancials = await getDataByStoreValidate(
+      "topFinancials?setlimit=12",
+      "topFinancialsHomepage"
+    );
+    settopFinancialsData(topFinancials);
+
+    const allStockBeta = await getDataByStoreValidate(
+      "allStockBeta?type=top&count=8",
+      "allStockBetaHomepage"
+    );
+    setbeta(allStockBeta);
+
+    const indexMover = await getDataByStoreValidate(
+      "indexMover?type=top&count=8",
+      "indexMoverHomepage"
+    );
+    setindexMover(indexMover);
+
+    const indexInfo = await getDataByStoreValidate(
+      "getIndexInfo",
+      "indexInfoHomepage"
+    );
+    dispatch(indexInfoActions.setData(indexInfo.Data));
+
+    const ipo = await getDataByStoreValidate(
+      "ipo",
+      "ipoHomepage",
+      true,
+      marketOpenStatus?.ipoUpdateTime
+    );
+    setipo(ipo);
+
+    const blockTr = await getDataByStoreValidate(
+      "blockTr/lastday",
+      "blockTrHomepage",
+      true,
+      marketOpenStatus?.dailyBlockTrUpdateDate
+    );
+    setblockTrData(blockTr);
+
+    setisLoading(false);
+    setdatafetched(true);
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     getData();
-    getIndexInfo();
-  }, []);
+  }, [marketOpenStatus]);
+
+  // async function getIndexData() {
+  //   const res = await fetch(
+  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/indexMinuteData`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   );
+  //   if (!res.ok) {
+  //     throw new Error("Failed to fetch data");
+  //   }
+  //   const data = await res.json();
+  //   setindexData(data);
+  // }
+  // async function getGainerLoserData() {
+  //   const res = await fetch(
+  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/topGainerLoser`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   );
+  //   if (!res.ok) {
+  //     throw new Error("Failed to fetch data");
+  //   }
+  //   const data = await res.json();
+  //   setgainerLoserData(data);
+  // }
+  // async function getIpo() {
+  //   const res = await fetch(
+  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/ipo`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   );
+  //   if (!res.ok) {
+  //     throw new Error("Failed to fetch data");
+  //   }
+  //   const data = await res.json();
+  //   setipo(data);
+  // }
+  // async function getSectorData() {
+  //   const res = await fetch(
+  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/sectorGainValueSummary`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   );
+  //   if (!res.ok) {
+  //     throw new Error("Failed to fetch data");
+  //   }
+  //   const data = await res.json();
+  //   setsectorData(data);
+  // }
+  // async function getBlockTr() {
+  //   const res = await fetch(
+  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/blockTr/lastday`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   );
+  //   if (!res.ok) {
+  //     throw new Error("Failed to fetch data");
+  //   }
+  //   const data = await res.json();
+  //   setblockTrData(data);
+  // }
+  // async function getNews() {
+  //   const res = await fetch(
+  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/news/all?limit=500`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   );
+  //   if (!res.ok) {
+  //     throw new Error("Failed to fetch data");
+  //   }
+  //   const data = await res.json();
+  //   setnewsData(data);
+  // }
+  // async function getTopFinancials() {
+  //   const res = await fetch(
+  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/topFinancials?setlimit=12`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   );
+  //   if (!res.ok) {
+  //     throw new Error("Failed to fetch data");
+  //   }
+  //   const data = await res.json();
+  //   settopFinancialsData(data);
+  // }
+  // async function getBeta() {
+  //   const res = await fetch(
+  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/allStockBeta?type=top&count=8`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   );
+  //   if (!res.ok) {
+  //     throw new Error("Failed to fetch data");
+  //   }
+  //   const data = await res.json();
+  //   setbeta(data);
+  // }
+  // async function getIndexMover() {
+  //   const res = await fetch(
+  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/indexMover?type=top&count=8`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   );
+  //   if (!res.ok) {
+  //     throw new Error("Failed to fetch data");
+  //   }
+  //   const data = await res.json();
+  //   setindexMover(data);
+  // }
+
+  // async function getIndexInfo() {
+  //   const res = await fetch(
+  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/getIndexInfo`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   );
+  //   if (!res.ok) {
+  //     throw new Error("Failed to fetch data");
+  //   }
+  //   const initdata = await res.json();
+  //   dispatch(indexInfoActions.setData(initdata.Data));
+  // }
+
+  // async function getData() {
+  //   try {
+  //     setisLoading(true);
+  //     await Promise.all([
+  //       getIndexData(),
+  //       getSectorData(),
+  //       getGainerLoserData(),
+  //       getBlockTr(),
+  //       getNews(),
+  //       getTopFinancials(),
+  //       getIpo(),
+  //       getBeta(),
+  //       getIndexMover(),
+  //     ]);
+  //     setdatafetched(true);
+  //     setisLoading(false);
+  //   } catch (error) {
+  //     setisLoading(false);
+  //     setdatafetched(false);
+  //   }
+  // }
 
   return (
     <Box>
@@ -266,17 +403,10 @@ export default function Home() {
               </Box>
             </Box>
 
-            <Divider />
+            {/* <Divider /> */}
 
             <Box>
-              {gainerLoserData && (
-                <Box>
-                  <GainerLoser
-                    data={gainerLoserData}
-                    handleButtonClick={handleButtonClick}
-                  />
-                </Box>
-              )}
+              <GainerLoser handleButtonClick={handleButtonClick} />
             </Box>
 
             <Divider light />

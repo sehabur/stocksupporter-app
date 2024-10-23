@@ -197,7 +197,7 @@ export default function Ipo() {
               {data.filter(
                 (item: any) => new Date(item.subscriptionEnd) >= new Date()
               ).length < 1 && (
-                <Typography sx={{ mt: 2 }}>
+                <Typography sx={{ mt: 2, color: "text.primary" }}>
                   There is no upcoming IPO to display
                 </Typography>
               )}
@@ -331,12 +331,18 @@ export default function Ipo() {
                     </Box>
                   </Paper>
                 ))}
+              {data.filter(
+                (item: any) => new Date(item.subscriptionEnd) < new Date()
+              ).length < 1 && (
+                <Typography sx={{ mt: 2, color: "text.primary" }}>
+                  There is no upcoming IPO to display
+                </Typography>
+              )}
             </Box>
           </Box>
           <Box>
             {data.length < 1 && (
               <Typography sx={{ mt: 2 }}>
-                {" "}
                 There is no IPO to display.
               </Typography>
             )}

@@ -6,7 +6,7 @@ export default async function FaqPage() {
   return (
     <Box
       component="main"
-      sx={{ bgcolor: "background.default", height: "90vh" }}
+      sx={{ bgcolor: "background.default", minHeight: "90vh" }}
     >
       <PageTitleSetter pageTitle="FAQ" />
       <Box sx={{ pt: 2 }}>

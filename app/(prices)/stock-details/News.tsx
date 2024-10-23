@@ -144,7 +144,7 @@ export default function News({ tradingCode }: any) {
             <Grid item xs={12} sm={4} key={item._id}>
               <Card
                 sx={{ minWidth: 275, bgcolor: "priceCardBgColor" }}
-                elevation={0}
+                variant="outlined"
               >
                 <CardContent
                   sx={{ pb: 1 }}
@@ -190,7 +190,7 @@ export default function News({ tradingCode }: any) {
                       (item.description.length > 125 ? ".." : "")}
                   </Typography>
                 </CardContent>
-                <CardActions sx={{ pt: 0, pl: 1.5 }}>
+                <CardActions sx={{ pt: 0, pb: 0.5, pl: 1.5 }}>
                   <Button
                     size="small"
                     endIcon={<ChevronRightRoundedIcon sx={{ ml: -0.7 }} />}

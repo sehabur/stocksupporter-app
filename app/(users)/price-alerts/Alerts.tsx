@@ -14,10 +14,10 @@ import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import { useDispatch, useSelector } from "react-redux";
 import { pageTitleActions } from "_store";
 import ToastMessage from "@/components/shared/ToastMessage";
-import SigninDialogContent from "@/components/shared/SigninDialogContent";
+import SigninDialogContent from "@/components/dialogs/SigninDialogContent";
 import Link from "next/link";
-import AlertSetDialog from "@/components/shared/AlertSetDialog";
-import PremiumDialogContent from "@/components/shared/PremiumDialogContent";
+import AlertSetDialog from "@/components/dialogs/AlertSetDialog";
+import PremiumDialogContent from "@/components/dialogs/PremiumDialogContent";
 
 const formInputsInitState = {
   price: "",

@@ -12,19 +12,19 @@ const labels = ["Uptrend", "Neutral", "Downtrend"];
 
 export default function MarketMoverChart({ data, rsi }: any) {
   return (
-    <Box sx={{ bgcolor: "secondaryBackground", pt: 3, pb: 3 }}>
+    <Box sx={{ bgcolor: "inherit", pt: 2, pb: 4 }}>
       <Paper
-        elevation={0}
+        variant="outlined"
         sx={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          pt: 3,
-          pb: 2,
+          pt: 2,
+          pb: 1.5,
           px: 2,
           mx: 2,
           borderRadius: 3,
-          bgcolor: "priceCardBgColor",
+          // bgcolor: "priceCardBgColor",
         }}
       >
         <Typography color="text.primary" sx={{ fontSize: "1.3rem" }}>
@@ -130,16 +130,17 @@ export default function MarketMoverChart({ data, rsi }: any) {
         </Box>
       </Paper>
       <Paper
-        elevation={0}
+        variant="outlined"
         sx={{
           alignItems: "center",
-          pt: 3,
-          pb: 3,
+          pt: 2,
+          pb: 2,
           px: 0,
+          mt: 3,
           mx: 2,
-          mt: 2,
           borderRadius: 3,
-          bgcolor: "priceCardBgColor",
+          // bgcolor: "priceCardBgColor",
+          maxWidth: 600,
         }}
       >
         <Typography

@@ -7,7 +7,7 @@ import NotificationsNoneRoundedIcon from "@mui/icons-material/NotificationsNoneR
 
 import { IconButton, useTheme } from "@mui/material";
 
-import AlertSetDialog from "../shared/AlertSetDialog";
+import AlertSetDialog from "../dialogs/AlertSetDialog";
 
 export default function AlertButton({
   tradingCode,

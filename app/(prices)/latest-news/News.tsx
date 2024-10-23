@@ -65,31 +65,6 @@ const options: any = [
   },
 ];
 
-// const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
-//   [`& .${toggleButtonGroupClasses.grouped}`]: {
-//     border: 0,
-//   },
-// }));
-
-// const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
-//   "&.MuiToggleButtonGroup-grouped": {
-//     borderRadius: "24px !important",
-//     border: `1px solid lightgrey !important`,
-//     marginRight: "8px",
-//     paddingLeft: "12px",
-//     paddingTop: "3px",
-//     paddingBottom: "3px",
-//     paddingRight: "12px",
-//     whiteSpace: "nowrap",
-//     "&.Mui-selected": {
-//       color: grey[50],
-//       backgroundColor: theme.palette.primary.main,
-//     },
-//   },
-//   color: theme.palette.text.primary,
-//   backgroundColor: theme.palette.divider,
-// }));
-
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   [`& .${toggleButtonGroupClasses.grouped}`]: {
     border: 0,
@@ -255,7 +230,6 @@ export default function News() {
             left: 0,
             right: 0,
             bgcolor: "background.default",
-            py: 1.5,
             px: 2,
             zIndex: 1000,
           }}
@@ -267,6 +241,8 @@ export default function News() {
             onChange={handleAlignmentChange}
             aria-label="Platform"
             sx={{
+              pt: 1.2,
+              pb: 1,
               display: "flex",
               overflowX: "auto",
               justifyContent: "flex-start",
@@ -285,68 +261,74 @@ export default function News() {
             ))}
           </StyledToggleButtonGroup>
         </Box>
-        <Grid container spacing={1.5} sx={{ mt: 4 }}>
-          {news.map((item: any) => (
-            <Grid item xs={12} key={item._id}>
-              <Card
-                sx={{ minWidth: 275, bgcolor: "priceCardBgColor" }}
-                variant="outlined"
-                key={item._id}
-              >
-                <CardContent
-                  sx={{ pb: 0 }}
-                  onClick={() => handleItemClick(item)}
+        <Box sx={{ bgcolor: "secondaryBackground", px: 2 }}>
+          <Grid container spacing={1.5} sx={{ mt: 4 }}>
+            {news.map((item: any) => (
+              <Grid item xs={12} key={item._id}>
+                <Card
+                  sx={{
+                    minWidth: 275,
+                    bgcolor: "priceCardBgColor",
+                    borderRadius: 1,
+                  }}
+                  variant="outlined"
+                  key={item._id}
                 >
-                  <Typography
-                    gutterBottom
-                    variant="h5"
-                    component="div"
-                    sx={{ fontWeight: 700, fontSize: "1rem" }}
-                  >
-                    {item.title}
-                  </Typography>
-                  <Typography sx={{ mb: 0.7 }} color="text.secondary">
-                    <Stack direction="row" alignItems="center">
-                      <ScheduleRoundedIcon
-                        color="success"
-                        sx={{ fontSize: "1rem", mr: 1 }}
-                      />
-                      <ReactTimeAgo
-                        date={item.time || item.date}
-                        locale="en-US"
-                        style={{ color: "#089981" }}
-                      />
-                      <Chip
-                        label={DateTime.fromISO(item.date).toFormat(
-                          "dd MMM, yyyy"
-                        )}
-                        size="small"
-                        sx={{
-                          ml: 2,
-                          borderRadius: 1,
-                          fontSize: ".875rem",
-                        }}
-                      />
-                    </Stack>
-                  </Typography>
-                  <Typography>
-                    {item.description.slice(0, 125) +
-                      (item.description.length > 125 ? ".." : "")}
-                  </Typography>
-                </CardContent>
-                <CardActions sx={{ pt: 0, pl: 1.5 }}>
-                  <Button
-                    size="small"
-                    endIcon={<ChevronRightRoundedIcon sx={{ ml: -0.7 }} />}
+                  <CardContent
+                    sx={{ pb: 0 }}
                     onClick={() => handleItemClick(item)}
                   >
-                    Read more
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+                    <Typography
+                      gutterBottom
+                      variant="h5"
+                      component="div"
+                      sx={{ fontWeight: 700, fontSize: "1rem" }}
+                    >
+                      {item.title}
+                    </Typography>
+                    <Typography sx={{ mb: 0.7 }} color="text.secondary">
+                      <Stack direction="row" alignItems="center">
+                        <ScheduleRoundedIcon
+                          color="success"
+                          sx={{ fontSize: "1rem", mr: 1 }}
+                        />
+                        <ReactTimeAgo
+                          date={item.time || item.date}
+                          locale="en-US"
+                          style={{ color: "#089981" }}
+                        />
+                        <Chip
+                          label={DateTime.fromISO(item.date).toFormat(
+                            "dd MMM, yyyy"
+                          )}
+                          size="small"
+                          sx={{
+                            ml: 2,
+                            borderRadius: 1,
+                            fontSize: ".875rem",
+                          }}
+                        />
+                      </Stack>
+                    </Typography>
+                    <Typography>
+                      {item.description.slice(0, 125) +
+                        (item.description.length > 125 ? ".." : "")}
+                    </Typography>
+                  </CardContent>
+                  <CardActions sx={{ pt: 0, pb: 0.4, pl: 1.5 }}>
+                    <Button
+                      size="small"
+                      endIcon={<ChevronRightRoundedIcon sx={{ ml: -0.7 }} />}
+                      onClick={() => handleItemClick(item)}
+                    >
+                      Read more
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
       </Box>
     </Box>
   );

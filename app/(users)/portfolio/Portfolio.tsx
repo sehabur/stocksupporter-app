@@ -14,7 +14,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import SigninDialogContent from "@/components/shared/SigninDialogContent";
+import SigninDialogContent from "@/components/dialogs/SigninDialogContent";
 
 export default function Portfolio() {
   const [portfolio, setPortfolio] = useState<any>();
@@ -286,7 +286,7 @@ export default function Portfolio() {
                   }}
                 >
                   <Button
-                    variant="outlined"
+                    variant="contained"
                     size="small"
                     color="error"
                     sx={{ ml: 1.5 }}
@@ -295,7 +295,7 @@ export default function Portfolio() {
                     Delete
                   </Button>
                   <Button
-                    variant="outlined"
+                    variant="contained"
                     size="small"
                     color="primary"
                     sx={{ ml: 1.5 }}

@@ -7,12 +7,14 @@ import pageTitleSlice from "./pageTitleSlice";
 import indexInfoSlice from "./indexInfoSlice";
 import favoriteSlice from "./favoriteSlice";
 import marketOpenStatusSlice from "./marketOpenStatusSlice";
+import allGainerLoserSlice from "./allGainerLoserSlice";
 
 const store = configureStore({
   reducer: {
     themeColor: themeColorSlice.reducer,
     pageTitle: pageTitleSlice.reducer,
     latestPrice: latestPriceSlice.reducer,
+    allGainerLoser: allGainerLoserSlice.reducer,
     auth: authSlice.reducer,
     favorite: favoriteSlice.reducer,
     marketOpenStatus: marketOpenStatusSlice.reducer,
@@ -22,6 +24,7 @@ const store = configureStore({
 
 export const themeColorActions = themeColorSlice.actions;
 export const latestPriceActions = latestPriceSlice.actions;
+export const allGainerLoserActions = allGainerLoserSlice.actions;
 export const authActions = authSlice.actions;
 export const pageTitleActions = pageTitleSlice.actions;
 export const indexInfoActions = indexInfoSlice.actions;
