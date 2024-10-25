@@ -135,7 +135,7 @@ export default function IndexDetails() {
 
   React.useEffect(() => {
     getData();
-  }, []);
+  }, [tradingCode]);
 
   return (
     <Box>

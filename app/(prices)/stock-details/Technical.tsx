@@ -157,7 +157,7 @@ export default function Technical(props: any) {
                           align="right"
                           sx={{ fontWeight: 700, fontSize: "1rem" }}
                         >
-                          {sma10}
+                          {sma10 || "-"}
                         </TableCell>
                       </TableRow>
                       <TableRow hover={true}>
@@ -168,7 +168,7 @@ export default function Technical(props: any) {
                           align="right"
                           sx={{ fontWeight: 700, fontSize: "1rem" }}
                         >
-                          {sma20}
+                          {sma20 || "-"}
                         </TableCell>
                       </TableRow>
                       <TableRow hover={true}>
@@ -179,7 +179,7 @@ export default function Technical(props: any) {
                           align="right"
                           sx={{ fontWeight: 700, fontSize: "1rem" }}
                         >
-                          {sma30}
+                          {sma30 || "-"}
                         </TableCell>
                       </TableRow>
                       <TableRow hover={true}>
@@ -190,7 +190,7 @@ export default function Technical(props: any) {
                           align="right"
                           sx={{ fontWeight: 700, fontSize: "1rem" }}
                         >
-                          {sma50}
+                          {sma50 || "-"}
                         </TableCell>
                       </TableRow>
                       <TableRow hover={true}>
@@ -201,7 +201,7 @@ export default function Technical(props: any) {
                           align="right"
                           sx={{ fontWeight: 700, fontSize: "1rem" }}
                         >
-                          {sma100}
+                          {sma100 || "-"}
                         </TableCell>
                       </TableRow>
                       <TableRow hover={true}>
@@ -212,7 +212,7 @@ export default function Technical(props: any) {
                           align="right"
                           sx={{ fontWeight: 700, fontSize: "1rem" }}
                         >
-                          {sma200}
+                          {sma200 || "-"}
                         </TableCell>
                       </TableRow>
                     </TableBody>
@@ -245,7 +245,7 @@ export default function Technical(props: any) {
                           align="right"
                           sx={{ fontWeight: 700, fontSize: "1rem" }}
                         >
-                          {ema10}
+                          {ema10 || "-"}
                         </TableCell>
                       </TableRow>
                       <TableRow hover={true}>
@@ -256,7 +256,7 @@ export default function Technical(props: any) {
                           align="right"
                           sx={{ fontWeight: 700, fontSize: "1rem" }}
                         >
-                          {ema20}
+                          {ema20 || "-"}
                         </TableCell>
                       </TableRow>
                       <TableRow hover={true}>
@@ -267,7 +267,7 @@ export default function Technical(props: any) {
                           align="right"
                           sx={{ fontWeight: 700, fontSize: "1rem" }}
                         >
-                          {ema30}
+                          {ema30 || "-"}
                         </TableCell>
                       </TableRow>
                       <TableRow hover={true}>
@@ -278,7 +278,7 @@ export default function Technical(props: any) {
                           align="right"
                           sx={{ fontWeight: 700, fontSize: "1rem" }}
                         >
-                          {ema50}
+                          {ema50 || "-"}
                         </TableCell>
                       </TableRow>
                       <TableRow hover={true}>
@@ -289,7 +289,7 @@ export default function Technical(props: any) {
                           align="right"
                           sx={{ fontWeight: 700, fontSize: "1rem" }}
                         >
-                          {ema100}
+                          {ema100 || "-"}
                         </TableCell>
                       </TableRow>
                       <TableRow hover={true}>
@@ -300,7 +300,7 @@ export default function Technical(props: any) {
                           align="right"
                           sx={{ fontWeight: 700, fontSize: "1rem" }}
                         >
-                          {ema200}
+                          {ema200 || "-"}
                         </TableCell>
                       </TableRow>
                     </TableBody>
@@ -478,7 +478,7 @@ export default function Technical(props: any) {
                   </Table>
                 </TableContainer>
               </Box>
-              <Box sx={{ mb: 4 }}>
+              <Box sx={{ mb: 6 }}>
                 <Box>
                   <CandlestickChartRoundedIcon
                     color="primary"
@@ -589,7 +589,8 @@ export default function Technical(props: any) {
                       Last 1 year
                     </Typography>
                   </Box>
-                  <Box sx={{ maxWidth: 350 }}>
+                  <Box sx={{ maxWidth: 350, mt: 3 }}>
+                    <Divider light variant="middle" />
                     {technicals?.patterns.length > 0 ? (
                       technicals?.patterns.map((item: any) => (
                         <>
@@ -611,7 +612,7 @@ export default function Technical(props: any) {
                         </>
                       ))
                     ) : (
-                      <Box sx={{ mt: 3 }}>
+                      <Box sx={{ mt: 2, ml: 2 }}>
                         <Typography color="warning.main">
                           No patterns
                         </Typography>

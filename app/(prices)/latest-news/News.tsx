@@ -148,9 +148,10 @@ export default function News() {
               : item.description.search(text);
           if (position !== -1) return item;
         })
-        .slice(0, 300);
+        .slice(0, 250);
 
       console.log(newData.length);
+
       setNews(newData);
     }
   };
@@ -173,8 +174,10 @@ export default function News() {
   }, []);
 
   React.useEffect(() => {
-    setNews(data.slice(0, 300));
+    setNews(data.slice(0, 250));
   }, [data]);
+
+  console.log(news.length);
 
   return (
     <Box>

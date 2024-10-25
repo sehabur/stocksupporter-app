@@ -19,7 +19,7 @@ export default async function StockDetails() {
       component="main"
       sx={{
         bgcolor: "background.default",
-        maxWidth: 1200,
+        maxWidth: 950,
         minHeight: "95vh",
         mx: "auto",
       }}

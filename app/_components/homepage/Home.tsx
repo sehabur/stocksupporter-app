@@ -134,6 +134,15 @@ export default function Home() {
     );
     setsectorData(sectorGainValueSummary);
 
+    setisLoading(false);
+    setdatafetched(true); // Show UI as soon as these 2 API call done //
+
+    const indexInfo = await getDataByStoreValidate(
+      "getIndexInfo",
+      "indexInfoHomepage"
+    );
+    dispatch(indexInfoActions.setData(indexInfo.Data));
+
     const news = await getDataByStoreValidate(
       "news/all?limit=250",
       "newsHomepage"
@@ -146,31 +155,17 @@ export default function Home() {
     );
     settopFinancialsData(topFinancials);
 
-    const allStockBeta = await getDataByStoreValidate(
-      "allStockBeta?type=top&count=8",
-      "allStockBetaHomepage"
-    );
-    setbeta(allStockBeta);
-
     const indexMover = await getDataByStoreValidate(
       "indexMover?type=top&count=8",
       "indexMoverHomepage"
     );
     setindexMover(indexMover);
 
-    const indexInfo = await getDataByStoreValidate(
-      "getIndexInfo",
-      "indexInfoHomepage"
+    const allStockBeta = await getDataByStoreValidate(
+      "allStockBeta?type=top&count=8",
+      "allStockBetaHomepage"
     );
-    dispatch(indexInfoActions.setData(indexInfo.Data));
-
-    const ipo = await getDataByStoreValidate(
-      "ipo",
-      "ipoHomepage",
-      true,
-      marketOpenStatus?.ipoUpdateTime
-    );
-    setipo(ipo);
+    setbeta(allStockBeta);
 
     const blockTr = await getDataByStoreValidate(
       "blockTr/lastday",
@@ -180,8 +175,13 @@ export default function Home() {
     );
     setblockTrData(blockTr);
 
-    setisLoading(false);
-    setdatafetched(true);
+    const ipo = await getDataByStoreValidate(
+      "ipo",
+      "ipoHomepage",
+      true,
+      marketOpenStatus?.ipoUpdateTime
+    );
+    setipo(ipo);
   }
 
   useEffect(() => {

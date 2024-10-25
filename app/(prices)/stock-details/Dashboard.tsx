@@ -150,7 +150,7 @@ export default function Dashboard() {
 
   React.useEffect(() => {
     getStockDetails();
-  }, []);
+  }, [tradingCode]);
 
   return (
     <Box>
@@ -160,7 +160,7 @@ export default function Dashboard() {
           <Box sx={{ bgcolor: "background.default", pt: 2, pb: 2 }}>
             <Box
               sx={{
-                maxWidth: 600,
+                maxWidth: 850,
                 mx: "auto",
                 px: 2,
               }}

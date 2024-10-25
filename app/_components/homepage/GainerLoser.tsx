@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Link from "next/link";
 
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup, {
@@ -132,7 +132,7 @@ export default function GainerLoser({ handleButtonClick }: any) {
 
   return (
     <Box sx={{ bgcolor: "secondaryBackground", py: 2 }}>
-      <LoadingSpinner open={!allGainerLoser?.dataFetched} />
+      {/* <LoadingSpinner open={!allGainerLoser?.dataFetched} /> */}
       <Box sx={{ mb: 2 }}>
         <Box sx={{ mx: 1 }}>
           <Button
@@ -184,7 +184,13 @@ export default function GainerLoser({ handleButtonClick }: any) {
             </StyledToggleButtonGroup>
           </Box>
         </Box>
+
         <Box sx={{ px: 1.5, pt: 1.5 }}>
+          {!allGainerLoser?.dataFetched && (
+            <Typography color="text.secondary" sx={{ my: 2, ml: 1 }}>
+              Data is loading...
+            </Typography>
+          )}
           {gainerData?.slice(0, 6).map((item: any) => (
             <MobileViewPriceCard item={item} key={item.id} />
           ))}
@@ -248,6 +254,11 @@ export default function GainerLoser({ handleButtonClick }: any) {
       </Box>
 
       <Box sx={{ px: 1.5, pt: 1.5 }}>
+        {!allGainerLoser?.dataFetched && (
+          <Typography color="text.secondary" sx={{ my: 2, ml: 1 }}>
+            Data is loading...
+          </Typography>
+        )}
         {loserData?.slice(0, 6).map((item: any) => (
           <MobileViewPriceCard item={item} key={item.id} />
         ))}

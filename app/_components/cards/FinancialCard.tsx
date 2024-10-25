@@ -148,8 +148,9 @@ export default function FinancialCard(props: any) {
             disableRipple
             onClick={() => handleItemClick(dialogtype)}
             sx={{
+              // fontFamily: "'DM Sans', sans-serif",
               color: data?.color || "text.secondary",
-              fontSize: ".83rem",
+              fontSize: ".8rem",
               fontWeight: 500,
               pl: 1.5,
               pr: 1,

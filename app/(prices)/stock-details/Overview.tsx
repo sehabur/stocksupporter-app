@@ -267,7 +267,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
   };
 
   return (
-    <Box sx={{ maxWidth: "550px", mx: "auto", py: 2, px: 2 }}>
+    <Box sx={{ maxWidth: 850, mx: "auto", py: 2, px: 2 }}>
       <Button
         onClick={() => {
           handleButtonClick(
@@ -762,8 +762,8 @@ export default function Overview({ stock, handleButtonClick }: any) {
           </Grid>
 
           <Grid item xs={4}>
-            <Typography color="text.secondary" sx={{ fontSize: ".875rem" }}>
-              Market Capital
+            <Typography color="text.secondary" sx={{ fontSize: ".85rem" }}>
+              Market Capitalization
             </Typography>
             <Stack direction="row" alignItems="baseline" flexWrap="wrap">
               <Typography
@@ -782,7 +782,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
             </Stack>
           </Grid>
           <Grid item xs={4}>
-            <Typography color="text.secondary" sx={{ fontSize: ".875rem" }}>
+            <Typography color="text.secondary" sx={{ fontSize: ".85rem" }}>
               Paid-up Capital
             </Typography>
             <Stack direction="row" alignItems="baseline" flexWrap="wrap">
@@ -802,8 +802,8 @@ export default function Overview({ stock, handleButtonClick }: any) {
             </Stack>
           </Grid>
           <Grid item xs={4}>
-            <Typography color="text.secondary" sx={{ fontSize: ".875rem" }}>
-              Authorized Cap
+            <Typography color="text.secondary" sx={{ fontSize: ".85rem" }}>
+              Authorized Capital
             </Typography>
             <Stack direction="row" alignItems="baseline" flexWrap="wrap">
               <Typography
@@ -844,8 +844,8 @@ export default function Overview({ stock, handleButtonClick }: any) {
           </Grid>
 
           <Grid item xs={4}>
-            <Typography color="text.secondary" sx={{ fontSize: ".875rem" }}>
-              Shot-term loan
+            <Typography color="text.secondary" sx={{ fontSize: ".85rem" }}>
+              Short term Loan
             </Typography>
             <Stack direction="row" alignItems="baseline" flexWrap="wrap">
               <Typography
@@ -867,8 +867,8 @@ export default function Overview({ stock, handleButtonClick }: any) {
           </Grid>
 
           <Grid item xs={4}>
-            <Typography color="text.secondary" sx={{ fontSize: ".875rem" }}>
-              Long-term loan
+            <Typography color="text.secondary" sx={{ fontSize: ".85rem" }}>
+              Long term Loan
             </Typography>
             <Stack direction="row" alignItems="baseline" flexWrap="wrap">
               <Typography
@@ -891,7 +891,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
 
           <Grid item xs={4}>
             <Typography color="text.secondary" sx={{ fontSize: ".875rem" }}>
-              {dates.agmPrefix} AGM Date
+              {dates.agmPrefix} AGM date
             </Typography>
             <Stack direction="row" alignItems="baseline">
               <Typography
@@ -907,11 +907,11 @@ export default function Overview({ stock, handleButtonClick }: any) {
           </Grid>
           <Grid item xs={4}>
             <Typography
-              noWrap
+              // noWrap
               color="text.secondary"
               sx={{ fontSize: ".875rem" }}
             >
-              {dates.recordPrefix} Record Date
+              {dates.recordPrefix} Rec date
             </Typography>
             <Stack direction="row" alignItems="baseline">
               <Typography

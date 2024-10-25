@@ -295,6 +295,7 @@ export default function Header() {
     const storage: { value: any } = await Preferences.get({
       key: "latestPrice",
     });
+
     if (!storage.value) {
       return await fetchLatestPriceFromApi();
     }
@@ -319,16 +320,20 @@ export default function Header() {
     const storage: { value: any } = await Preferences.get({
       key: "allGainerLoser",
     });
+
     if (!storage.value) {
       return await fetchGainerLoserDataFromApi();
     }
 
-    const { pullTime: pullTimeFromStorage } = JSON.parse(storage.value);
+    const { data: allGainerLoserFromStorage, pullTime: pullTimeFromStorage } =
+      JSON.parse(storage.value);
 
     const dataFetchEndTime = calcDataFetchEndTime(marketOpenStatus);
 
     if (new Date(pullTimeFromStorage) < new Date(dataFetchEndTime)) {
       return await fetchGainerLoserDataFromApi();
+    } else {
+      dispatch(allGainerLoserActions.setData(allGainerLoserFromStorage));
     }
   };
 
@@ -433,7 +438,7 @@ export default function Header() {
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [marketOpenStatusReduxSlice]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -442,7 +447,7 @@ export default function Header() {
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [marketOpenStatusReduxSlice, auth]);
 
   useEffect(() => {
     const interval = setInterval(() => {

@@ -146,6 +146,8 @@ export default function Dashboard() {
 
   const [variantAlignment, setVariantAlignment] = React.useState<any>(variant);
 
+  console.log(allGainerLoser, initdata, data);
+
   React.useEffect(() => {
     setinitdata(allGainerLoser?.data);
   }, [allGainerLoser]);
@@ -155,6 +157,7 @@ export default function Dashboard() {
       id: item._id,
       tradingCode: item.tradingCode,
       type: item.type,
+      time: item.time,
       close: item.close,
       sector: item.sector,
       category: item.category,

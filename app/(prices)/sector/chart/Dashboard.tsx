@@ -179,7 +179,7 @@ export default function Dashboard() {
 
   React.useEffect(() => {
     getData();
-  }, []);
+  }, [sectorTag]);
 
   return (
     <Box>
