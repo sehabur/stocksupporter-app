@@ -30,11 +30,8 @@ import ToggleButtonGroup, {
 } from "@mui/material/ToggleButtonGroup";
 import { DateTime } from "luxon";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
-import { grey } from "@mui/material/colors";
 import { useDispatch } from "react-redux";
 import { pageTitleActions } from "_store";
-import { useRouter } from "next/navigation";
-import { AUTO_RELOAD_TIME_MS } from "@/data/constants";
 import AutoReload from "@/components/shared/AutoReload";
 
 const options: any = [
@@ -72,8 +69,8 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 }));
 const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   "&.MuiToggleButtonGroup-grouped": {
-    borderRadius: "24px !important",
-    marginRight: "8px",
+    borderRadius: "6px !important",
+    marginRight: "10px",
     border: `1px solid lightgrey !important`,
     paddingLeft: "12px",
     paddingTop: "3px",
@@ -90,8 +87,6 @@ const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
 }));
 
 export default function News() {
-  const router = useRouter();
-
   const dispatch = useDispatch();
 
   dispatch(pageTitleActions.setPageTitle("News"));
@@ -177,8 +172,6 @@ export default function News() {
     setNews(data.slice(0, 250));
   }, [data]);
 
-  console.log(news.length);
-
   return (
     <Box>
       <LoadingSpinner open={isLoading} />
@@ -189,11 +182,13 @@ export default function News() {
         fullWidth
         maxWidth="sm"
       >
-        <DialogTitle sx={{ fontWeight: 700, fontSize: "1.1rem", mr: 2 }}>
-          {dialogContent?.title}
-        </DialogTitle>
+        <DialogTitle sx={{ mr: 2 }}>{dialogContent?.title}</DialogTitle>
         <DialogContent dividers>
-          <Stack direction="row" alignItems="center" sx={{ mb: 2 }}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            sx={{ mb: 2, fontSize: "1.1rem" }}
+          >
             <ScheduleRoundedIcon
               color="success"
               sx={{ fontSize: "1.2rem", mr: 1.3 }}
@@ -204,9 +199,7 @@ export default function News() {
               style={{ fontSize: "1rem", color: "#089981" }}
             />
           </Stack>
-          <Typography sx={{ fontSize: "1rem", pb: 2 }}>
-            {dialogContent?.description}
-          </Typography>
+          <Typography sx={{ pb: 2 }}>{dialogContent?.description}</Typography>
         </DialogContent>
 
         <IconButton
@@ -283,9 +276,7 @@ export default function News() {
                   >
                     <Typography
                       gutterBottom
-                      variant="h5"
-                      component="div"
-                      sx={{ fontWeight: 700, fontSize: "1rem" }}
+                      sx={{ fontWeight: 600, fontSize: "1rem" }}
                     >
                       {item.title}
                     </Typography>

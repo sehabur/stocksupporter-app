@@ -3,7 +3,15 @@ import React from "react";
 import Link from "next/link";
 import { DateTime } from "luxon";
 import { useSelector } from "react-redux";
-import { Avatar, Box, Button, Chip, Divider, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Chip,
+  Divider,
+  Paper,
+  Typography,
+} from "@mui/material";
 import WorkspacePremiumRoundedIcon from "@mui/icons-material/WorkspacePremiumRounded";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import SigninDialogContent from "@/components/dialogs/SigninDialogContent";
@@ -33,9 +41,12 @@ export default function Profile() {
               </Typography>
             </Box>
 
-            <Divider />
+            {/* <Divider /> */}
 
-            <Box sx={{ my: 2 }}>
+            <Paper
+              variant="outlined"
+              sx={{ mt: 3, mb: 3, p: 2, borderRadius: 3 }}
+            >
               <Typography
                 color="text.secondary"
                 sx={{ mb: 2, fontSize: "1rem" }}
@@ -49,11 +60,11 @@ export default function Profile() {
               <Typography color="text.primary" sx={{ mt: 1 }}>
                 Phone: {auth.phone || "No phone number"}
               </Typography>
-            </Box>
+            </Paper>
 
-            <Divider />
+            {/* <Divider /> */}
 
-            <Box sx={{ my: 2 }}>
+            <Paper variant="outlined" sx={{ my: 2, p: 2, borderRadius: 3 }}>
               <Typography
                 sx={{ mb: 2, fontSize: "1rem" }}
                 color="text.secondary"
@@ -90,7 +101,7 @@ export default function Profile() {
                   />
                 </>
               )}
-            </Box>
+            </Paper>
 
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mt: 4 }}>
               <Button

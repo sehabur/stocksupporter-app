@@ -50,8 +50,8 @@ export default function News({ news }: any) {
       >
         <DialogTitle
           sx={{
-            fontWeight: { xs: 700, sm: 500 },
             fontSize: { xs: "1.2rem", sm: "1.4rem" },
+            mr: 2,
           }}
         >
           {dialogContent?.title}
@@ -68,9 +68,7 @@ export default function News({ news }: any) {
               style={{ fontSize: "1rem", color: "#089981" }}
             />
           </Stack>
-          <Typography sx={{ fontSize: "1rem", pb: 2 }}>
-            {dialogContent?.description}
-          </Typography>
+          <Typography sx={{ pb: 2 }}>{dialogContent?.description}</Typography>
         </DialogContent>
 
         <IconButton
@@ -118,10 +116,8 @@ export default function News({ news }: any) {
                 >
                   <Typography
                     gutterBottom
-                    variant="h5"
-                    component="div"
                     sx={{
-                      fontWeight: { xs: 700, sm: 500 },
+                      fontWeight: { xs: 600, sm: 600 },
                       fontSize: { xs: "1.1rem", sm: "1.3rem" },
                     }}
                   >
@@ -151,7 +147,7 @@ export default function News({ news }: any) {
                       />
                     </Stack>
                   </Typography>
-                  <Typography sx={{ fontSize: ".9rem" }}>
+                  <Typography sx={{ fontSize: ".875rem" }}>
                     {item.description.slice(0, 125) +
                       (item.description.length > 125 ? ".." : "")}
                   </Typography>

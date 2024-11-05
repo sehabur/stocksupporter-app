@@ -1,7 +1,9 @@
 "use client";
-import * as React from "react";
+import React from "react";
+
 import { DateTime } from "luxon";
-import LoadingSpinner from "@/components/shared/LoadingSpinner";
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
 
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -10,20 +12,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Box, Typography, Paper, Chip, Divider } from "@mui/material";
-import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { pageTitleActions } from "_store";
-import { AUTO_RELOAD_TIME_MS } from "@/data/constants";
 
-// function calculateAverage(values: number[]) {
-//   if (values.length === 0) return 0; // Handle empty array case
-//   const sum = values.reduce(
-//     (accumulator, currentValue) => accumulator + currentValue,
-//     0
-//   );
-//   const average = sum / values.length;
-//   return average.toFixed(2);
-// }
+import { pageTitleActions } from "_store";
+import LoadingSpinner from "@/components/shared/LoadingSpinner";
 
 function getBlockTrSummary(data: any) {
   let quantity = 0;
@@ -46,6 +37,7 @@ function getBlockTrSummary(data: any) {
 
 export default function BlockTransection() {
   const [data, setdata] = React.useState<any>([]);
+
   const [summary, setsummary] = React.useState<any>({
     quantity: 0,
     value: 0,
@@ -59,7 +51,7 @@ export default function BlockTransection() {
 
   const dispatch = useDispatch();
 
-  dispatch(pageTitleActions.setPageTitle("Block Transections"));
+  dispatch(pageTitleActions.setPageTitle("Block Trnx"));
 
   const handleButtonClick = (href: string) => {
     router.push(href);
@@ -198,10 +190,10 @@ export default function BlockTransection() {
             <TableRow
               sx={{
                 ".MuiTableCell-head": {
-                  fontWeight: 700,
-                  color: "text.primary",
+                  fontWeight: 500,
+                  color: "text.secondary",
                   lineHeight: 1.4,
-                  py: 1,
+                  py: 1.3,
                 },
               }}
             >

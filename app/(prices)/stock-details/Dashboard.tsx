@@ -170,6 +170,7 @@ export default function Dashboard() {
                   color: "text.primary",
                   fontSize: "1.2rem",
                   fontWeight: 500,
+                  mb: 1,
                 }}
               >
                 {stock.fundamentals?.companyName}

@@ -88,7 +88,6 @@ export default function News({ tradingCode }: any) {
       >
         <DialogTitle
           sx={{
-            fontWeight: 700,
             fontSize: "1.1rem",
             mr: 2,
           }}
@@ -107,9 +106,7 @@ export default function News({ tradingCode }: any) {
               style={{ fontSize: "1rem", color: "#089981" }}
             />
           </Stack>
-          <Typography sx={{ fontSize: "1rem", pb: 2 }}>
-            {dialogContent?.description}
-          </Typography>
+          <Typography sx={{ pb: 2 }}>{dialogContent?.description}</Typography>
         </DialogContent>
 
         <IconButton
@@ -155,7 +152,7 @@ export default function News({ tradingCode }: any) {
                     variant="h5"
                     component="div"
                     sx={{
-                      fontWeight: { xs: 700, sm: 500 },
+                      fontWeight: { xs: 600, sm: 600 },
                       fontSize: { xs: "1.1rem", sm: "1.3rem" },
                     }}
                   >
@@ -185,7 +182,7 @@ export default function News({ tradingCode }: any) {
                       />
                     </Stack>
                   </Typography>
-                  <Typography sx={{ fontSize: ".9rem" }}>
+                  <Typography sx={{ fontSize: ".875rem" }}>
                     {item.description.slice(0, 125) +
                       (item.description.length > 125 ? ".." : "")}
                   </Typography>

@@ -60,7 +60,7 @@ export default function IndexInfoCard({ data }: any) {
             fontFamily: "'Nunito Sans', sans-serif",
           }}
         >
-          {addPlusSign(indexLatestData?.percentChange)}
+          {addPlusSign(indexLatestData?.percentChange)}%
         </Typography>
       </Stack>
       <Stack direction="row" alignItems="center" justifyContent="flex-start">

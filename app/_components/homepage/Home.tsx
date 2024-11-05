@@ -18,7 +18,6 @@ import Ipo from "@/components/homepage/Ipo";
 import Beta from "@/components/homepage/Beta";
 import IndexMover from "@/components/homepage/IndexMover";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
-import { AUTO_RELOAD_TIME_MS } from "@/data/constants";
 
 import { indexInfoActions, pageTitleActions } from "_store";
 import AutoReload from "../shared/AutoReload";
@@ -26,6 +25,12 @@ import { Preferences } from "@capacitor/preferences";
 import { calcDataFetchEndTime, getIsMarketOpen } from "_helper";
 
 export default function Home() {
+  const dispatch = useDispatch();
+
+  dispatch(pageTitleActions.setPageTitle("Homepage"));
+
+  const router = useRouter();
+
   const [indexData, setindexData] = useState<{ latest: {}; rsi: number }>();
 
   const [sectorData, setsectorData] = useState();
@@ -46,13 +51,7 @@ export default function Home() {
 
   const [datafetched, setdatafetched] = useState(false);
 
-  const router = useRouter();
-
-  const dispatch = useDispatch();
-
   const marketOpenStatus = useSelector((state: any) => state.marketOpenStatus);
-
-  dispatch(pageTitleActions.setPageTitle("Homepage"));
 
   const handleButtonClick = (href: string) => {
     router.push(href);
@@ -80,6 +79,7 @@ export default function Home() {
         pullTime: new Date().toISOString(),
       }),
     });
+
     return initdata;
   }
 
@@ -87,7 +87,17 @@ export default function Home() {
     endpoint: string,
     storageKey: string,
     isCustomDataFetchEndTime: boolean = false,
-    customDataFetchEndTimeValue: string = ""
+    customDataFetchEndData: {
+      endDatetime: string;
+      isCustomTime: boolean;
+      hour: number;
+      minute: number;
+    } = {
+      endDatetime: "",
+      isCustomTime: false,
+      hour: 0,
+      minute: 0,
+    }
   ) => {
     if (getIsMarketOpen(marketOpenStatus)) {
       return await fetchDataFromApi(endpoint, storageKey);
@@ -106,12 +116,19 @@ export default function Home() {
     let dataFetchEndTime;
 
     if (isCustomDataFetchEndTime) {
-      dataFetchEndTime = new Date(customDataFetchEndTimeValue);
+      const { endDatetime, isCustomTime, hour, minute } =
+        customDataFetchEndData;
+
+      dataFetchEndTime = new Date(endDatetime);
+
+      if (isCustomTime) {
+        dataFetchEndTime.setUTCHours(hour, minute, 0, 0);
+      }
     } else {
       dataFetchEndTime = calcDataFetchEndTime(marketOpenStatus);
     }
 
-    // console.log(endpoint, dataFetchEndTime);
+    console.log(storageKey, dataFetchEndTime);
 
     if (new Date(pullTime) < new Date(dataFetchEndTime)) {
       return await fetchDataFromApi(endpoint, storageKey);
@@ -122,6 +139,7 @@ export default function Home() {
 
   async function getData() {
     setisLoading(true);
+
     const indexMinuteData = await getDataByStoreValidate(
       "indexMinuteData",
       "indexMinuteDataHomepage"
@@ -171,206 +189,27 @@ export default function Home() {
       "blockTr/lastday",
       "blockTrHomepage",
       true,
-      marketOpenStatus?.dailyBlockTrUpdateDate
+      {
+        endDatetime: marketOpenStatus?.dailyBlockTrUpdateDate,
+        isCustomTime: true,
+        hour: 9,
+        minute: 55,
+      }
     );
     setblockTrData(blockTr);
 
-    const ipo = await getDataByStoreValidate(
-      "ipo",
-      "ipoHomepage",
-      true,
-      marketOpenStatus?.ipoUpdateTime
-    );
+    const ipo = await getDataByStoreValidate("ipo", "ipoHomepage", true, {
+      endDatetime: marketOpenStatus?.ipoUpdateTime,
+      isCustomTime: false,
+      hour: 0,
+      minute: 0,
+    });
     setipo(ipo);
   }
 
   useEffect(() => {
     getData();
   }, [marketOpenStatus]);
-
-  // async function getIndexData() {
-  //   const res = await fetch(
-  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/indexMinuteData`,
-  //     {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     }
-  //   );
-  //   if (!res.ok) {
-  //     throw new Error("Failed to fetch data");
-  //   }
-  //   const data = await res.json();
-  //   setindexData(data);
-  // }
-  // async function getGainerLoserData() {
-  //   const res = await fetch(
-  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/topGainerLoser`,
-  //     {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     }
-  //   );
-  //   if (!res.ok) {
-  //     throw new Error("Failed to fetch data");
-  //   }
-  //   const data = await res.json();
-  //   setgainerLoserData(data);
-  // }
-  // async function getIpo() {
-  //   const res = await fetch(
-  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/ipo`,
-  //     {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     }
-  //   );
-  //   if (!res.ok) {
-  //     throw new Error("Failed to fetch data");
-  //   }
-  //   const data = await res.json();
-  //   setipo(data);
-  // }
-  // async function getSectorData() {
-  //   const res = await fetch(
-  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/sectorGainValueSummary`,
-  //     {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     }
-  //   );
-  //   if (!res.ok) {
-  //     throw new Error("Failed to fetch data");
-  //   }
-  //   const data = await res.json();
-  //   setsectorData(data);
-  // }
-  // async function getBlockTr() {
-  //   const res = await fetch(
-  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/blockTr/lastday`,
-  //     {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     }
-  //   );
-  //   if (!res.ok) {
-  //     throw new Error("Failed to fetch data");
-  //   }
-  //   const data = await res.json();
-  //   setblockTrData(data);
-  // }
-  // async function getNews() {
-  //   const res = await fetch(
-  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/news/all?limit=500`,
-  //     {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     }
-  //   );
-  //   if (!res.ok) {
-  //     throw new Error("Failed to fetch data");
-  //   }
-  //   const data = await res.json();
-  //   setnewsData(data);
-  // }
-  // async function getTopFinancials() {
-  //   const res = await fetch(
-  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/topFinancials?setlimit=12`,
-  //     {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     }
-  //   );
-  //   if (!res.ok) {
-  //     throw new Error("Failed to fetch data");
-  //   }
-  //   const data = await res.json();
-  //   settopFinancialsData(data);
-  // }
-  // async function getBeta() {
-  //   const res = await fetch(
-  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/allStockBeta?type=top&count=8`,
-  //     {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     }
-  //   );
-  //   if (!res.ok) {
-  //     throw new Error("Failed to fetch data");
-  //   }
-  //   const data = await res.json();
-  //   setbeta(data);
-  // }
-  // async function getIndexMover() {
-  //   const res = await fetch(
-  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/indexMover?type=top&count=8`,
-  //     {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     }
-  //   );
-  //   if (!res.ok) {
-  //     throw new Error("Failed to fetch data");
-  //   }
-  //   const data = await res.json();
-  //   setindexMover(data);
-  // }
-
-  // async function getIndexInfo() {
-  //   const res = await fetch(
-  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/getIndexInfo`,
-  //     {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     }
-  //   );
-  //   if (!res.ok) {
-  //     throw new Error("Failed to fetch data");
-  //   }
-  //   const initdata = await res.json();
-  //   dispatch(indexInfoActions.setData(initdata.Data));
-  // }
-
-  // async function getData() {
-  //   try {
-  //     setisLoading(true);
-  //     await Promise.all([
-  //       getIndexData(),
-  //       getSectorData(),
-  //       getGainerLoserData(),
-  //       getBlockTr(),
-  //       getNews(),
-  //       getTopFinancials(),
-  //       getIpo(),
-  //       getBeta(),
-  //       getIndexMover(),
-  //     ]);
-  //     setdatafetched(true);
-  //     setisLoading(false);
-  //   } catch (error) {
-  //     setisLoading(false);
-  //     setdatafetched(false);
-  //   }
-  // }
 
   return (
     <Box>

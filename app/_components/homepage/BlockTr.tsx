@@ -68,7 +68,7 @@ export default function BlockTr({ data, handleButtonClick }: any) {
             Block Transections
           </Button>
           <Chip
-            label={DateTime.fromISO(data[0].date).toFormat("dd MMMM, yyyy")}
+            label={DateTime.fromISO(data[0]?.date).toFormat("dd MMMM, yyyy")}
             size="small"
             sx={{
               ml: 0.7,

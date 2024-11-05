@@ -28,7 +28,7 @@ export default function PremiumDialogContent(props: any) {
           flexDirection: "column",
           alignItems: "center",
           textAlign: "center",
-          mb: 3,
+          mb: 4,
         }}
       >
         <Avatar sx={{ bgcolor: "text.secondary", mb: 3 }}>
@@ -36,7 +36,7 @@ export default function PremiumDialogContent(props: any) {
         </Avatar>
         <Typography
           sx={{
-            fontSize: "1.5rem",
+            fontSize: "1.6rem",
             fontWeight: 700,
             color: "text.primary",
             lineHeight: 1.1,
@@ -50,7 +50,7 @@ export default function PremiumDialogContent(props: any) {
             fontSize: "1rem",
             fontWeight: 500,
             color: "text.secondary",
-            lineHeight: 1.4,
+            lineHeight: 1.5,
           }}
         >
           Please subscribe to premium package to access this feature
@@ -62,13 +62,13 @@ export default function PremiumDialogContent(props: any) {
           <Typography
             sx={{
               fontSize: ".875rem",
-              textAlign: "justify",
+              textAlign: "left",
               color: "text.primary",
             }}
           >
-            Elevate your investing potential with a Premium membership. Gain
-            personalised and actionable insights with enhanced features to
-            maximize your investments!
+            Elevate your investing potential with a Premium membership. Get more
+            personalised information and actionable insights with enhanced
+            features to maximize your investments!
           </Typography>
         </Box>
       )}

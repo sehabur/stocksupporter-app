@@ -33,8 +33,8 @@ const StyledToggleButton = styled(ToggleButton)(({ theme }: any) => ({
     borderRadius: "24px !important",
     border: `1px solid lightgrey !important`,
     marginRight: "16px",
-    paddingLeft: "24px",
-    paddingRight: "24px",
+    paddingLeft: "20px",
+    paddingRight: "20px",
     paddingTop: "2px",
     paddingBottom: "2px",
     "&.Mui-selected": {

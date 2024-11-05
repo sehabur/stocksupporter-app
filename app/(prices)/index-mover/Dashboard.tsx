@@ -153,7 +153,7 @@ export default function Dashboard() {
     },
     {
       field: "close",
-      headerName: "Price (BDT)",
+      headerName: "PRICE (BDT)",
       align: "left",
       headerAlign: "left",
       width: 100,
@@ -213,32 +213,9 @@ export default function Dashboard() {
         </StyledToggleButtonGroup>
       </Box>
 
-      {/* <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          my: 3,
-        }}
-      >
-        <Typography
-          sx={{ fontSize: { xs: "1.3rem", sm: "1.4rem" } }}
-          color="text.primary"
-          gutterBottom
-        >
-          {variants[typeAlignment].pageTitle}
-        </Typography>
-        <Typography
-          sx={{ fontSize: "1rem", textAlign: "center" }}
-          color="text.secondary"
-        >
-          {variants[typeAlignment].pageSubtitle}
-        </Typography>
-      </Box> */}
-      <Box sx={{ mx: "auto" }}>
+      <Box>
         <DataGrid
-          rows={data[typeAlignment]}
+          rows={data && data[typeAlignment]}
           columns={columns}
           hideFooter={true}
           sx={{
@@ -259,6 +236,11 @@ export default function Dashboard() {
             fontWeight: 500,
           }}
         />
+        {data[typeAlignment].length < 1 && (
+          <Typography textAlign="center" sx={{ py: 2 }}>
+            No data to display
+          </Typography>
+        )}
       </Box>
     </Box>
   );

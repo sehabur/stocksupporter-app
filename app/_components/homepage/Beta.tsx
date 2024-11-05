@@ -90,7 +90,7 @@ export default function Beta({ data, handleButtonClick }: any) {
     },
     {
       field: "close",
-      headerName: "Price (BDT)",
+      headerName: "PRICE (BDT)",
       align: "left",
       headerAlign: "left",
       width: 100,
@@ -167,7 +167,7 @@ export default function Beta({ data, handleButtonClick }: any) {
         </StyledToggleButtonGroup>
       </Box>
 
-      <Box>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
         <DataGrid
           rows={data[typeAlignment]}
           columns={columns}
@@ -184,7 +184,7 @@ export default function Beta({ data, handleButtonClick }: any) {
               whiteSpace: "normal",
             },
             border: "none",
-            width: "90vw",
+            maxWidth: 350,
             fontSize: ".9rem",
             fontWeight: 500,
           }}

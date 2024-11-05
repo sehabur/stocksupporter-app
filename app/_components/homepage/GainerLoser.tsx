@@ -14,12 +14,10 @@ import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRound
 
 import SeeMoreButton from "../buttons/SeeMoreButton";
 import MobileViewPriceCard from "../cards/MobileViewPriceCard";
-import LoadingSpinner from "../shared/LoadingSpinner";
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   [`& .${toggleButtonGroupClasses.grouped}`]: {
     border: 0,
-    borderRadius: 3,
   },
 }));
 const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
@@ -40,6 +38,8 @@ const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
 }));
 
 export default function GainerLoser({ handleButtonClick }: any) {
+  console.log("first mount -> ", new Date());
+
   const [alignmentGainer, setAlignmentGainer] = useState("gainer");
 
   const [alignmentLoser, setAlignmentLoser] = useState("loser");
@@ -132,7 +132,6 @@ export default function GainerLoser({ handleButtonClick }: any) {
 
   return (
     <Box sx={{ bgcolor: "secondaryBackground", py: 2 }}>
-      {/* <LoadingSpinner open={!allGainerLoser?.dataFetched} /> */}
       <Box sx={{ mb: 2 }}>
         <Box sx={{ mx: 1 }}>
           <Button

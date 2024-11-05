@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Preferences } from "@capacitor/preferences";
 import { useRouter } from "next/navigation";
-import { App } from "@capacitor/app";
+
 import {
   AppBar,
   Box,
@@ -51,7 +51,11 @@ import {
 } from "@/data/constants";
 
 import { getUser } from "_helper/dataFetch";
+
 import { calcDataFetchEndTime, getIsMarketOpen } from "_helper";
+
+import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
+import MoreMenu from "./MoreMenu";
 
 const TransitionSlide = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -97,6 +101,7 @@ export default function Header() {
   const [searchResultFallbackText, setSearchResultFallbackText] = useState(
     "Type trading code or company name"
   );
+
   const [searchResult, setSearchResult] = useState(latestPrice);
 
   const [openSearchDialog, setOpenSearchDialog] = useState(false);
@@ -104,18 +109,21 @@ export default function Header() {
   const [indexInfoAnchorEl, setindexInfoAnchorEl] =
     React.useState<HTMLButtonElement | null>(null);
 
+  const [openMoreMenuDialog, setOpenMoreMenuDialog] = useState(false);
+
+  const handleMoreMenuDialogOpen = () => {
+    setOpenMoreMenuDialog(true);
+  };
+
+  const handleMoreMenuDialogClose = () => {
+    setOpenMoreMenuDialog(false);
+  };
+
   const handleReloadPage = async () => {
-    await getIndexInfo(marketOpenStatusReduxSlice);
+    await getIndexInfo(marketOpenStatusReduxSlice, true);
 
     const { pathname, search } = window.location;
     const url = pathname + search;
-
-    // const url =
-    //   pathname +
-    //   search +
-    //   (search == "" ? "?" : "&") +
-    //   "scrollY=" +
-    //   Math.floor(window.scrollY);
 
     router.push(`/reload?redirect=${encodeURIComponent(url)}`);
   };
@@ -135,10 +143,10 @@ export default function Header() {
   const handleSearchDialogOpen = (event: React.MouseEvent<HTMLElement>) => {
     setOpenSearchDialog(true);
   };
+
   const handleSearchDialogClose = (
     navigate: boolean = false,
-    href: string = "",
-    title: string = ""
+    href: string = ""
   ) => {
     setOpenSearchDialog(false);
     setSearchResult([]);
@@ -183,7 +191,7 @@ export default function Header() {
       key: "latestPrice",
       value: JSON.stringify({
         data: initdata,
-        updatedAt: initdata[101].time,
+        // updatedAt: initdata[101].time,
         pullTime: new Date().toISOString(),
       }),
     });
@@ -210,7 +218,7 @@ export default function Header() {
       key: "allGainerLoser",
       value: JSON.stringify({
         data: initdata,
-        updatedAt: initdata[101].time,
+        // updatedAt: initdata[101].time,
         pullTime: new Date().toISOString(),
       }),
     });
@@ -279,15 +287,20 @@ export default function Header() {
         },
       }
     );
+
     if (!res.ok) {
       throw new Error("Failed to fetch data");
     }
     const initdata = await res.json();
+
     dispatch(marketOpenStatusActions.setData(initdata));
     return { status: "success", data: initdata };
   };
 
-  const getLatestPriceData = async (marketOpenStatus: any) => {
+  const getLatestPriceData = async (
+    marketOpenStatus: any,
+    firstMount: boolean
+  ) => {
     if (getIsMarketOpen(marketOpenStatus)) {
       return await fetchLatestPriceFromApi();
     }
@@ -303,16 +316,28 @@ export default function Header() {
     const { data: latestPriceFromStorage, pullTime: pullTimeFromStorage } =
       JSON.parse(storage.value);
 
+    if (latestPriceFromStorage.length < 1) {
+      return await fetchLatestPriceFromApi();
+    }
+
     const dataFetchEndTime = calcDataFetchEndTime(marketOpenStatus);
 
-    if (new Date(pullTimeFromStorage) < new Date(dataFetchEndTime)) {
+    if (
+      new Date(pullTimeFromStorage).getTime() <
+      new Date(dataFetchEndTime).getTime()
+    ) {
       return await fetchLatestPriceFromApi();
-    } else {
-      dispatch(latestPriceActions.setData(latestPriceFromStorage));
+    }
+
+    if (firstMount) {
+      return dispatch(latestPriceActions.setData(latestPriceFromStorage));
     }
   };
 
-  const getGainerLoserData = async (marketOpenStatus: any) => {
+  const getGainerLoserData = async (
+    marketOpenStatus: any,
+    firstMount: boolean
+  ) => {
     if (getIsMarketOpen(marketOpenStatus)) {
       return await fetchGainerLoserDataFromApi();
     }
@@ -328,12 +353,21 @@ export default function Header() {
     const { data: allGainerLoserFromStorage, pullTime: pullTimeFromStorage } =
       JSON.parse(storage.value);
 
+    if (allGainerLoserFromStorage.length < 1) {
+      return await fetchGainerLoserDataFromApi();
+    }
+
     const dataFetchEndTime = calcDataFetchEndTime(marketOpenStatus);
 
-    if (new Date(pullTimeFromStorage) < new Date(dataFetchEndTime)) {
+    if (
+      new Date(pullTimeFromStorage).getTime() <
+      new Date(dataFetchEndTime).getTime()
+    ) {
       return await fetchGainerLoserDataFromApi();
-    } else {
-      dispatch(allGainerLoserActions.setData(allGainerLoserFromStorage));
+    }
+
+    if (firstMount) {
+      return dispatch(allGainerLoserActions.setData(allGainerLoserFromStorage));
     }
   };
 
@@ -345,9 +379,11 @@ export default function Header() {
     if (getIsMarketOpen(marketOpenStatus)) {
       return await fetchScreenerDataFromApi();
     }
+
     const storage: { value: any } = await Preferences.get({
       key: "screener",
     });
+
     if (!storage.value) {
       return await fetchScreenerDataFromApi();
     }
@@ -356,18 +392,23 @@ export default function Header() {
 
     const dataFetchEndTime = calcDataFetchEndTime(marketOpenStatus);
 
-    if (new Date(pullTimeFromStorage) < new Date(dataFetchEndTime)) {
+    if (
+      new Date(pullTimeFromStorage).getTime() <
+      new Date(dataFetchEndTime).getTime()
+    ) {
       return await fetchScreenerDataFromApi();
     }
   };
 
-  const getIndexInfo = async (marketOpenStatus: any) => {
+  const getIndexInfo = async (marketOpenStatus: any, firstMount: boolean) => {
     if (getIsMarketOpen(marketOpenStatus)) {
       return await fetchIndexInfoFromApi();
     }
+
     const storage: { value: any } = await Preferences.get({
       key: "indexInfo",
     });
+
     if (!storage.value) {
       return await fetchIndexInfoFromApi();
     }
@@ -377,10 +418,15 @@ export default function Header() {
 
     const dataFetchEndTime = calcDataFetchEndTime(marketOpenStatus);
 
-    if (new Date(pullTimeFromStorage) < new Date(dataFetchEndTime)) {
+    if (
+      new Date(pullTimeFromStorage).getTime() <
+      new Date(dataFetchEndTime).getTime()
+    ) {
       return await fetchIndexInfoFromApi();
-    } else {
-      dispatch(indexInfoActions.setData(indexInfoFromStorage));
+    }
+
+    if (firstMount) {
+      return dispatch(indexInfoActions.setData(indexInfoFromStorage));
     }
   };
 
@@ -407,9 +453,8 @@ export default function Header() {
     getUserData();
     const market: any = await getMarketOpenStatus();
     if (market?.status === "success") {
-      getLatestPriceData(market.data);
-      getGainerLoserData(market.data);
-      // getIndexInfo(market.data);
+      getLatestPriceData(market.data, true);
+      getGainerLoserData(market.data, true);
     }
   };
 
@@ -424,7 +469,7 @@ export default function Header() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      getLatestPriceData(marketOpenStatusReduxSlice);
+      getLatestPriceData(marketOpenStatusReduxSlice, false);
     }, LATEST_PRICE_FETCH_TIME_MS);
     return () => {
       clearInterval(interval);
@@ -433,7 +478,7 @@ export default function Header() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      getGainerLoserData(marketOpenStatusReduxSlice);
+      getGainerLoserData(marketOpenStatusReduxSlice, false);
     }, GAINER_LOSER_FETCH_TIME_MS);
     return () => {
       clearInterval(interval);
@@ -453,7 +498,7 @@ export default function Header() {
     const interval = setInterval(() => {
       const { pathname } = window.location;
       if (pathname != "/") {
-        getIndexInfo(marketOpenStatusReduxSlice);
+        getIndexInfo(marketOpenStatusReduxSlice, false);
       }
     }, INDEX_INFO_FETCH_TIME_MS);
     return () => {
@@ -462,12 +507,12 @@ export default function Header() {
   }, [marketOpenStatusReduxSlice]);
 
   useEffect(() => {
-    getAppInitData();
-  }, []);
-
-  useEffect(() => {
     getScreenerData(marketOpenStatusReduxSlice, auth);
   }, [marketOpenStatusReduxSlice, auth]);
+
+  useEffect(() => {
+    getAppInitData();
+  }, []);
 
   return (
     <>
@@ -490,102 +535,81 @@ export default function Header() {
           <Box
             sx={{
               display: "flex",
-              flexDirection: "row",
               alignItems: "center",
+              justifyContent: "center",
+              gap: 1.4,
             }}
           >
-            <Box sx={{ maxWidth: "45vw" }}>
-              <Typography
-                sx={{
-                  fontSize: "1.2rem",
-                  fontWeight: 700,
-                  color: "text.primary",
-                }}
-                noWrap
-              >
-                {pageTitle}
-              </Typography>
-            </Box>
+            <IconButton onClick={handleMoreMenuDialogOpen} sx={{ p: 0 }}>
+              <MenuRoundedIcon color="primary" />
+            </IconButton>
+
+            <Typography
+              sx={{
+                fontSize: "1.1rem",
+                fontWeight: 600,
+                color: "text.primary",
+              }}
+              noWrap
+            >
+              {pageTitle}
+            </Typography>
           </Box>
 
-          <Box>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              {indexInfo?.indexLatestData?.index !== 0 && (
-                <Chip
-                  label={addPlusSign(indexInfo.indexLatestData.change)}
-                  size="small"
-                  icon={
-                    indexInfo.marketOpenStatus == "Open" ? (
-                      <RadioButtonCheckedRoundedIcon color="success" />
-                    ) : indexInfo.marketOpenStatus == "Closed" ? (
-                      <DoDisturbOnRoundedIcon color="error" />
-                    ) : (
-                      <DoDisturbOnRoundedIcon color="warning" />
-                    )
-                  }
-                  sx={{
-                    "& .MuiChip-label": {
-                      color: textColor(indexInfo.indexLatestData.change),
-                      fontSize: "1rem",
-                      fontWeight: 700,
-                    },
-                    mr: 1,
-                  }}
-                  component={Button}
-                  onClick={handleIndexInfoClick}
-                />
-              )}
-
-              {/* <IconButton onClick={handleClick}>
-                {indexInfo.marketOpenStatus == "Open" ? (
-                  <RadioButtonCheckedRoundedIcon
-                    color="success"
-                    sx={{ fontSize: "1rem" }}
-                  />
-                ) : indexInfo.marketOpenStatus == "Closed" ? (
-                  <DoDisturbOnRoundedIcon
-                    color="error"
-                    sx={{ fontSize: "1rem" }}
-                  />
-                ) : (
-                  <DoDisturbOnRoundedIcon
-                    color="warning"
-                    sx={{ fontSize: "1rem" }}
-                  />
-                )}
-              </IconButton>
-
-              <Typography
-                onClick={handleClick}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 1.2,
+            }}
+          >
+            {indexInfo?.indexLatestData?.index !== 0 && (
+              <Chip
+                label={addPlusSign(indexInfo.indexLatestData.change)}
+                size="small"
+                icon={
+                  indexInfo.marketOpenStatus == "Open" ? (
+                    <RadioButtonCheckedRoundedIcon
+                      color="success"
+                      sx={{ p: 0 }}
+                    />
+                  ) : indexInfo.marketOpenStatus == "Closed" ? (
+                    <DoDisturbOnRoundedIcon color="error" sx={{ p: 0 }} />
+                  ) : (
+                    <DoDisturbOnRoundedIcon color="warning" sx={{ p: 0 }} />
+                  )
+                }
                 sx={{
-                  color: textColor(indexInfo.indexLatestData.change),
-                  fontWeight: 700,
-                  fontSize: "1rem",
-                  mr: 1,
-                  // fontFamily: "'Nunito Sans'",
+                  "& .MuiChip-label": {
+                    color: textColor(indexInfo.indexLatestData.change),
+                    fontSize: ".95rem",
+                    pl: 0.8,
+                    fontWeight: 700,
+                  },
+                  mr: 0.4,
                 }}
-              >
-                {addPlusSign(indexInfo.indexLatestData.change)}
-              </Typography> */}
+                component={Button}
+                onClick={handleIndexInfoClick}
+              />
+            )}
 
-              <IconButton onClick={handleReloadPage}>
-                <SyncRoundedIcon color="primary" />
-              </IconButton>
+            <IconButton onClick={handleReloadPage} sx={{ p: 0 }}>
+              <SyncRoundedIcon color="primary" />
+            </IconButton>
 
-              <IconButton onClick={handleSearchDialogOpen}>
-                <SearchRoundedIcon color="primary" />
-              </IconButton>
-            </Box>
+            <IconButton onClick={handleSearchDialogOpen} sx={{ p: 0 }}>
+              <SearchRoundedIcon color="primary" />
+            </IconButton>
           </Box>
         </Toolbar>
       </AppBar>
       <Toolbar sx={{ bgcolor: "background.default" }} />
+
+      <MoreMenu
+        openMoreMenuDialog={openMoreMenuDialog}
+        handleMoreMenuDialogClose={handleMoreMenuDialogClose}
+      />
 
       <Dialog
         open={openSearchDialog}

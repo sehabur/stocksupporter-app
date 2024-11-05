@@ -46,17 +46,6 @@ const AppUpdateDialog = () => {
         ? iosVersionCode
         : 0;
 
-    // console.log(
-    //   "newborn",
-    //   build,
-    //   platform,
-    //   androidVersionCode,
-    //   iosVersionCode,
-    //   targetVersion,
-    //   value,
-    //   marketOpenStatus.androidVersionCode,
-    // );
-
     if (
       Number(build) < targetVersion &&
       (!value || new Date() > new Date(value))

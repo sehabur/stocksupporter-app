@@ -3,7 +3,7 @@ import React from "react";
 
 import { DateTime } from "luxon";
 import Link from "next/link";
-import { useParams, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 import { Box, Typography, Chip, Button, Tooltip, Divider } from "@mui/material";
 import DoDisturbOnRoundedIcon from "@mui/icons-material/DoDisturbOnRounded";

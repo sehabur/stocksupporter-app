@@ -25,13 +25,9 @@ import { favoriteActions, pageTitleActions } from "_store";
 import ToastMessage from "@/components/shared/ToastMessage";
 import MobileViewPriceCard from "@/components/cards/MobileViewPriceCard";
 import SigninDialogContent from "@/components/dialogs/SigninDialogContent";
-import { useRouter } from "next/navigation";
-import { AUTO_RELOAD_TIME_MS } from "@/data/constants";
 import AutoReload from "@/components/shared/AutoReload";
 
 export default function Favorites() {
-  const router = useRouter();
-
   const dispatch = useDispatch();
 
   dispatch(pageTitleActions.setPageTitle("Favorites"));
@@ -51,8 +47,6 @@ export default function Favorites() {
   const [dialogOpen, setDialogOpen] = React.useState(false);
 
   const [toastMessage, setToastMessage] = React.useState("");
-
-  console.log(favorite, favStockCard);
 
   const handleLogoutToastColse = () => {
     setToastOpen(false);
@@ -121,21 +115,6 @@ export default function Favorites() {
       setFavStockCard(favs);
     }
   }, [favorite, latestPrice]);
-
-  // React.useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     if (!dialogOpen) {
-  //       const { pathname, search } = window.location;
-  //       router.push(
-  //         `/reload?redirect=${encodeURIComponent(pathname + search)}`
-  //       );
-  //     }
-  //   }, AUTO_RELOAD_TIME_MS);
-
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, []);
 
   return (
     <Box

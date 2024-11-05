@@ -1209,8 +1209,8 @@ export default function Financials({ data }: any) {
         {!auth?.isPremiumEligible && (
           <Box
             sx={{
-              pt: 4,
-              pb: 4,
+              pt: 2,
+              pb: 3,
               px: 2,
             }}
           >

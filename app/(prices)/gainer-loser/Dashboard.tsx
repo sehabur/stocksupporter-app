@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -121,6 +121,8 @@ const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   color: theme.palette.primary.main,
 }));
 
+const INIT_ITEM_TO_DISPLAY = 25;
+
 export default function Dashboard() {
   const dispatch = useDispatch();
 
@@ -136,23 +138,21 @@ export default function Dashboard() {
 
   const allGainerLoser = useSelector((state: any) => state.allGainerLoser);
 
-  const [data, setdata] = React.useState<any>([]);
+  const [data, setdata] = useState<any>([]);
 
-  const [initdata, setinitdata] = React.useState<any>([]);
+  const [initdata, setinitdata] = useState<any>([]);
 
-  const [isScroll, setisScroll] = React.useState(false);
+  const [isScroll, setisScroll] = useState(false);
 
-  const [typeAlignment, setTypeAlignment] = React.useState<any>(type);
+  const [typeAlignment, setTypeAlignment] = useState<any>(type);
 
-  const [variantAlignment, setVariantAlignment] = React.useState<any>(variant);
+  const [variantAlignment, setVariantAlignment] = useState<any>(variant);
 
-  console.log(allGainerLoser, initdata, data);
-
-  React.useEffect(() => {
+  useEffect(() => {
     setinitdata(allGainerLoser?.data);
   }, [allGainerLoser]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     let newData = initdata.map((item: any) => ({
       id: item._id,
       tradingCode: item.tradingCode,
@@ -209,7 +209,7 @@ export default function Dashboard() {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -284,14 +284,14 @@ export default function Dashboard() {
       <Box sx={{ px: 1, pt: 0.1, pb: 2, bgcolor: "secondaryBackground" }}>
         {data &&
           data
-            .slice(0, 25)
+            .slice(0, INIT_ITEM_TO_DISPLAY)
             .map((item: any, index: number) => (
               <MobileViewPriceCard item={item} key={index} />
             ))}
 
         {isScroll &&
           data
-            .slice(25)
+            .slice(INIT_ITEM_TO_DISPLAY)
             .map((item: any, index: number) => (
               <MobileViewPriceCard item={item} key={index} />
             ))}

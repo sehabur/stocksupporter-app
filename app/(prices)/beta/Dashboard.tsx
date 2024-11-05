@@ -1,40 +1,29 @@
 "use client";
 import React from "react";
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
 
 import { Box, Typography } from "@mui/material";
-
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup, {
   toggleButtonGroupClasses,
 } from "@mui/material/ToggleButtonGroup";
 import { grey } from "@mui/material/colors";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import styles from "./Dashboard.module.css";
-import Link from "next/link";
 import { styled } from "@mui/material/styles";
-import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { pageTitleActions } from "_store";
-import { AUTO_RELOAD_TIME_MS } from "@/data/constants";
-import AutoReload from "@/components/shared/AutoReload";
 
-// const variants: any = {
-//   gainer: {
-//     pageTitle: "Positive Beta",
-//     pageSubtitle: "Stocks with positive beta value",
-//   },
-//   loser: {
-//     pageTitle: "Negative Beta",
-//     pageSubtitle: "Stocks with negative beta value",
-//   },
-// };
+import styles from "./Dashboard.module.css";
+
+import { pageTitleActions } from "_store";
+import AutoReload from "@/components/shared/AutoReload";
+import LoadingSpinner from "@/components/shared/LoadingSpinner";
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   [`& .${toggleButtonGroupClasses.grouped}`]: {
     border: 0,
-    borderRadius: 3,
   },
 }));
+
 const StyledToggleButtonSuccess = styled(ToggleButton)(({ theme }) => ({
   "&.MuiToggleButtonGroup-grouped": {
     borderRadius: "6px !important",
@@ -77,6 +66,8 @@ export default function Dashboard() {
   };
   const [data, setdata] = React.useState<any>(initstate);
 
+  const [isLoading, setisLoading] = React.useState(false);
+
   const [typeAlignment, setTypeAlignment] = React.useState("gainer");
 
   const router = useRouter();
@@ -112,7 +103,7 @@ export default function Dashboard() {
     },
     {
       field: "close",
-      headerName: "Price (BDT)",
+      headerName: "PRICE (BDT)",
       align: "left",
       headerAlign: "left",
       width: 100,
@@ -129,20 +120,26 @@ export default function Dashboard() {
   ];
 
   async function getData() {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/allStockBeta?type=all`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
+    try {
+      setisLoading(true);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/allStockBeta?type=all`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!res.ok) {
+        throw new Error("Failed to fetch data");
       }
-    );
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
+      const data = await res.json();
+      setdata(data);
+      setisLoading(false);
+    } catch (error) {
+      setisLoading(false);
     }
-    const data = await res.json();
-    setdata(data);
   }
 
   const handleTypeAlignmentChange = (
@@ -164,6 +161,7 @@ export default function Dashboard() {
 
   return (
     <Box sx={{ px: 2, py: 2 }}>
+      <LoadingSpinner open={isLoading} />
       <AutoReload />
       <Box
         sx={{
@@ -196,29 +194,7 @@ export default function Dashboard() {
         </StyledToggleButtonGroup>
       </Box>
 
-      {/* <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          my: 2,
-        }}
-      >
-        <Typography
-          sx={{ fontSize: { xs: "1.3rem", sm: "1.4rem" } }}
-          color="text.primary"
-        >
-          {variants[typeAlignment].pageTitle}
-        </Typography>
-        <Typography
-          sx={{ fontSize: "1rem", textAlign: "center" }}
-          color="text.secondary"
-        >
-          {variants[typeAlignment].pageSubtitle}
-        </Typography>
-      </Box> */}
-      <Box sx={{ mx: "auto" }}>
+      <Box>
         <DataGrid
           rows={data && data[typeAlignment]}
           columns={columns}
@@ -241,6 +217,11 @@ export default function Dashboard() {
             fontWeight: 500,
           }}
         />
+        {data[typeAlignment].length < 1 && (
+          <Typography textAlign="center" sx={{ py: 2 }}>
+            No data to display
+          </Typography>
+        )}
       </Box>
     </Box>
   );

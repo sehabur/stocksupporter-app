@@ -74,8 +74,8 @@ export default function SearchStockCard(props: any) {
           >
             <Typography
               sx={{
-                fontSize: ".94rem",
-                fontWeight: 500,
+                fontSize: ".95rem",
+                fontWeight: 600,
                 color: "text.primary",
                 mr: itemType !== "stock" ? 1 : 0,
               }}

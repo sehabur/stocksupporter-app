@@ -78,21 +78,22 @@ export default function BlockTransections({ tradingCode }: any) {
                 <TableRow
                   sx={{
                     ".MuiTableCell-head": {
-                      fontWeight: 700,
+                      fontWeight: 500,
+                      color: "text.secondary",
                       py: 1,
-                      lineHeight: 1.5,
+                      lineHeight: 1.3,
                     },
                     "&:nth-of-type(odd)": {
                       backgroundColor: "stipedTableEvenRow",
                     },
                   }}
                 >
-                  <TableCell>DATE</TableCell>
-                  <TableCell>VALUE (MN)</TableCell>
-                  <TableCell>VOLUME</TableCell>
-                  <TableCell>TRADES</TableCell>
-                  <TableCell>MAX PRICE</TableCell>
-                  <TableCell>MIN PRICE</TableCell>
+                  <TableCell align="center">DATE</TableCell>
+                  <TableCell align="center">VALUE (MN)</TableCell>
+                  <TableCell align="center">VOLUME</TableCell>
+                  <TableCell align="center">TRADES</TableCell>
+                  <TableCell align="center">MAX PRICE</TableCell>
+                  <TableCell align="center">MIN PRICE</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -101,9 +102,8 @@ export default function BlockTransections({ tradingCode }: any) {
                     key={row._id}
                     hover={true}
                     sx={{
-                      ".MuiTableCell": {
-                        fontSize: "1rem",
-                        fontWeight: 700,
+                      ".MuiTableCell-body": {
+                        fontWeight: 500,
                       },
                       "&:nth-of-type(odd)": {
                         backgroundColor: "financePageBgcolor",
@@ -113,14 +113,14 @@ export default function BlockTransections({ tradingCode }: any) {
                       },
                     }}
                   >
-                    <TableCell sx={{ minWidth: 90 }}>
-                      {DateTime.fromISO(row.date).toFormat("dd MMM")}
+                    <TableCell align="center" sx={{ minWidth: 110 }}>
+                      {DateTime.fromISO(row.date).toFormat("dd-MM-yy")}
                     </TableCell>
-                    <TableCell>{row.value}</TableCell>
-                    <TableCell>{row.quantity}</TableCell>
-                    <TableCell>{row.trades}</TableCell>
-                    <TableCell>{row.maxPrice}</TableCell>
-                    <TableCell>{row.minPrice}</TableCell>
+                    <TableCell align="center">{row.value}</TableCell>
+                    <TableCell align="center">{row.quantity}</TableCell>
+                    <TableCell align="center">{row.trades}</TableCell>
+                    <TableCell align="center">{row.maxPrice}</TableCell>
+                    <TableCell align="center">{row.minPrice}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

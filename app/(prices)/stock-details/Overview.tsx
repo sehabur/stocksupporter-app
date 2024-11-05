@@ -516,7 +516,7 @@ export default function Overview({ stock, handleButtonClick }: any) {
                 color="text.secondary"
                 sx={{ ml: 0.7, fontSize: ".8rem" }}
               >
-                Crore
+                CR
               </Typography>
             </Stack>
           </Grid>
@@ -534,12 +534,6 @@ export default function Overview({ stock, handleButtonClick }: any) {
               >
                 {stock.latest.trade}
               </Typography>
-              {/* <Typography
-                color="text.secondary"
-                sx={{ ml: 0.7, fontSize: ".8rem" }}
-              >
-                Crore
-              </Typography> */}
             </Stack>
           </Grid>
 

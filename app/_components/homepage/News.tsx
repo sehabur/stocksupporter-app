@@ -129,7 +129,7 @@ export default function News({ data, handleButtonClick }: any) {
         fullWidth
         maxWidth="sm"
       >
-        <DialogTitle sx={{ fontWeight: 700, fontSize: "1.1rem", mr: 2 }}>
+        <DialogTitle sx={{ fontWeight: 600, fontSize: "1.1rem", mr: 2 }}>
           {dialogContent?.title}
         </DialogTitle>
         <DialogContent dividers>

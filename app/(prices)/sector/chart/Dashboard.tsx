@@ -133,7 +133,7 @@ export default function Dashboard() {
 
   const dispatch = useDispatch();
 
-  dispatch(pageTitleActions.setPageTitle(sector?.name));
+  dispatch(pageTitleActions.setPageTitle("Sector"));
 
   const percentChangeData: any = formatPercentChangeData(
     data?.latest,
@@ -259,28 +259,6 @@ export default function Dashboard() {
                     : 0}
                   {"%"}
                 </Typography>
-
-                {/* <Tooltip
-                  title={`Market is ${data.marketOpenStatus?.toLowerCase()} now`}
-                  enterTouchDelay={10}
-                  arrow
-                >
-                  <Chip
-                    label={data.marketOpenStatus}
-                    variant="outlined"
-                    size="small"
-                    icon={
-                      data?.marketOpenStatus == "Open" ? (
-                        <RadioButtonCheckedRoundedIcon color="success" />
-                      ) : stock?.marketOpenStatus == "Closed" ? (
-                        <DoDisturbOnRoundedIcon color="error" />
-                      ) : (
-                        <DoDisturbOnRoundedIcon color="warning" />
-                      )
-                    }
-                    sx={{ fontSize: ".875rem", px: 0.3 }}
-                  />
-                </Tooltip> */}
               </Box>
 
               <Typography
@@ -353,172 +331,6 @@ export default function Dashboard() {
               </Grid>
             </Paper>
           </Box>
-
-          {/* <Box>
-            <Paper
-              sx={{
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "space-around",
-                mx: 1.5,
-                mt: 3,
-                mb: 3,
-                pt: 1.8,
-                pb: 1.5,
-                px: 2,
-                borderRadius: 2,
-                bgcolor: "appCardBgColor",
-                rowGap: 2,
-                columnGap: 6,
-              }}
-              elevation={0}
-            >
-              <Box
-                sx={{
-                  textAlign: "center",
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: ".9rem",
-                    color: "text.primary",
-                    fontWeight: 500,
-                  }}
-                >
-                  Today
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: "1.2rem",
-                    fontWeight: 700,
-                    color: percentChangeData.today.color,
-                  }}
-                >
-                  {percentChangeData.today.text}
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  textAlign: "center",
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: ".9rem",
-                    color: "text.primary",
-                    fontWeight: 500,
-                  }}
-                >
-                  1 Week
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: "1.2rem",
-                    fontWeight: 700,
-                    color: percentChangeData.oneWeek.color,
-                  }}
-                >
-                  {percentChangeData.oneWeek.text}
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  textAlign: "center",
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: ".9rem",
-                    color: "text.primary",
-                    fontWeight: 500,
-                  }}
-                >
-                  1 Month
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: "1.2rem",
-                    fontWeight: 700,
-                    color: percentChangeData.oneMonth.color,
-                  }}
-                >
-                  {percentChangeData.oneMonth.text}
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  textAlign: "center",
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: ".9rem",
-                    color: "text.primary",
-                    fontWeight: 500,
-                  }}
-                >
-                  6 Month
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: "1.2rem",
-                    fontWeight: 700,
-                    color: percentChangeData.sixMonth.color,
-                  }}
-                >
-                  {percentChangeData.sixMonth.text}
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  textAlign: "center",
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: ".9rem",
-                    color: "text.primary",
-                    fontWeight: 500,
-                  }}
-                >
-                  1 Year
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: "1.2rem",
-                    fontWeight: 700,
-                    color: percentChangeData.oneYear.color,
-                  }}
-                >
-                  {percentChangeData.oneYear.text}
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  textAlign: "center",
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: ".9rem",
-                    color: "text.primary",
-                    fontWeight: 500,
-                  }}
-                >
-                  5 Year
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: "1.2rem",
-                    fontWeight: 700,
-                    color: percentChangeData.fiveYear.color,
-                  }}
-                >
-                  {percentChangeData.fiveYear.text}
-                </Typography>
-              </Box>
-            </Paper>
-          </Box> */}
 
           <Box sx={{ px: 2, mb: 4 }}>
             <Box>
@@ -706,7 +518,12 @@ export default function Dashboard() {
           </Box>
           <Box sx={{ px: 2, pt: 2, pb: 2 }}>
             <Typography
-              sx={{ fontSize: "1.2rem", color: "text.primary", mb: 2 }}
+              sx={{
+                fontSize: "1.4rem",
+                color: "text.primary",
+                mb: 3,
+                fontWeight: 700,
+              }}
             >
               Other Sectors
             </Typography>
@@ -727,17 +544,11 @@ export default function Dashboard() {
                       mb: 1.5,
                       py: 0.6,
                       minWidth: 70,
-                      // textAlign: "center",
-                      // borderRadius: 2,
-                      // ":hover": {
-                      //   bgcolor: "secondaryBackground",
-                      //   cursor: "pointer",
-                      // },
                     }}
                     component={Button}
                     onClick={() => {
                       handleButtonClick(
-                        `/sector/chart/${item.tag}`,
+                        `/sector/chart?sector=${item.tag}`,
                         `${item.name} sector`
                       );
                     }}

@@ -91,7 +91,7 @@ export default function IndexMover({ data, handleButtonClick }: any) {
     },
     {
       field: "close",
-      headerName: "Price (BDT)",
+      headerName: "PRICE (BDT)",
       align: "left",
       headerAlign: "left",
       width: 100,
@@ -117,7 +117,7 @@ export default function IndexMover({ data, handleButtonClick }: any) {
   };
 
   return (
-    <Box sx={{ px: 2, maxWidth: 500 }}>
+    <Box sx={{ px: 2, maxWidth: 800, mx: "auto" }}>
       <Box>
         <Button
           onClick={() => {
@@ -161,7 +161,7 @@ export default function IndexMover({ data, handleButtonClick }: any) {
         </StyledToggleButtonGroup>
       </Box>
 
-      <Box>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
         <DataGrid
           rows={data[typeAlignment]}
           columns={columns}
@@ -170,7 +170,6 @@ export default function IndexMover({ data, handleButtonClick }: any) {
           sx={{
             ".MuiDataGrid-columnHeader": {
               color: "text.secondary",
-              // fontSize: { xs: ".8rem", sm: ".9rem" },
             },
             "& .MuiDataGrid-columnHeaderTitle": {
               overflow: "visible",
@@ -178,7 +177,7 @@ export default function IndexMover({ data, handleButtonClick }: any) {
               whiteSpace: "normal",
             },
             border: "none",
-            width: "90vw",
+            maxWidth: 350,
             fontSize: ".9rem",
             fontWeight: 500,
           }}

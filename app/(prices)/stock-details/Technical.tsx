@@ -107,8 +107,8 @@ export default function Technical(props: any) {
       {!auth?.isPremiumEligible && (
         <Box
           sx={{
-            pt: 2,
-            pb: 2,
+            pt: 3,
+            pb: 3,
             px: 2,
           }}
         >
@@ -513,43 +513,32 @@ export default function Technical(props: any) {
                   </Box>
 
                   <Box sx={{ maxWidth: 350 }}>
-                    {technicals?.candlestick.length > 0 ? (
-                      technicals?.candlestick
-                        .sort((a: any, b: any) => {
-                          const date2: any = new Date(b.date);
-                          const date1: any = new Date(a.date);
-                          return date2 - date1;
-                        })
-                        .map((item: any) => (
-                          <>
-                            <ListItem>
-                              <ListItemAvatar>
-                                <Avatar>
-                                  <InsightsRoundedIcon />
-                                </Avatar>
-                              </ListItemAvatar>
-                              <ListItemText
-                                primary={formatPatternName(item.value)}
-                                secondary={DateTime.fromISO(item.date).toFormat(
-                                  "dd MMM, yyyy"
-                                )}
-                                sx={{
-                                  "& .MuiListItemText-primary": {
-                                    fontSize: "1rem",
-                                    color: "text.primary",
-                                  },
-                                }}
-                              />
-                            </ListItem>
-                            {technicals?.candlestick?.length > 1 && (
-                              <Divider light variant="middle" />
-                            )}
-                          </>
-                        ))
+                    {technicals?.candlestick?.value ? (
+                      <ListItem sx={{ px: 0 }}>
+                        <ListItemAvatar>
+                          <Avatar>
+                            <InsightsRoundedIcon />
+                          </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={formatPatternName(
+                            technicals?.candlestick?.value
+                          )}
+                          secondary={DateTime.fromISO(
+                            technicals?.candlestick?.date
+                          ).toFormat("dd MMM, yyyy")}
+                          sx={{
+                            "& .MuiListItemText-primary": {
+                              fontSize: "1rem",
+                              color: "text.primary",
+                            },
+                          }}
+                        />
+                      </ListItem>
                     ) : (
                       <Box sx={{ mt: 3 }}>
                         <Typography color="warning.main">
-                          No patterns
+                          No candlestick formed
                         </Typography>
                       </Box>
                     )}

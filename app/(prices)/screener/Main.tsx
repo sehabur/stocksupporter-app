@@ -15,7 +15,6 @@ import {
   InputAdornment,
   IconButton,
   useTheme,
-  ListItemText,
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -34,8 +33,6 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import EastRoundedIcon from "@mui/icons-material/EastRounded";
-import AutoAwesomeOutlinedIcon from "@mui/icons-material/AutoAwesomeOutlined";
-import StarBorderRoundedIcon from "@mui/icons-material/StarBorderRounded";
 
 import { filterOptions } from "./filters";
 import styles from "./Main.module.css";

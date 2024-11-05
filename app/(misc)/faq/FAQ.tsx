@@ -25,7 +25,7 @@ export default function FAQ() {
       <Box sx={{ width: "100%" }}>
         {faqItems.map((item: any, index: number) => (
           <Box key={index} sx={{ mb: 1.5 }}>
-            <Accordion elevation={2}>
+            <Accordion elevation={4}>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1d-content"

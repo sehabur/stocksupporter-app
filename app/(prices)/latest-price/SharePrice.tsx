@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -14,7 +14,6 @@ import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import { sectorList } from "@/data/dse";
 import MobileViewPriceCard from "@/components/cards/MobileViewPriceCard";
 import { pageTitleActions } from "_store";
-import { AUTO_RELOAD_TIME_MS } from "@/data/constants";
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   [`& .${toggleButtonGroupClasses.grouped}`]: {
@@ -23,7 +22,7 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 }));
 const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   "&.MuiToggleButtonGroup-grouped": {
-    borderRadius: "24px !important",
+    borderRadius: "6px !important",
     marginRight: "8px",
     border: `1px solid lightgrey !important`,
     paddingLeft: "10px",
@@ -40,6 +39,8 @@ const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   textTransform: "none",
 }));
 
+const INIT_ITEM_TO_DISPLAY = 25;
+
 export default function SharePrice() {
   const router = useRouter();
 
@@ -55,15 +56,15 @@ export default function SharePrice() {
 
   const initSharelist = latestPrice.filter((item: any) => item.type == "stock");
 
-  const [isScroll, setisScroll] = React.useState(false);
+  const [isScroll, setisScroll] = useState(false);
 
-  const [shares, setShares] = React.useState<any>(initSharelist);
+  const [shares, setShares] = useState<any>(initSharelist);
 
-  const [alignment, setAlignment] = React.useState(sector || "all");
+  const [alignment, setAlignment] = useState(sector || "all");
 
-  const [isLoading, setisLoading] = React.useState<boolean>(false);
+  const [isLoading, setisLoading] = useState<boolean>(false);
 
-  const buttonRefs: any = React.useRef([]);
+  const buttonRefs: any = useRef([]);
 
   const scrollToButton = () => {
     if (buttonRefs.current[sector]) {
@@ -104,8 +105,6 @@ export default function SharePrice() {
     return shareData;
   };
 
-  // console.log(shares);
-
   const handleAlignmentChange = (
     event: React.MouseEvent<HTMLElement>,
     newvalue: string
@@ -113,27 +112,16 @@ export default function SharePrice() {
     setAlignment(newvalue);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     scrollToButton();
   }, []);
 
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      const { pathname, search } = window.location;
-      router.push(`/reload?redirect=${encodeURIComponent(pathname + search)}`);
-    }, AUTO_RELOAD_TIME_MS);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
-  React.useEffect(() => {
+  useEffect(() => {
     setShares(filterShares(alignment));
   }, [latestPrice, alignment]);
 
@@ -193,13 +181,16 @@ export default function SharePrice() {
         <Box sx={{ height: 30 }}></Box>
       </Box>
 
-      {shares?.slice(0, 25).map((item: any, index: number) => (
-        <Box key={index}>
-          <MobileViewPriceCard item={item} />
-        </Box>
-      ))}
+      {shares
+        ?.slice(0, INIT_ITEM_TO_DISPLAY)
+        .map((item: any, index: number) => (
+          <Box key={index}>
+            <MobileViewPriceCard item={item} />
+          </Box>
+        ))}
+
       {isScroll &&
-        shares?.slice(25).map((item: any, index: number) => (
+        shares?.slice(INIT_ITEM_TO_DISPLAY).map((item: any, index: number) => (
           <Box key={index}>
             <MobileViewPriceCard item={item} />
           </Box>
