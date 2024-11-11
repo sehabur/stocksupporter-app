@@ -361,7 +361,7 @@ export default function Dashboard() {
                       fontWeight: 500,
                     }}
                   >
-                    {data.latest.ycp}
+                    {data.latest.open}
                   </Typography>
                 </Stack>
               </Grid>

@@ -86,7 +86,7 @@ export default function MobileViewPriceCard({ item }: any) {
                   ml: 0.7,
                   fontWeight: 700,
                   "& .MuiChip-label": {
-                    px: 0.7,
+                    px: 0.6,
                   },
                 }}
               />
@@ -141,10 +141,12 @@ export default function MobileViewPriceCard({ item }: any) {
                   variant="outlined"
                   color={item.haltStatus === "buy" ? "success" : "error"}
                   sx={{
+                    borderRadius: 1,
                     ml: 0.7,
-                    fontSize: ".8rem",
+                    fontSize: ".7rem",
+                    fontWeight: 600,
                     "& .MuiChip-label": {
-                      px: 0.7,
+                      px: 0.4,
                     },
                   }}
                 />
@@ -157,10 +159,12 @@ export default function MobileViewPriceCard({ item }: any) {
                 variant="outlined"
                 color="warning"
                 sx={{
+                  borderRadius: 1,
                   ml: 0.7,
-                  fontSize: ".8rem",
+                  fontSize: ".7rem",
+                  fontWeight: 600,
                   "& .MuiChip-label": {
-                    px: 0.7,
+                    px: 0.4,
                   },
                 }}
               />

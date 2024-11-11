@@ -148,39 +148,7 @@ export default function Dashboard() {
 
   const [variantAlignment, setVariantAlignment] = useState<any>(variant);
 
-  useEffect(() => {
-    setinitdata(allGainerLoser?.data);
-  }, [allGainerLoser]);
-
-  useEffect(() => {
-    let newData = initdata.map((item: any) => ({
-      id: item._id,
-      tradingCode: item.tradingCode,
-      type: item.type,
-      time: item.time,
-      close: item.close,
-      sector: item.sector,
-      category: item.category,
-      haltStatus: item.haltStatus,
-      recordDate: item.recordDate,
-      change: item[variantAlignment].change,
-      percentChange: item[variantAlignment].percentChange,
-      volume: item[variantAlignment].volume,
-      value: item[variantAlignment].value,
-      trade: item[variantAlignment].trade,
-    }));
-
-    if (typeAlignment == "gainer") {
-      newData.sort((a: any, b: any) => b.percentChange - a.percentChange);
-    } else if (typeAlignment == "loser") {
-      newData.sort((a: any, b: any) => a.percentChange - b.percentChange);
-    } else {
-      newData.sort((a: any, b: any) => b[typeAlignment] - a[typeAlignment]);
-    }
-    setdata(newData);
-
-    router.push(`?type=${typeAlignment}&variant=${variantAlignment}`);
-  }, [initdata, typeAlignment, variantAlignment]);
+  const [isLoading, setisLoading] = useState<boolean>(false);
 
   const handleTypeAlignmentChange = (
     event: React.MouseEvent<HTMLElement>,
@@ -210,23 +178,59 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
+    setinitdata(allGainerLoser?.data);
+  }, [allGainerLoser]);
+
+  useEffect(() => {
+    setisLoading(true);
+    let newData = initdata.map((item: any) => ({
+      id: item._id,
+      tradingCode: item.tradingCode,
+      type: item.type,
+      time: item.time,
+      close: item.close,
+      sector: item.sector,
+      category: item.category,
+      haltStatus: item.haltStatus,
+      recordDate: item.recordDate,
+      change: item[variantAlignment].change,
+      percentChange: item[variantAlignment].percentChange,
+      volume: item[variantAlignment].volume,
+      value: item[variantAlignment].value,
+      trade: item[variantAlignment].trade,
+    }));
+
+    if (typeAlignment == "gainer") {
+      newData.sort((a: any, b: any) => b.percentChange - a.percentChange);
+    } else if (typeAlignment == "loser") {
+      newData.sort((a: any, b: any) => a.percentChange - b.percentChange);
+    } else {
+      newData.sort((a: any, b: any) => b[typeAlignment] - a[typeAlignment]);
+    }
+    setdata(newData);
+    router.push(`?type=${typeAlignment}&variant=${variantAlignment}`);
+    setisLoading(false);
+  }, [initdata, typeAlignment, variantAlignment]);
+
+  useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <Box sx={{ py: 0 }}>
-      <LoadingSpinner open={!allGainerLoser?.dataFetched} />
+      <LoadingSpinner open={!allGainerLoser?.dataFetched || isLoading} />
       <Box
         sx={{
           pt: 1.5,
           pb: 0.5,
           px: 2,
-          // position: "fixed",
-          // top: 55,
-          // left: 0,
-          // right: 0,
-          // zIndex: 1,
+          position: "fixed",
+          top: 55,
+          left: 0,
+          right: 0,
+          zIndex: 1,
+          bgcolor: "background.default",
         }}
       >
         <Box
@@ -234,7 +238,7 @@ export default function Dashboard() {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            mb: 1.3,
+            mb: 1.2,
           }}
         >
           <StyledMainToggleButtonGroup
@@ -280,8 +284,8 @@ export default function Dashboard() {
           </StyledToggleButtonGroup>
         </Box>
       </Box>
-      {/* <Box sx={{ height: 90 }}></Box> */}
-      <Box sx={{ px: 1, pt: 0.1, pb: 2, bgcolor: "secondaryBackground" }}>
+      <Box sx={{ height: 90 }}></Box>
+      <Box sx={{ px: 1, pt: 1.3, pb: 2, bgcolor: "secondaryBackground" }}>
         {data &&
           data
             .slice(0, INIT_ITEM_TO_DISPLAY)

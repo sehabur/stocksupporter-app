@@ -30,6 +30,8 @@ import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import { DateTime } from "luxon";
 
 export default function News({ tradingCode }: any) {
+  const theme = useTheme();
+
   const [openDialog, setOpenDialog] = useState(false);
 
   const [dialogContent, setDialogContent] = useState<any>({});
@@ -88,8 +90,8 @@ export default function News({ tradingCode }: any) {
       >
         <DialogTitle
           sx={{
-            fontSize: "1.1rem",
             mr: 2,
+            fontSize: "1.1rem",
           }}
         >
           {dialogContent?.title}
@@ -98,12 +100,23 @@ export default function News({ tradingCode }: any) {
           <Stack direction="row" alignItems="center" sx={{ mb: 2 }}>
             <ScheduleRoundedIcon
               color="success"
-              sx={{ fontSize: "1.2rem", mr: 1.3 }}
+              sx={{ fontSize: "1rem", mr: 1 }}
             />
             <ReactTimeAgo
-              date={dialogContent?.date}
+              date={dialogContent.time || dialogContent.date}
               locale="en-US"
-              style={{ fontSize: "1rem", color: "#089981" }}
+              style={{ color: theme.palette.success.main }}
+            />
+            <Chip
+              label={DateTime.fromISO(dialogContent.date).toFormat(
+                "dd MMM, yyyy"
+              )}
+              size="small"
+              sx={{
+                ml: 2,
+                borderRadius: 1,
+                fontSize: ".875rem",
+              }}
             />
           </Stack>
           <Typography sx={{ pb: 2 }}>{dialogContent?.description}</Typography>
@@ -162,12 +175,15 @@ export default function News({ tradingCode }: any) {
                     <Stack direction="row" alignItems="center">
                       <ScheduleRoundedIcon
                         color="success"
-                        sx={{ fontSize: "1.2rem", mr: 1.3 }}
+                        sx={{ fontSize: "1.2rem", mr: 1 }}
                       />
                       <ReactTimeAgo
                         date={item.time || item.date}
                         locale="en-US"
-                        style={{ fontSize: "1rem", color: "#089981" }}
+                        style={{
+                          fontSize: "1rem",
+                          color: theme.palette.success.main,
+                        }}
                       />
                       <Chip
                         label={DateTime.fromISO(item.date).toFormat(

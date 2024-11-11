@@ -94,6 +94,8 @@ const formatChartData = (data: any) => {
 };
 
 export default function IndexChart({ indexData, handleButtonClick }: any) {
+  const theme = useTheme();
+
   const [alignment, setAlignment] = React.useState("dsex");
 
   const [currentIndex, setCurrentIndex] = React.useState({
@@ -194,7 +196,11 @@ export default function IndexChart({ indexData, handleButtonClick }: any) {
       <Paper
         elevation={0}
         sx={{
-          bgcolor: "appCardBgColor",
+          // bgcolor: "appCardBgColor",
+          background:
+            theme.palette.mode == "dark"
+              ? "linear-gradient(to right, #16222A, #252529)"
+              : "linear-gradient(to right,  #f5f7fa, #f7f7f7)",
           px: 2,
           pb: 1.5,
           pt: 1,
@@ -269,7 +275,7 @@ export default function IndexChart({ indexData, handleButtonClick }: any) {
               mr: 2,
             }}
           >
-            <Typography color="text.primary" sx={{ ml: 0.5 }}>
+            <Typography color="text.secondary" sx={{ ml: 0.5 }}>
               Last update{" "}
               {DateTime.fromISO(indexData.latest.time).toFormat(
                 "dd MMM, HH:mm"

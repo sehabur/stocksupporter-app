@@ -65,7 +65,8 @@ export default function CandlestickVolumeChart(props: any) {
     chart.current.applyOptions({
       watermark: {
         visible: true,
-        fontSize: 24,
+        fontSize: 20,
+        fontFamily: "'Poppins', sans-serif",
         horzAlign: "center",
         vertAlign: "center",
         color: "rgba(125, 125, 125, 0.3)",

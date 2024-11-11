@@ -128,7 +128,7 @@ export default function Home() {
       dataFetchEndTime = calcDataFetchEndTime(marketOpenStatus);
     }
 
-    console.log(storageKey, dataFetchEndTime);
+    // console.log(storageKey, dataFetchEndTime);
 
     if (new Date(pullTime) < new Date(dataFetchEndTime)) {
       return await fetchDataFromApi(endpoint, storageKey);

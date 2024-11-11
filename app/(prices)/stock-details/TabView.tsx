@@ -25,6 +25,7 @@ import { useDispatch } from "react-redux";
 import { pageTitleActions } from "_store";
 import FavoriteButton from "@/components/buttons/FavoriteButton";
 import Link from "next/link";
+import AiGeneratedInsight from "./AiGeneratedInsight";
 
 const TabPanel = (props: any) => {
   const { children, value, index, ...other } = props;
@@ -110,6 +111,22 @@ export default function TabView(props: any) {
     {
       title: "News",
       component: <News tradingCode={tradingCode} />,
+    },
+    {
+      title: "AI insight",
+      component: (
+        <AiGeneratedInsight
+          tradingCode={tradingCode}
+          epsCurrent={stock.fundamentals?.epsCurrent}
+          pe={stock.fundamentals?.pe?.value}
+          pbv={stock.fundamentals?.pbv?.value}
+          pcf={stock.fundamentals?.pcf?.value}
+          technicals={stock.fundamentals?.technicals}
+          fundamentals={stock.fundamentals?.screener}
+          cashDividend={stock.fundamentals?.cashDividend}
+          price={stock.latest?.close}
+        />
+      ),
     },
     {
       title: "Technical",

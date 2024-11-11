@@ -233,14 +233,23 @@ export default function Overview({ stock, handleButtonClick }: any) {
       ? "#f45e6a"
       : "#00A25B";
 
-  const minuteChartData: any = stock.minute.map(
-    (item: { time: string; close: number; ycp: number }) => {
+  // const minuteChartData: any = stock.minute.map(
+  //   (item: { time: string; close: number; ycp: number }) => {
+  //     return {
+  //       time: DateTime.fromISO(item.time).plus({ hours: 6 }).toUnixInteger(),
+  //       value: item.close !== 0 ? item.close : item.ycp,
+  //     };
+  //   }
+  // );
+
+  const minuteChartData: any = stock.minute
+    .filter((item: { ltp: number }) => item.ltp !== 0)
+    .map((item: { time: string; ltp: number; ycp: number }) => {
       return {
         time: DateTime.fromISO(item.time).plus({ hours: 6 }).toUnixInteger(),
-        value: item.close !== 0 ? item.close : item.ycp,
+        value: item.ltp,
       };
-    }
-  );
+    });
 
   const dailyCandleData = formatCandleChartData(stock.daily);
   const weeklyCandleData = formatCandleChartData(stock.weekly);
@@ -756,67 +765,6 @@ export default function Overview({ stock, handleButtonClick }: any) {
           </Grid>
 
           <Grid item xs={4}>
-            <Typography color="text.secondary" sx={{ fontSize: ".85rem" }}>
-              Market Capitalization
-            </Typography>
-            <Stack direction="row" alignItems="baseline" flexWrap="wrap">
-              <Typography
-                color="text.primary"
-                sx={{
-                  fontSize: "1.1rem",
-                  fontWeight: 500,
-                  mr: 0.7,
-                }}
-              >
-                {(stock.fundamentals.marketCap / 10).toFixed(2)}
-              </Typography>
-              <Typography color="text.secondary" sx={{ fontSize: ".8rem" }}>
-                CR
-              </Typography>
-            </Stack>
-          </Grid>
-          <Grid item xs={4}>
-            <Typography color="text.secondary" sx={{ fontSize: ".85rem" }}>
-              Paid-up Capital
-            </Typography>
-            <Stack direction="row" alignItems="baseline" flexWrap="wrap">
-              <Typography
-                color="text.primary"
-                sx={{
-                  fontSize: "1.1rem",
-                  fontWeight: 500,
-                  mr: 0.7,
-                }}
-              >
-                {(stock.fundamentals.paidUpCap / 10).toFixed(2)}
-              </Typography>
-              <Typography color="text.secondary" sx={{ fontSize: ".8rem" }}>
-                CR
-              </Typography>
-            </Stack>
-          </Grid>
-          <Grid item xs={4}>
-            <Typography color="text.secondary" sx={{ fontSize: ".85rem" }}>
-              Authorized Capital
-            </Typography>
-            <Stack direction="row" alignItems="baseline" flexWrap="wrap">
-              <Typography
-                color="text.primary"
-                sx={{
-                  fontSize: "1.1rem",
-                  fontWeight: 500,
-                  mr: 0.7,
-                }}
-              >
-                {(stock.fundamentals.authCap / 10).toFixed(2)}
-              </Typography>
-              <Typography color="text.secondary" sx={{ fontSize: ".8rem" }}>
-                CR
-              </Typography>
-            </Stack>
-          </Grid>
-
-          <Grid item xs={4}>
             <Typography color="text.secondary" sx={{ fontSize: ".875rem" }}>
               Total Shares
             </Typography>
@@ -876,6 +824,70 @@ export default function Overview({ stock, handleButtonClick }: any) {
                 {stock.fundamentals.longTermLoan !== 0
                   ? (stock.fundamentals.longTermLoan / 10).toFixed(2)
                   : 0}
+              </Typography>
+              <Typography color="text.secondary" sx={{ fontSize: ".8rem" }}>
+                CR
+              </Typography>
+            </Stack>
+          </Grid>
+
+          <Grid item xs={4}>
+            <Typography color="text.secondary" sx={{ fontSize: ".85rem" }}>
+              Market Capitalization
+            </Typography>
+            <Stack direction="row" alignItems="baseline" flexWrap="wrap">
+              <Typography
+                color="text.primary"
+                sx={{
+                  fontSize: "1.1rem",
+                  fontWeight: 500,
+                  mr: 0.7,
+                }}
+              >
+                {(stock.fundamentals.marketCap / 10).toFixed(2)}
+              </Typography>
+              <Typography color="text.secondary" sx={{ fontSize: ".8rem" }}>
+                CR
+              </Typography>
+            </Stack>
+          </Grid>
+          <Grid item xs={4}>
+            <Typography
+              color="text.secondary"
+              sx={{ fontSize: ".85rem", maxWidth: 70 }}
+            >
+              Paid-up Capital
+            </Typography>
+            <Stack direction="row" alignItems="baseline" flexWrap="wrap">
+              <Typography
+                color="text.primary"
+                sx={{
+                  fontSize: "1.1rem",
+                  fontWeight: 500,
+                  mr: 0.7,
+                }}
+              >
+                {(stock.fundamentals.paidUpCap / 10).toFixed(2)}
+              </Typography>
+              <Typography color="text.secondary" sx={{ fontSize: ".8rem" }}>
+                CR
+              </Typography>
+            </Stack>
+          </Grid>
+          <Grid item xs={4}>
+            <Typography color="text.secondary" sx={{ fontSize: ".85rem" }}>
+              Authorized Capital
+            </Typography>
+            <Stack direction="row" alignItems="baseline" flexWrap="wrap">
+              <Typography
+                color="text.primary"
+                sx={{
+                  fontSize: "1.1rem",
+                  fontWeight: 500,
+                  mr: 0.7,
+                }}
+              >
+                {(stock.fundamentals.authCap / 10).toFixed(2)}
               </Typography>
               <Typography color="text.secondary" sx={{ fontSize: ".8rem" }}>
                 CR

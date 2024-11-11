@@ -46,6 +46,7 @@ import FacebookRoundedIcon from "@mui/icons-material/FacebookRounded";
 import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
 import DonutSmallIcon from "@mui/icons-material/DonutSmall";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
+import AutoAwesomeRoundedIcon from "@mui/icons-material/AutoAwesomeRounded";
 
 import { authActions, favoriteActions } from "_store";
 
@@ -53,8 +54,15 @@ import ToastMessage from "./shared/ToastMessage";
 
 import DarkThemeButton from "./buttons/DarkThemeButton";
 import { App } from "@capacitor/app";
+import { yellow } from "@mui/material/colors";
 
 const marketMenu = [
+  {
+    title: "Supercharts",
+    label: "Supercharts",
+    icon: <AddchartOutlinedIcon />,
+    href: "/supercharts?symbol=DSEX",
+  },
   {
     title: "Sectors",
     label: "Sectors",
@@ -62,10 +70,10 @@ const marketMenu = [
     href: "/sector",
   },
   {
-    title: "Supercharts",
-    label: "Supercharts",
-    icon: <AddchartOutlinedIcon />,
-    href: "/supercharts?symbol=DSEX",
+    title: "News",
+    label: "News",
+    icon: <NewspaperRoundedIcon />,
+    href: "/latest-news",
   },
   {
     title: "Index movers",
@@ -80,29 +88,13 @@ const marketMenu = [
     href: "/beta",
   },
   {
-    title: "Block transections",
-    label: "Block transections",
-    icon: <BatchPredictionRoundedIcon />,
-    href: "/block-tr",
+    title: "AI insight",
+    label: "AI insight",
+    icon: <AutoAwesomeRoundedIcon />,
+    href: "/ai-insight",
+    customIconColor: yellow[700],
   },
-  {
-    title: "Latest news",
-    label: "News",
-    icon: <NewspaperRoundedIcon />,
-    href: "/latest-news",
-  },
-  {
-    title: "IPO",
-    label: "IPO",
-    icon: <UpcomingRoundedIcon />,
-    href: "/ipo",
-  },
-  {
-    title: "Screener",
-    label: "Screener",
-    icon: <FilterAltOutlinedIcon />,
-    href: "/screener",
-  },
+
   {
     title: "Top shares",
     label: "Top shares",
@@ -114,6 +106,25 @@ const marketMenu = [
     label: "Latest price",
     icon: <DonutSmallIcon />,
     href: "/latest-price",
+  },
+  {
+    title: "Screener",
+    label: "Screener",
+    icon: <FilterAltOutlinedIcon />,
+    href: "/screener",
+  },
+  {
+    title: "Block transections",
+    label: "Block transections",
+    icon: <BatchPredictionRoundedIcon />,
+    href: "/block-tr",
+  },
+
+  {
+    title: "IPO",
+    label: "IPO",
+    icon: <UpcomingRoundedIcon />,
+    href: "/ipo",
   },
 ];
 
@@ -170,10 +181,10 @@ const othersMenu = [
 
 const userMenu = [
   {
-    title: "Favorites",
-    label: "Favorites",
-    icon: <FavoriteBorderRoundedIcon />,
-    href: "/favorites",
+    title: "Notifications",
+    label: "Notifications",
+    icon: <NotificationsNoneRoundedIcon />,
+    href: "/notifications",
   },
   {
     title: "Price alerts",
@@ -182,10 +193,10 @@ const userMenu = [
     href: "/price-alerts",
   },
   {
-    title: "Notifications",
-    label: "Notifications",
-    icon: <NotificationsNoneRoundedIcon />,
-    href: "/notifications",
+    title: "Favorites",
+    label: "Favorites",
+    icon: <FavoriteBorderRoundedIcon />,
+    href: "/favorites",
   },
   {
     title: "Portfolio",
@@ -267,7 +278,7 @@ export default function MoreMenu({
           borderRadius: 2,
           my: 1.1,
           px: 2,
-          py: 0.2,
+          py: 0.3,
           width: "100%",
         }}
         component={Button}

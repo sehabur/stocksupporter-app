@@ -86,9 +86,8 @@ const formatCandleChartData = (data: any) => {
 export default function SectorChart({ data }: any) {
   const [alignment, setAlignment] = React.useState("minute");
 
-  const theme = useTheme();
-
-  const matchesSmDown = useMediaQuery(theme.breakpoints.down("sm"));
+  // const theme = useTheme();
+  // const matchesSmDown = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleAlignment = (
     event: any,
@@ -99,14 +98,14 @@ export default function SectorChart({ data }: any) {
     }
   };
 
-  const minuteChartData: any = data.minute
-    // .filter((item: any) => item.ltp !== 0 || item.close !== 0)
-    .map((item: { time: string; ltp: number; ycp: number }) => {
+  const minuteChartData: any = data.minute.map(
+    (item: { time: string; close: number }) => {
       return {
         time: DateTime.fromISO(item.time).plus({ hours: 6 }).toUnixInteger(),
-        value: item.ltp !== 0 ? item.ltp : item.ycp,
+        value: item.close,
       };
-    });
+    }
+  );
 
   const latestMinuteData = data.minute[data.minute.length - 1].change;
 

@@ -221,7 +221,7 @@ export default function Dashboard() {
                     fontSize: ".875rem",
                     ml: 0.8,
                     mr: 2,
-                    mt: 0.5,
+                    mt: 0.7,
                   }}
                 >
                   BDT

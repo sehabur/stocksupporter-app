@@ -65,7 +65,7 @@ export default function SearchStockCard(props: any) {
       variant="outlined"
     >
       <Grid container alignItems="center">
-        <Grid item xs={9.5} onClick={handleButtonClick} sx={{ pr: 2 }}>
+        <Grid item xs={10} onClick={handleButtonClick} sx={{ pr: 2 }}>
           <Stack
             direction="row"
             alignItems="center"
@@ -74,10 +74,10 @@ export default function SearchStockCard(props: any) {
           >
             <Typography
               sx={{
-                fontSize: ".95rem",
+                fontSize: ".9rem",
                 fontWeight: 600,
                 color: "text.primary",
-                mr: itemType !== "stock" ? 1 : 0,
+                mr: itemType !== "stock" ? 0.5 : 0,
               }}
             >
               {itemType === "index"
@@ -93,11 +93,10 @@ export default function SearchStockCard(props: any) {
                 sx={{
                   borderRadius: 1,
                   // fontSize: "1rem",
-                  ml: 0.8,
-                  mr: 1,
+                  ml: 0.6,
                   fontWeight: 700,
                   "& .MuiChip-label": {
-                    px: 0.7,
+                    px: 0.5,
                   },
                 }}
               />
@@ -109,12 +108,11 @@ export default function SearchStockCard(props: any) {
                 size="small"
                 sx={{
                   borderRadius: 1,
+                  ml: 0.7,
                   fontWeight: 700,
-                  mr: 0.8,
                   "& .MuiChip-label": {
                     px: 0.5,
                   },
-                  // fontSize: ".9rem",
                   color:
                     item.change === 0
                       ? "primary.main"
@@ -130,11 +128,11 @@ export default function SearchStockCard(props: any) {
               size="small"
               sx={{
                 borderRadius: 1,
+                ml: item.change !== 0 ? 0.7 : 1,
                 fontWeight: 700,
                 "& .MuiChip-label": {
-                  px: 0.5,
+                  px: item.change !== 0 ? 0.5 : 1,
                 },
-                // fontSize: ".9rem",
                 color:
                   item.change === 0
                     ? "primary.main"
@@ -153,10 +151,12 @@ export default function SearchStockCard(props: any) {
                   variant="outlined"
                   color={item.haltStatus === "buy" ? "success" : "error"}
                   sx={{
-                    ml: 0.8,
-                    fontSize: ".8rem",
+                    borderRadius: 1,
+                    ml: 0.7,
+                    fontSize: ".7rem",
+                    fontWeight: 600,
                     "& .MuiChip-label": {
-                      px: 0.7,
+                      px: 0.4,
                     },
                   }}
                 />
@@ -169,10 +169,12 @@ export default function SearchStockCard(props: any) {
                 variant="outlined"
                 color="warning"
                 sx={{
-                  ml: 0.8,
-                  fontSize: ".8rem",
+                  borderRadius: 1,
+                  ml: 0.7,
+                  fontSize: ".7rem",
+                  fontWeight: 600,
                   "& .MuiChip-label": {
-                    px: 0.7,
+                    px: 0.4,
                   },
                 }}
               />
@@ -189,7 +191,7 @@ export default function SearchStockCard(props: any) {
           </Typography>
         </Grid>
 
-        <Grid item xs={2.5}>
+        <Grid item xs={2}>
           <Stack alignItems="flex-end" sx={{ mr: 0.7 }}>
             <Typography
               sx={{

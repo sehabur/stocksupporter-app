@@ -9,6 +9,7 @@ import {
   DialogTitle,
   DialogContent,
   IconButton,
+  useTheme,
 } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -78,6 +79,8 @@ const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
 }));
 
 export default function News({ data, handleButtonClick }: any) {
+  const theme = useTheme();
+
   const [openDialog, setOpenDialog] = useState(false);
 
   const [dialogContent, setDialogContent] = useState<any>({});
@@ -129,19 +132,19 @@ export default function News({ data, handleButtonClick }: any) {
         fullWidth
         maxWidth="sm"
       >
-        <DialogTitle sx={{ fontWeight: 600, fontSize: "1.1rem", mr: 2 }}>
+        <DialogTitle sx={{ mr: 2, fontSize: "1.1rem" }}>
           {dialogContent?.title}
         </DialogTitle>
         <DialogContent dividers>
           <Stack direction="row" alignItems="center" sx={{ mb: 2 }}>
             <ScheduleRoundedIcon
               color="success"
-              sx={{ fontSize: "1.2rem", mr: 1.3 }}
+              sx={{ fontSize: "1.2rem", mr: 1 }}
             />
             <ReactTimeAgo
               date={dialogContent?.date}
               locale="en-US"
-              style={{ fontSize: "1rem", color: "#089981" }}
+              style={{ fontSize: "1rem", color: theme.palette.success.main }}
             />
           </Stack>
           <Typography sx={{ fontSize: ".9rem", pb: 2 }}>
@@ -233,12 +236,12 @@ export default function News({ data, handleButtonClick }: any) {
                     <Stack direction="row" alignItems="center">
                       <ScheduleRoundedIcon
                         color="success"
-                        sx={{ fontSize: "1rem", mr: 1.3 }}
+                        sx={{ fontSize: "1rem", mr: 1 }}
                       />
                       <ReactTimeAgo
                         date={item.time || item.date}
                         locale="en-US"
-                        style={{ color: "#089981" }}
+                        style={{ color: theme.palette.success.main }}
                       />
                     </Stack>
                   </Typography>

@@ -12,6 +12,7 @@ import {
   DialogContent,
   IconButton,
   Chip,
+  useTheme,
 } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -87,6 +88,8 @@ const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
 }));
 
 export default function News() {
+  const theme = useTheme();
+
   const dispatch = useDispatch();
 
   dispatch(pageTitleActions.setPageTitle("News"));
@@ -182,21 +185,30 @@ export default function News() {
         fullWidth
         maxWidth="sm"
       >
-        <DialogTitle sx={{ mr: 2 }}>{dialogContent?.title}</DialogTitle>
+        <DialogTitle sx={{ mr: 2, fontSize: "1.1rem" }}>
+          {dialogContent?.title}
+        </DialogTitle>
         <DialogContent dividers>
-          <Stack
-            direction="row"
-            alignItems="center"
-            sx={{ mb: 2, fontSize: "1.1rem" }}
-          >
+          <Stack direction="row" alignItems="center" sx={{ mb: 2 }}>
             <ScheduleRoundedIcon
               color="success"
-              sx={{ fontSize: "1.2rem", mr: 1.3 }}
+              sx={{ fontSize: "1rem", mr: 1 }}
             />
             <ReactTimeAgo
-              date={dialogContent?.date}
+              date={dialogContent.time || dialogContent.date}
               locale="en-US"
-              style={{ fontSize: "1rem", color: "#089981" }}
+              style={{ color: theme.palette.success.main }}
+            />
+            <Chip
+              label={DateTime.fromISO(dialogContent.date).toFormat(
+                "dd MMM, yyyy"
+              )}
+              size="small"
+              sx={{
+                ml: 2,
+                borderRadius: 1,
+                fontSize: ".875rem",
+              }}
             />
           </Stack>
           <Typography sx={{ pb: 2 }}>{dialogContent?.description}</Typography>
@@ -289,7 +301,7 @@ export default function News() {
                         <ReactTimeAgo
                           date={item.time || item.date}
                           locale="en-US"
-                          style={{ color: "#089981" }}
+                          style={{ color: theme.palette.success.main }}
                         />
                         <Chip
                           label={DateTime.fromISO(item.date).toFormat(

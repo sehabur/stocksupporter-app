@@ -10,11 +10,6 @@ export default function Spinner() {
         height: "93vh",
       }}
     >
-      {/* <Dialog open={true}>
-        <Box sx={{ p: 2, pb: 1 }}>
-          <CircularProgress color="primary" />
-        </Box>
-      </Dialog> */}
       <Backdrop open={true} sx={{ bgcolor: "background.default", zIndex: 100 }}>
         <CircularProgress color="primary" />
       </Backdrop>
