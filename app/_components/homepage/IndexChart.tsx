@@ -196,11 +196,11 @@ export default function IndexChart({ indexData, handleButtonClick }: any) {
       <Paper
         elevation={0}
         sx={{
-          // bgcolor: "appCardBgColor",
-          background:
-            theme.palette.mode == "dark"
-              ? "linear-gradient(to right, #16222A, #252529)"
-              : "linear-gradient(to right,  #f5f7fa, #f7f7f7)",
+          bgcolor: "appCardBgColor",
+          // background:
+          //   theme.palette.mode == "dark"
+          //     ? "radial-gradient(circle, #252529, #292a2d)"
+          //     : "radial-gradient(circle, #e6f5ff, #f0f7fa)",
           px: 2,
           pb: 1.5,
           pt: 1,

@@ -27,9 +27,9 @@ export default function TradingviewChart() {
 
   const theme: any = useTheme();
 
-  const searchParams = useSearchParams();
+  const searchParams: any = useSearchParams();
 
-  const symbol = searchParams.get("symbol");
+  const symbol = decodeURIComponent(searchParams.get("symbol"));
 
   const auth = useSelector((state: any) => state.auth);
 

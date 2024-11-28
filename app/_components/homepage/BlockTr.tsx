@@ -120,7 +120,9 @@ export default function BlockTr({ data, handleButtonClick }: any) {
                     <Typography
                       onClick={() => {
                         handleButtonClick(
-                          `/stock-details?tradingCode=${row.tradingCode}`,
+                          `/stock-details?tradingCode=${encodeURIComponent(
+                            row.tradingCode
+                          )}`,
                           `${row.tradingCode} Details`
                         );
                       }}

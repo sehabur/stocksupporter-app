@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Virtuoso } from "react-virtuoso";
 
 import { Box } from "@mui/material";
 import ToggleButton from "@mui/material/ToggleButton";
@@ -121,7 +122,7 @@ const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   color: theme.palette.primary.main,
 }));
 
-const INIT_ITEM_TO_DISPLAY = 25;
+// const INIT_ITEM_TO_DISPLAY = 25;
 
 export default function Dashboard() {
   const dispatch = useDispatch();
@@ -138,11 +139,13 @@ export default function Dashboard() {
 
   const allGainerLoser = useSelector((state: any) => state.allGainerLoser);
 
+  const [listHeight, setListHeight] = useState(0);
+
   const [data, setdata] = useState<any>([]);
 
   const [initdata, setinitdata] = useState<any>([]);
 
-  const [isScroll, setisScroll] = useState(false);
+  // const [isScroll, setisScroll] = useState(false);
 
   const [typeAlignment, setTypeAlignment] = useState<any>(type);
 
@@ -168,14 +171,14 @@ export default function Dashboard() {
     }
   };
 
-  const handleScroll = () => {
-    const currentScrollPos = window.scrollY;
-    if (currentScrollPos > 0) {
-      setisScroll(true);
-    } else {
-      setisScroll(false);
-    }
-  };
+  // const handleScroll = () => {
+  //   const currentScrollPos = window.scrollY;
+  //   if (currentScrollPos > 0) {
+  //     setisScroll(true);
+  //   } else {
+  //     setisScroll(false);
+  //   }
+  // };
 
   useEffect(() => {
     setinitdata(allGainerLoser?.data);
@@ -193,6 +196,7 @@ export default function Dashboard() {
       category: item.category,
       haltStatus: item.haltStatus,
       recordDate: item.recordDate,
+      spotRange: item.spotRange,
       change: item[variantAlignment].change,
       percentChange: item[variantAlignment].percentChange,
       volume: item[variantAlignment].volume,
@@ -213,9 +217,22 @@ export default function Dashboard() {
   }, [initdata, typeAlignment, variantAlignment]);
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.scrollTo(0, 0);
+
+    const calculateHeight = () => {
+      // const headerHeight = document.getElementById("header")?.offsetHeight || 0;
+      // const footerHeight = document.getElementById("footer")?.offsetHeight || 0;
+      setListHeight(window.innerHeight - 230);
+    };
+    calculateHeight();
+    // window.addEventListener("resize", calculateHeight);
+    // return () => window.removeEventListener("resize", calculateHeight);
   }, []);
+
+  // useEffect(() => {
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // }, []);
 
   return (
     <Box sx={{ py: 0 }}>
@@ -286,7 +303,7 @@ export default function Dashboard() {
       </Box>
       <Box sx={{ height: 90 }}></Box>
       <Box sx={{ px: 1, pt: 1.3, pb: 2, bgcolor: "secondaryBackground" }}>
-        {data &&
+        {/* {data &&
           data
             .slice(0, INIT_ITEM_TO_DISPLAY)
             .map((item: any, index: number) => (
@@ -298,7 +315,20 @@ export default function Dashboard() {
             .slice(INIT_ITEM_TO_DISPLAY)
             .map((item: any, index: number) => (
               <MobileViewPriceCard item={item} key={index} />
-            ))}
+            ))} */}
+
+        <div
+          id="virtual-list"
+          style={{ height: `${listHeight}px`, overflow: "hidden" }}
+        >
+          <Virtuoso
+            style={{ height: "100%" }}
+            // totalCount={200}
+            // useWindowScroll
+            data={data}
+            itemContent={(_, item) => <MobileViewPriceCard item={item} />}
+          />
+        </div>
       </Box>
     </Box>
   );

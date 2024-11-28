@@ -4,7 +4,7 @@ import { Box, Grid, Paper, Typography, Stack, Chip } from "@mui/material";
 import { useRouter } from "next/navigation";
 import FavoriteButton from "../buttons/FavoriteButton";
 import AlertButton from "../buttons/AlertButton";
-import { isWithinPreviousTwoDays } from "_helper";
+import { isBetweenSpotRange, isWithinPreviousTwoDays } from "_helper";
 
 const addPlusSign = (value: number) => {
   let result;
@@ -23,7 +23,7 @@ export default function MobileViewPriceCard({ item }: any) {
 
   const itemType = item?.type;
 
-  const isSpotEnabled = isWithinPreviousTwoDays(item.recordDate);
+  const isSpotEnabled = isBetweenSpotRange(item.spotRange);
 
   const handleButtonClick = () => {
     let href = "";
@@ -35,7 +35,9 @@ export default function MobileViewPriceCard({ item }: any) {
         href = `/sector/chart?sector=${item.sectorTag}`;
         break;
       case "stock":
-        href = `/stock-details?tradingCode=${item.tradingCode}`;
+        href = `/stock-details?tradingCode=${encodeURIComponent(
+          item.tradingCode
+        )}`;
         break;
     }
     router.push(href);

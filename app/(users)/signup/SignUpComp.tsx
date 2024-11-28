@@ -33,6 +33,8 @@ export default function SignUpComp() {
 
   const redirect = searchParams.get("redirect");
 
+  const action = searchParams.get("action");
+
   const [isLoading, setIsLoading] = React.useState(false);
 
   // const [successMessage, setSuccessMessage] = React.useState("");
@@ -79,6 +81,19 @@ export default function SignUpComp() {
         dispatch(authActions.login(data.user));
         pushNotificationInit(data.user);
         setErrorMessage("");
+
+        if (action === "generate_otp") {
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/generateOtp`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${data.user.token}`,
+              },
+            }
+          );
+        }
         handleButtonClick(redirect || "/");
       } else {
         let errorMsg = "";
@@ -228,7 +243,13 @@ export default function SignUpComp() {
 
         <Box sx={{ mt: 1 }}>
           <Typography
-            onClick={() => handleButtonClick(`/signin?redirect=${redirect}`)}
+            onClick={() =>
+              handleButtonClick(
+                `/signin${
+                  redirect ? "?redirect=" + encodeURIComponent(redirect) : ""
+                }${action ? "&action=" + action : ""}`
+              )
+            }
             sx={{
               textDecoration: "underline",
               color: "primary.main",

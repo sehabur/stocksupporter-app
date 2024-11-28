@@ -229,8 +229,9 @@ export default function TopFinancials(props: any) {
                         <Typography
                           onClick={() => {
                             handleButtonClick(
-                              `/stock-details?tradingCode=${row.tradingCode}`,
-                              `${row.tradingCode} Details`
+                              `/stock-details?tradingCode=${encodeURIComponent(
+                                row.tradingCode
+                              )}`
                             );
                           }}
                           sx={{

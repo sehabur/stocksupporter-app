@@ -24,7 +24,7 @@ import PremiumDialogContent from "@/components/dialogs/PremiumDialogContent";
 import "./ai.css";
 import { grey } from "@mui/material/colors";
 
-import LanguageRoundedIcon from "@mui/icons-material/LanguageRounded";
+// import LanguageRoundedIcon from "@mui/icons-material/LanguageRounded";
 
 const StyledLanguageToggleButtonGroup = styled(ToggleButtonGroup)(
   ({ theme }) => ({
@@ -37,7 +37,7 @@ const StyledLanguageToggleButtonGroup = styled(ToggleButtonGroup)(
 
 const StyledLanguageToggleButton = styled(ToggleButton)(({ theme }) => ({
   "&.MuiToggleButtonGroup-grouped": {
-    borderRadius: "4px !important",
+    borderRadius: "24px !important",
     "&.Mui-selected": {
       color: grey[50],
       backgroundColor: theme.palette.primary.main,
@@ -51,10 +51,13 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
     border: 0,
   },
 }));
+
 const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   "&.MuiToggleButtonGroup-grouped": {
+    width: "100px",
     borderRadius: "4px !important",
     border: `1px solid lightgrey !important`,
+    whiteSpace: "nowrap",
     "&.Mui-selected": {
       color: theme.palette.background.default,
       backgroundColor: theme.palette.text.secondary,
@@ -128,6 +131,8 @@ export default function AiGeneratedInsight(props: any) {
   } = props;
 
   const theme = useTheme();
+
+  const targetRef: any = React.useRef(null);
 
   const matchesMdUp = useMediaQuery(theme.breakpoints.up("md"));
 
@@ -219,7 +224,8 @@ export default function AiGeneratedInsight(props: any) {
       }
 
       doc.getElementById("content").innerHTML = marked.parse(
-        "*Please wait... AI model is generating data...*"
+        `*Please wait...<br/><br/>
+        AI model is generating data...*`
       );
 
       const queryBody: any = getQueryDataBody();
@@ -281,6 +287,12 @@ export default function AiGeneratedInsight(props: any) {
       );
     }
   }, [doc]);
+
+  useEffect(() => {
+    if (targetRef.current) {
+      targetRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [targetRef]);
 
   useEffect(() => {
     if (window?.document) {
@@ -347,10 +359,10 @@ export default function AiGeneratedInsight(props: any) {
                     key={index}
                     value={item.queryType}
                     sx={{
-                      px: { xs: 1.5, md: 2 },
+                      // px: { xs: 1.5, md: 2 },
                       py: { xs: 0.3, md: 0.7 },
-                      mb: { xs: 1, md: 1.3 },
-                      mr: { xs: 1.2, md: 0 },
+                      mb: { xs: 1, md: 1.5 },
+                      mr: { xs: 1, md: 0 },
                       width: { xs: "inherit", md: "100%" },
                       fontSize: { xs: ".85rem", md: ".9rem" },
                     }}
@@ -392,10 +404,16 @@ export default function AiGeneratedInsight(props: any) {
                   gap: 0.6,
                 }}
               >
-                <LanguageRoundedIcon />
-                <Paper variant="outlined" sx={{ bgcolor: "transparent" }}>
+                {/* <LanguageRoundedIcon /> */}
+                <Paper
+                  variant="outlined"
+                  sx={{
+                    bgcolor: "priceCardBgColor",
+                    borderRadius: 9,
+                    // border: `.5px solid ${theme.palette.primary.main}`,
+                  }}
+                >
                   <StyledLanguageToggleButtonGroup
-                    size="small"
                     value={languageAlignment}
                     exclusive
                     onChange={handleLanguageAlignmentChange}
@@ -405,7 +423,7 @@ export default function AiGeneratedInsight(props: any) {
                       value="En"
                       sx={{
                         py: 0,
-                        px: 0.6,
+                        px: 1.2,
                         fontWeight: 600,
                         fontSize: ".875rem",
                       }}
@@ -416,7 +434,7 @@ export default function AiGeneratedInsight(props: any) {
                       value="Bn"
                       sx={{
                         py: 0,
-                        px: 0.6,
+                        px: 1,
                         fontFamily: '"Noto Sans Bengali", sans-serif',
                         fontWeight: 700,
                         fontSize: ".95rem",
@@ -435,6 +453,7 @@ export default function AiGeneratedInsight(props: any) {
                 px: { xs: 1.5, md: 3 },
                 pt: 2,
                 pb: 2,
+                color: "text.primary",
                 fontSize: languageAlignment == "Bn" ? "1rem" : ".875rem",
                 fontFamily:
                   languageAlignment == "Bn"
@@ -445,6 +464,7 @@ export default function AiGeneratedInsight(props: any) {
           </Paper>
         </Box>
       )}
+      <Box ref={targetRef}></Box>
     </Box>
   );
 }

@@ -138,7 +138,9 @@ export default function Main() {
           return (
             <Typography
               component={Link}
-              href={`/stock-details?tradingCode=${params.value}`}
+              href={`/stock-details?tradingCode=${encodeURIComponent(
+                params.value
+              )}`}
             >
               {params.value}
             </Typography>

@@ -19,12 +19,7 @@ import { DateTime } from "luxon";
 import { grey } from "@mui/material/colors";
 import Link from "next/link";
 
-import {
-  redirect,
-  useParams,
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import DoDisturbOnRoundedIcon from "@mui/icons-material/DoDisturbOnRounded";
 import RadioButtonCheckedRoundedIcon from "@mui/icons-material/RadioButtonCheckedRounded";
@@ -35,7 +30,7 @@ import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import { useDispatch } from "react-redux";
 import { pageTitleActions } from "_store";
 import AlertButton from "@/components/buttons/AlertButton";
-import { isWithinPreviousTwoDays } from "_helper";
+import { isBetweenSpotRange, isWithinPreviousTwoDays } from "_helper";
 
 const addPlusSign = (value: number) => {
   let result;
@@ -97,9 +92,10 @@ const stockInitState = {
 };
 
 export default function Dashboard() {
-  const searchParams = useSearchParams();
+  const searchParams: any = useSearchParams();
 
-  const tradingCode: string = searchParams.get("tradingCode") || "";
+  const tradingCode: string =
+    decodeURIComponent(searchParams.get("tradingCode")) || "";
 
   const dispatch = useDispatch();
 
@@ -117,7 +113,7 @@ export default function Dashboard() {
 
   const textColor = getTextColor(stock.latest?.change);
 
-  const isSpotEnabled = isWithinPreviousTwoDays(stock.fundamentals?.recordDate);
+  const isSpotEnabled = isBetweenSpotRange(stock.fundamentals?.spotRange);
 
   async function getStockDetails() {
     try {
@@ -317,25 +313,16 @@ export default function Dashboard() {
               </Box>
 
               <Box sx={{ mt: 2 }}>
-                <Trades
-                  data={stock.minute}
-                  tradingCode={stock.fundamentals?.tradingCode}
-                />
+                <Trades data={stock.minute} tradingCode={tradingCode} />
               </Box>
 
               <Box sx={{ display: "flex", alignItems: "center", mt: 1.5 }}>
-                <FavoriteButton
-                  tradingCode={stock.fundamentals?.tradingCode}
-                  variant="detailed"
-                />
-                <AlertButton
-                  tradingCode={stock.fundamentals?.tradingCode}
-                  variant="detailed"
-                />
+                <FavoriteButton tradingCode={tradingCode} variant="detailed" />
+                <AlertButton tradingCode={tradingCode} variant="detailed" />
                 <Button
                   onClick={() => {
                     handleButtonClick(
-                      `/supercharts?symbol=${stock.fundamentals.tradingCode}`
+                      `/supercharts?symbol=${encodeURIComponent(tradingCode)}`
                     );
                   }}
                   sx={{ borderRadius: 2 }}
@@ -348,6 +335,7 @@ export default function Dashboard() {
           </Box>
           <Box>
             <TabView
+              key={tradingCode}
               stock={stock}
               tradingCode={tradingCode}
               prices={{

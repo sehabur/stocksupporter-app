@@ -7,7 +7,7 @@ export default async function GainerLooser() {
       component="main"
       sx={{
         bgcolor: "background.default",
-        minHeight: "95vh",
+        // minHeight: "95vh",
       }}
     >
       <Dashboard />

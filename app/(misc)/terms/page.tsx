@@ -14,7 +14,14 @@ export default async function Terms() {
         }}
       >
         <Box sx={{ px: 2 }}>
-          <Typography sx={{ fontSize: "1.2rem", fontWeight: 600, mb: 2 }}>
+          <Typography
+            sx={{
+              fontSize: "1.2rem",
+              color: "text.primary",
+              fontWeight: 600,
+              mb: 2,
+            }}
+          >
             Terms & Conditions
           </Typography>
           <Typography

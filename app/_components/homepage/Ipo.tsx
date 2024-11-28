@@ -158,20 +158,16 @@ export default function Ipo(props: any) {
         {data.filter(
           (item: any) => new Date(item.subscriptionEnd) >= new Date()
         ).length < 1 && (
-          <Box sx={{ width: "85vw", pb: 2 }}>
-            <Paper
-              elevation={0}
-              sx={{
-                my: 1,
-                ml: 0.8,
-                py: 1.5,
-                px: 2,
-                bgcolor: "secondaryBackground",
-                width: "100%",
-              }}
-            >
-              <Typography> There is no upcoming IPO to display.</Typography>
-            </Paper>
+          <Box
+            sx={{
+              ml: 1.2,
+              pt: 2,
+              pb: 2,
+            }}
+          >
+            <Typography color="text.primary">
+              No upcoming IPO to display.
+            </Typography>
           </Box>
         )}
       </Box>

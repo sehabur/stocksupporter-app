@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { marked } from "marked";
 
 import {
-  Grid,
   Typography,
   Box,
   Paper,
@@ -15,6 +14,9 @@ import {
   TextField,
   Button,
   Drawer,
+  Dialog,
+  DialogContent,
+  DialogTitle,
 } from "@mui/material";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup, {
@@ -27,6 +29,7 @@ import UnfoldMoreRoundedIcon from "@mui/icons-material/UnfoldMoreRounded";
 
 import PremiumDialogContent from "@/components/dialogs/PremiumDialogContent";
 import "./ai.css";
+import PageTitleSetter from "@/components/shared/PageTitleSetter";
 
 const StyledLanguageToggleButtonGroup = styled(ToggleButtonGroup)(
   ({ theme }) => ({
@@ -60,8 +63,10 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 }));
 const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   "&.MuiToggleButtonGroup-grouped": {
+    width: "100px",
     borderRadius: "5px !important",
     border: `1px solid lightgrey !important`,
+    whiteSpace: "nowrap",
     "&.Mui-selected": {
       color: theme.palette.background.default,
       backgroundColor: theme.palette.text.secondary,
@@ -124,9 +129,7 @@ const initdata: any = {
   },
 };
 
-export default function AiGeneratedInsight(props: any) {
-  const { allStockList } = props;
-
+export default function AiGeneratedInsight() {
   const theme = useTheme();
 
   const matchesMdUp = useMediaQuery(theme.breakpoints.up("md"));
@@ -134,6 +137,8 @@ export default function AiGeneratedInsight(props: any) {
   const auth = useSelector((state: any) => state.auth);
 
   const [data, setdata] = useState<any>(initdata);
+
+  const [allStockList, setallStockList] = useState<any>([]);
 
   const [tradingCode, setTradingCode] = useState("");
 
@@ -206,12 +211,12 @@ export default function AiGeneratedInsight(props: any) {
         doc.getElementById("content").innerHTML = marked.parse(
           data[tradingCode][queryType][languageAlignment]
         );
-        // console.log(data[tradingCode][queryType][languageAlignment]);
         return;
       }
 
       doc.getElementById("content").innerHTML = marked.parse(
-        "*Please wait... AI model is generating data...*"
+        `*Please wait...<br/><br/>
+        AI model is generating data...*`
       );
 
       const res: any = await fetch(
@@ -236,7 +241,6 @@ export default function AiGeneratedInsight(props: any) {
 
       if (res.ok) {
         setdata((state: any) => {
-          // console.log(state);
           if (!state[tradingCode]) {
             state[tradingCode] = {};
           }
@@ -265,6 +269,21 @@ export default function AiGeneratedInsight(props: any) {
         );
       }
     }
+  };
+
+  const getStockList = async () => {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/prices/getStocksList`,
+      {
+        next: { revalidate: 0 },
+      }
+    );
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+
+    const stocklist = await res.json();
+    setallStockList(stocklist);
   };
 
   // useEffect(() => {
@@ -296,6 +315,9 @@ export default function AiGeneratedInsight(props: any) {
       setDoc(window.document);
     }
   }, []);
+  useEffect(() => {
+    getStockList();
+  }, []);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -321,8 +343,10 @@ export default function AiGeneratedInsight(props: any) {
 
   return (
     <Box>
-      <Drawer anchor="bottom" open={openDrawer} onClose={toggleDrawer(false)}>
-        <Box>
+      <PageTitleSetter pageTitle="AI insight" />
+
+      <Dialog open={openDrawer} onClose={toggleDrawer(false)}>
+        {/* <Box>
           <Box sx={{ px: 2, py: 1.5 }}>
             <Typography
               sx={{ fontWeight: 700, fontSize: "1.1rem", textAlign: "center" }}
@@ -331,130 +355,137 @@ export default function AiGeneratedInsight(props: any) {
             </Typography>
           </Box>
         </Box>
-        <Divider />
-        <Box
-          component="form"
-          onSubmit={handleSubmit}
-          sx={{ maxWidth: 260, mx: "auto", px: 2, pt: 3, pb: 3 }}
-        >
-          <Box sx={{ mb: { xs: 3, md: 2 } }}>
-            <Typography sx={{ color: "text.secondary", mb: { xs: 1, md: 1 } }}>
-              Select language:
-            </Typography>
-
-            <Paper
-              variant="outlined"
-              sx={{
-                width: 163,
-                bgcolor: "inherit",
-              }}
-            >
-              <StyledLanguageToggleButtonGroup
-                // size="small"
-                value={languageAlignment}
-                exclusive
-                onChange={handleLanguageAlignmentChange}
-                aria-label="text alignment"
+        <Divider /> */}
+        <DialogTitle>Options</DialogTitle>
+        <DialogContent dividers>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            sx={{ maxWidth: 225, ml: 2, mr: 1 }}
+          >
+            <Box sx={{ mb: { xs: 3, md: 2 } }}>
+              <Typography
+                sx={{ color: "text.secondary", mb: { xs: 1, md: 1 } }}
               >
-                <StyledLanguageToggleButton
-                  value="En"
-                  sx={{ py: 0, fontWeight: 600 }}
-                >
-                  English
-                </StyledLanguageToggleButton>
-                <StyledLanguageToggleButton
-                  value="Bn"
-                  sx={{
-                    py: 0,
-                    fontFamily: '"Noto Sans Bengali", sans-serif',
-                    fontSize: "1rem",
-                    fontWeight: 600,
-                  }}
-                >
-                  বাংলা
-                </StyledLanguageToggleButton>
-              </StyledLanguageToggleButtonGroup>
-            </Paper>
-          </Box>
+                Select language:
+              </Typography>
 
-          <Box sx={{ mb: { xs: 3, md: 2 } }}>
-            <Typography sx={{ color: "text.secondary", mb: { xs: 1, md: 1 } }}>
-              Select stock:
-            </Typography>
-            <Autocomplete
-              size="small"
-              onChange={handleSelectStock}
-              options={allStockList.sort()}
-              value={tradingCode}
-              renderInput={(params) => (
-                <TextField {...params} placeholder="Select stock" required />
-              )}
-              sx={{ width: { xs: 200, md: "100%" } }}
-            />
-          </Box>
-
-          <Box>
-            <Typography
-              sx={{ color: "text.secondary", mb: { xs: 1.3, md: 1.5 } }}
-            >
-              Select analysis type:
-            </Typography>
-            <StyledToggleButtonGroup
-              size="small"
-              value={alignment}
-              exclusive
-              onChange={handleAlignmentChange}
-              orientation={matchesMdUp ? "vertical" : "horizontal"}
-              sx={{
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "flex-start",
-                alignItems: "flex-start",
-              }}
-            >
-              {options
-                .filter((item: any) => item.queryType != "general")
-                .map((item: any, index: number) => (
-                  <StyledToggleButton
-                    key={index}
-                    value={item.queryType}
+              <Paper
+                variant="outlined"
+                sx={{
+                  width: 163,
+                  bgcolor: "inherit",
+                }}
+              >
+                <StyledLanguageToggleButtonGroup
+                  // size="small"
+                  value={languageAlignment}
+                  exclusive
+                  onChange={handleLanguageAlignmentChange}
+                  aria-label="text alignment"
+                >
+                  <StyledLanguageToggleButton
+                    value="En"
+                    sx={{ py: 0, fontWeight: 600 }}
+                  >
+                    English
+                  </StyledLanguageToggleButton>
+                  <StyledLanguageToggleButton
+                    value="Bn"
                     sx={{
-                      px: { xs: 1.5, md: 2 },
-                      py: { xs: 0.5, md: 0.6 },
-                      mb: { xs: 1.3, md: 1.3 },
-                      mr: { xs: 1.5, md: 0 },
-                      width: { xs: "inherit", md: "100%" },
-                      fontSize: { xs: ".85rem", md: ".9rem" },
+                      py: 0,
+                      fontFamily: '"Noto Sans Bengali", sans-serif',
+                      fontSize: "1rem",
+                      fontWeight: 600,
                     }}
                   >
-                    {matchesMdUp ? item.buttonText : item.buttonTextSmall}
-                  </StyledToggleButton>
-                ))}
-            </StyledToggleButtonGroup>
-          </Box>
+                    বাংলা
+                  </StyledLanguageToggleButton>
+                </StyledLanguageToggleButtonGroup>
+              </Paper>
+            </Box>
 
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 1.5,
-              mt: { xs: 2, md: 1.5 },
-              mb: { xs: 2, md: 0 },
-            }}
-          >
-            <Button
-              variant="outlined"
-              sx={{ px: 2.5 }}
-              onClick={toggleDrawer(false)}
+            <Box sx={{ mb: { xs: 3, md: 2 } }}>
+              <Typography
+                sx={{ color: "text.secondary", mb: { xs: 1, md: 1 } }}
+              >
+                Select stock:
+              </Typography>
+              <Autocomplete
+                size="small"
+                onChange={handleSelectStock}
+                options={allStockList?.sort()}
+                value={tradingCode}
+                renderInput={(params) => (
+                  <TextField {...params} placeholder="Select stock" required />
+                )}
+                sx={{ width: { xs: 206, md: "100%" } }}
+              />
+            </Box>
+
+            <Box>
+              <Typography
+                sx={{ color: "text.secondary", mb: { xs: 1.3, md: 1.5 } }}
+              >
+                Select analysis type:
+              </Typography>
+              <StyledToggleButtonGroup
+                size="small"
+                value={alignment}
+                exclusive
+                onChange={handleAlignmentChange}
+                orientation={matchesMdUp ? "vertical" : "horizontal"}
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  justifyContent: "flex-start",
+                  alignItems: "flex-start",
+                }}
+              >
+                {options
+                  .filter((item: any) => item.queryType != "general")
+                  .map((item: any, index: number) => (
+                    <StyledToggleButton
+                      key={index}
+                      value={item.queryType}
+                      sx={{
+                        // px: { xs: 1.5, md: 2 },
+                        py: { xs: 0.5, md: 0.6 },
+                        mb: { xs: 1.3, md: 1.3 },
+                        mr: { xs: 1, md: 0 },
+                        width: { xs: "inherit", md: "100%" },
+                        fontSize: { xs: ".85rem", md: ".9rem" },
+                      }}
+                    >
+                      {matchesMdUp ? item.buttonText : item.buttonTextSmall}
+                    </StyledToggleButton>
+                  ))}
+              </StyledToggleButtonGroup>
+            </Box>
+
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+                mt: { xs: 2, md: 1.5 },
+                mb: { xs: 2, md: 0 },
+              }}
             >
-              Cancel
-            </Button>
-            <Button variant="contained" sx={{ px: 2.5 }} type="submit">
-              Submit
-            </Button>
+              <Button
+                variant="outlined"
+                sx={{ px: 2.6 }}
+                onClick={toggleDrawer(false)}
+              >
+                Cancel
+              </Button>
+              <Button variant="contained" sx={{ px: 2.5 }} type="submit">
+                Submit
+              </Button>
+            </Box>
           </Box>
-        </Box>
-      </Drawer>
+        </DialogContent>
+      </Dialog>
 
       <Box
         sx={{
@@ -494,7 +525,7 @@ export default function AiGeneratedInsight(props: any) {
           elevation={0}
           sx={{
             mt: 2,
-            borderRadius: 2,
+            borderRadius: 3,
             minHeight: { xs: 300, md: 480 },
             bgcolor: "appCardBgColor",
           }}
@@ -511,6 +542,7 @@ export default function AiGeneratedInsight(props: any) {
               px: { xs: 2, md: 3 },
               pt: 2,
               pb: 2,
+              color: "text.primary",
               fontSize: fontSelected.size,
               fontFamily: fontSelected.family,
             }}

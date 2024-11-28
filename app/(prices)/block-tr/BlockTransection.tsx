@@ -230,7 +230,9 @@ export default function BlockTransection() {
                   <Typography
                     onClick={() => {
                       handleButtonClick(
-                        `/stock-details?tradingCode=${row.tradingCode}`
+                        `/stock-details?tradingCode=${encodeURIComponent(
+                          row.tradingCode
+                        )}`
                       );
                     }}
                     sx={{

@@ -14,7 +14,7 @@ import Alert from "@mui/material/Alert/Alert";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-import { authActions, pageTitleActions } from "_store";
+import { authActions, favoriteActions, pageTitleActions } from "_store";
 import Spinner from "@/components/shared/Spinner";
 import { pushNotificationInit } from "_helper/fcm";
 
@@ -26,6 +26,8 @@ export default function SignInComp({ redirectFromComponent }: any) {
   const searchParams = useSearchParams();
 
   const redirect = searchParams.get("redirect");
+
+  const action = searchParams.get("action");
 
   const [formData, setFormData] = React.useState({
     phone: "",
@@ -71,8 +73,22 @@ export default function SignInComp({ redirectFromComponent }: any) {
 
       if (res.ok) {
         dispatch(authActions.login(data.user));
+        dispatch(favoriteActions.setData(data.user.favorites));
         pushNotificationInit(data.user);
         setErrorMessage("");
+
+        if (action === "generate_otp") {
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/generateOtp`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${data.user.token}`,
+              },
+            }
+          );
+        }
         handleButtonClick(redirect || redirectFromComponent || "/");
       } else {
         setErrorMessage("Login failed. " + data.message);
@@ -153,7 +169,13 @@ export default function SignInComp({ redirectFromComponent }: any) {
         </Box>
         <Box sx={{ mt: 1 }}>
           <Typography
-            onClick={() => handleButtonClick(`/signup?redirect=${redirect}`)}
+            onClick={() =>
+              handleButtonClick(
+                `/signup${
+                  redirect ? "?redirect=" + encodeURIComponent(redirect) : ""
+                }${action ? "&action=" + action : ""}`
+              )
+            }
             sx={{
               textDecoration: "underline",
               color: "primary.main",

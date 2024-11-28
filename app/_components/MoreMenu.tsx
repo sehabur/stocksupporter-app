@@ -3,6 +3,8 @@ import React, { useState, forwardRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { Browser } from "@capacitor/browser";
+import { Device } from "@capacitor/device";
+import { App } from "@capacitor/app";
 import {
   Box,
   Button,
@@ -19,6 +21,7 @@ import {
 } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
 
+import { yellow } from "@mui/material/colors";
 import LoginIcon from "@mui/icons-material/Login";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CloseIcon from "@mui/icons-material/Close";
@@ -53,8 +56,6 @@ import { authActions, favoriteActions } from "_store";
 import ToastMessage from "./shared/ToastMessage";
 
 import DarkThemeButton from "./buttons/DarkThemeButton";
-import { App } from "@capacitor/app";
-import { yellow } from "@mui/material/colors";
 
 const marketMenu = [
   {
@@ -276,9 +277,9 @@ export default function MoreMenu({
           alignItems: "center",
           justifyContent: "space-between",
           borderRadius: 2,
-          my: 1.1,
+          my: 1.2,
           px: 2,
-          py: 0.3,
+          py: 0.4,
           width: "100%",
         }}
         component={Button}
@@ -313,8 +314,12 @@ export default function MoreMenu({
 
   useEffect(() => {
     const getAppVersion = async () => {
-      const { version } = await App.getInfo();
-      setappVersion(version);
+      const { platform } = await Device.getInfo();
+
+      if (platform != "web") {
+        const { version } = await App.getInfo();
+        setappVersion(version);
+      }
     };
     getAppVersion();
   }, [App]);
@@ -365,6 +370,13 @@ export default function MoreMenu({
             {/* test purpose */}
 
             <Box sx={{ pb: 2.5 }}>
+              <Typography color="text.secondary">Packages</Typography>
+              {packageMenu.map((item: any, index: number) =>
+                getMenuItem(item, index)
+              )}
+            </Box>
+
+            <Box sx={{ pb: 2.5 }}>
               <Typography color="text.secondary" sx={{ mb: 2 }}>
                 Market and stocks
               </Typography>
@@ -372,6 +384,7 @@ export default function MoreMenu({
                 getMenuItem(item, index)
               )}
             </Box>
+
             <Box sx={{ pb: 2.5 }}>
               <Typography color="text.secondary">User menu</Typography>
               {userMenu.map((item: any, index: number) =>
@@ -386,9 +399,9 @@ export default function MoreMenu({
                       alignItems: "center",
                       justifyContent: "space-between",
                       borderRadius: 2,
-                      my: 1.1,
+                      my: 1.2,
                       px: 2,
-                      py: 0.2,
+                      py: 0.4,
                       width: "100%",
                       bgcolor: "transparent",
                     }}
@@ -437,12 +450,7 @@ export default function MoreMenu({
                 </>
               )}
             </Box>
-            <Box sx={{ pb: 2.5 }}>
-              <Typography color="text.secondary">Packages</Typography>
-              {packageMenu.map((item: any, index: number) =>
-                getMenuItem(item, index)
-              )}
-            </Box>
+
             <Box sx={{ pb: 2.5 }}>
               <Typography color="text.secondary">Others</Typography>
               {othersMenu.map((item: any, index: number) =>

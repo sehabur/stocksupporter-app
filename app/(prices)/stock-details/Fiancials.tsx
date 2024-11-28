@@ -145,99 +145,60 @@ const quarterMonthsGetter = (
 };
 
 const formatQuarterlyData = (data: any, yearEnd: string) => {
-  if (!data) return;
-  if (data.length < 2) return;
+  if (!data || data.length < 1) return;
 
-  data.sort((a: { year: number }, b: { year: number }) => a.year - b.year);
+  data.sort((a: { year: number }, b: { year: number }) => b.year - a.year);
 
-  const lastYearData = data[data.length - 2];
-  const thisYearData = data[data.length - 1];
+  const thisYearData = data[0];
+  const lastYearData = data.length >= 2 && data[1];
 
   const { qMonths, currentYearValue, lastYearValue } = quarterMonthsGetter(
     yearEnd,
-    thisYearData.year,
-    lastYearData.year
+    thisYearData?.year,
+    lastYearData?.year
   );
 
   const categories = qMonths;
 
-  let datapointSeries1: any;
+  const datapointSeries2 = [
+    thisYearData?.q1 == 0 ? 0 : thisYearData?.q1 || null,
+    thisYearData?.q2 == 0 ? 0 : thisYearData?.q2 || null,
+    thisYearData?.q3 == 0 ? 0 : thisYearData?.q3 || null,
+    thisYearData?.q4 == 0 ? 0 : thisYearData?.q4 || null,
+  ];
+
+  let dataSeries = [];
+
   if (lastYearData) {
-    datapointSeries1 = [
-      lastYearData?.q1 || null,
-      lastYearData?.q2 || null,
-      lastYearData?.q3 || null,
-      lastYearData?.q4 || null,
+    const datapointSeries1 = [
+      lastYearData?.q1 == 0 ? 0 : lastYearData?.q1 || null,
+      lastYearData?.q2 == 0 ? 0 : lastYearData?.q2 || null,
+      lastYearData?.q3 == 0 ? 0 : lastYearData?.q3 || null,
+      lastYearData?.q4 == 0 ? 0 : lastYearData?.q4 || null,
+    ];
+
+    dataSeries = [
+      {
+        name: lastYearValue,
+        data: datapointSeries1,
+      },
+      {
+        name: currentYearValue,
+        data: datapointSeries2,
+      },
     ];
   } else {
-    datapointSeries1 = [];
+    dataSeries = [
+      {
+        name: currentYearValue,
+        data: datapointSeries2,
+      },
+    ];
   }
 
-  const datapointSeries2 = [
-    thisYearData?.q1 || null,
-    thisYearData?.q2 || null,
-    thisYearData?.q3 || null,
-    thisYearData?.q4 || null,
-  ];
-
   return {
     categories,
-    dataSeries: [
-      {
-        name: lastYearValue,
-        data: datapointSeries1,
-      },
-      {
-        name: currentYearValue,
-        data: datapointSeries2,
-      },
-    ],
-  };
-};
-
-const formatQuarterlyEpsData = (data: any, yearEnd: string) => {
-  if (!data) return;
-  if (data.length < 2) return;
-
-  data.sort((a: { year: number }, b: { year: number }) => a.year - b.year);
-
-  const thisYearData = data[data.length - 1];
-  const lastYearData = data[data.length - 2];
-
-  const { qMonths, currentYearValue, lastYearValue } = quarterMonthsGetter(
-    yearEnd,
-    thisYearData.year,
-    lastYearData.year
-  );
-  const categories = qMonths;
-  const datapointSeries2 = [
-    thisYearData?.q1 || null,
-    thisYearData?.q2 || null,
-    thisYearData?.q3 || null,
-    thisYearData?.q4 || null,
-  ];
-  const datapointSeries1 = [
-    lastYearData?.q1 || null,
-    lastYearData?.q2 || null,
-    lastYearData?.q3 || null,
-    lastYearData?.q4 || null,
-  ];
-
-  return {
-    // current: epsCurrent,
-    // changeText,
-    // changeTextColor,
-    categories,
-    dataSeries: [
-      {
-        name: lastYearValue,
-        data: datapointSeries1,
-      },
-      {
-        name: currentYearValue,
-        data: datapointSeries2,
-      },
-    ],
+    dataSeries: dataSeries,
   };
 };
 
@@ -417,7 +378,7 @@ export default function Financials({ data }: any) {
     data?.screener?.dividend?.data,
     data.dividendYield
   );
-  const epsQuarterly = formatQuarterlyEpsData(data.epsQuaterly, data.yearEnd);
+  const epsQuarterly = formatQuarterlyData(data.epsQuaterly, data.yearEnd);
   const navQuarterly = formatQuarterlyData(data.navQuaterly, data.yearEnd);
   const nocfpsQuarterly = formatQuarterlyData(
     data.nocfpsQuaterly,
@@ -1435,7 +1396,17 @@ export default function Financials({ data }: any) {
                   handleItemClick={handleItemClick}
                 />
               </Grid>
-
+              <Grid item xs={6} sm={4}>
+                <FinancialCard
+                  titleShort="Operating Profit"
+                  title="Operating Profit"
+                  unit="CR"
+                  divideFactor={10000000}
+                  data={data?.screener?.operatingProfit}
+                  dialogtype="operatingProfit"
+                  handleItemClick={handleItemClick}
+                />
+              </Grid>
               <Grid item xs={6} sm={4}>
                 <FinancialCard
                   titleShort="Net Income"
@@ -1458,18 +1429,6 @@ export default function Financials({ data }: any) {
                   handleItemClick={handleItemClick}
                 />
               </Grid>
-              <Grid item xs={6} sm={4}>
-                <FinancialCard
-                  titleShort="Operating Profit"
-                  title="Operating Profit"
-                  unit="CR"
-                  divideFactor={10000000}
-                  data={data?.screener?.operatingProfit}
-                  dialogtype="operatingProfit"
-                  handleItemClick={handleItemClick}
-                />
-              </Grid>
-
               <Grid item xs={6} sm={4}>
                 <FinancialCard
                   titleShort="Profit Margin"

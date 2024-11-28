@@ -88,7 +88,9 @@ export default function Dashboard() {
         return (
           <Typography
             onClick={() => {
-              handleButtonClick(`/stock-details?tradingCode=${params.value}`);
+              handleButtonClick(
+                `/stock-details?tradingCode=${encodeURIComponent(params.value)}`
+              );
             }}
             sx={{
               color: "primary.main",
@@ -218,9 +220,7 @@ export default function Dashboard() {
           }}
         />
         {data[typeAlignment].length < 1 && (
-          <Typography textAlign="center" sx={{ py: 2 }}>
-            No data to display
-          </Typography>
+          <Typography textAlign="center">No data to display</Typography>
         )}
       </Box>
     </Box>

@@ -3,6 +3,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 
+import { Virtuoso } from "react-virtuoso";
+
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import ToggleButton from "@mui/material/ToggleButton";
@@ -20,6 +22,7 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
     border: 0,
   },
 }));
+
 const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   "&.MuiToggleButtonGroup-grouped": {
     borderRadius: "6px !important",
@@ -39,7 +42,7 @@ const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   textTransform: "none",
 }));
 
-const INIT_ITEM_TO_DISPLAY = 25;
+// const INIT_ITEM_TO_DISPLAY = 25;
 
 export default function SharePrice() {
   const router = useRouter();
@@ -56,7 +59,9 @@ export default function SharePrice() {
 
   const initSharelist = latestPrice.filter((item: any) => item.type == "stock");
 
-  const [isScroll, setisScroll] = useState(false);
+  const [listHeight, setListHeight] = useState(0);
+
+  // const [isScroll, setisScroll] = useState(false);
 
   const [shares, setShares] = useState<any>(initSharelist);
 
@@ -76,14 +81,14 @@ export default function SharePrice() {
     }
   };
 
-  const handleScroll = () => {
-    const currentScrollPos = window.scrollY;
-    if (currentScrollPos > 0) {
-      setisScroll(true);
-    } else {
-      setisScroll(false);
-    }
-  };
+  // const handleScroll = () => {
+  //   const currentScrollPos = window.scrollY;
+  //   if (currentScrollPos > 0) {
+  //     setisScroll(true);
+  //   } else {
+  //     setisScroll(false);
+  //   }
+  // };
 
   const filterShares = (sector: string) => {
     if (!shares) return [];
@@ -112,9 +117,20 @@ export default function SharePrice() {
     setAlignment(newvalue);
   };
 
+  // useEffect(() => {
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // }, []);
+
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const calculateHeight = () => {
+      // const headerHeight = document.getElementById("header")?.offsetHeight || 0;
+      // const footerHeight = document.getElementById("footer")?.offsetHeight || 0;
+      setListHeight(window.innerHeight - 173);
+    };
+    calculateHeight();
+    window.addEventListener("resize", calculateHeight);
+    return () => window.removeEventListener("resize", calculateHeight);
   }, []);
 
   useEffect(() => {
@@ -181,7 +197,7 @@ export default function SharePrice() {
         <Box sx={{ height: 30 }}></Box>
       </Box>
 
-      {shares
+      {/* {shares
         ?.slice(0, INIT_ITEM_TO_DISPLAY)
         .map((item: any, index: number) => (
           <Box key={index}>
@@ -194,7 +210,20 @@ export default function SharePrice() {
           <Box key={index}>
             <MobileViewPriceCard item={item} />
           </Box>
-        ))}
+        ))} */}
+
+      <div
+        id="virtual-list"
+        style={{ height: `${listHeight}px`, overflow: "hidden" }}
+      >
+        <Virtuoso
+          style={{ height: "100%" }}
+          // totalCount={200}
+          // useWindowScroll
+          data={shares}
+          itemContent={(_, item) => <MobileViewPriceCard item={item} />}
+        />
+      </div>
     </Box>
   );
 }

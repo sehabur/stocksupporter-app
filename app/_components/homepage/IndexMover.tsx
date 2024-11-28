@@ -75,7 +75,9 @@ export default function IndexMover({ data, handleButtonClick }: any) {
           <Typography
             onClick={() => {
               handleButtonClick(
-                `/stock-details?tradingCode=${params.value}`,
+                `/stock-details?tradingCode=${encodeURIComponent(
+                  params.value
+                )}`,
                 `${params.value} Details`
               );
             }}
@@ -183,6 +185,11 @@ export default function IndexMover({ data, handleButtonClick }: any) {
           }}
         />
       </Box>
+      {data[typeAlignment].length < 1 && (
+        <Typography textAlign="center" sx={{ mt: 4, mb: 2 }}>
+          No data to display
+        </Typography>
+      )}
       <Box sx={{ mt: 1 }}>
         <SeeMoreButton href="/index-mover" title="Index movers" />
       </Box>
